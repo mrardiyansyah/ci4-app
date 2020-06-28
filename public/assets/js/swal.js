@@ -6,7 +6,7 @@ const swal = $('.swal').data('swal');
 //         icon: 'success'
 //     });
 // }
-$(document).on('click', '#testSwal', function (e) {
+$(document).on('click', '#delete-menu', function (e) {
     e.preventDefault();
     const href = $(this).attr('href');
     let menu = $(this).data('menu');

@@ -36,8 +36,7 @@
                             <td><?= $m['menu']; ?></td>
                             <td>
                                 <a href="" id="edit" class="edit-btn badge badge-primary" data-toggle="modal" data-target="#edit-menu" data-id="<?= $m['id_user_menu']; ?>" data-menu="<?= $m['menu']; ?>">Edit</a>
-                                <a href="<?= base_url('menu/delete-menu') . '/' . $m['id_user_menu']; ?>" id="delete" class="badge badge-danger btn-hapus-menu" data-swal="swal" data-menu="<?= $m['menu']; ?>">Delete</a>
-                                <a href="#" id="testSwal" class=" badge badge-secondary" data-swal="swal" data-menu="<?= $m['menu']; ?>">Edit</a>
+                                <a href="<?= base_url('menu/delete-menu') . '/' . $m['id_user_menu']; ?>" id="delete-menu" class="badge badge-danger btn-hapus-menu" data-swal="swal" data-menu="<?= $m['menu']; ?>">Delete</a>
                             </td>
                         </tr>
                         <?php $i++; ?>

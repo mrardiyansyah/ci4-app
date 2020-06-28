@@ -83,7 +83,7 @@ class Menu extends BaseController
             if ($check) {
                 $M_Menu->delete($id_user_menu);
                 return redirect()->back()->with('message', '<div class="alert alert-success" role="alert">
-                        Menu \'' . $check['menu'] . '\' has been Updated!</div>');
+                        Menu \'' . $check['menu'] . '\' has been Deleted!</div>');
             } else {
                 throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Menu is not found. Please check again!');
             }
