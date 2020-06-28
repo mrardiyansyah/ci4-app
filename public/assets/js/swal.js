@@ -19,7 +19,7 @@ $(document).on('click', '#testSwal', function (e) {
         width: 400,
         showCancelButton: true,
         cancelButtonText: `Cancel`,
-        confirmButtonText: 'Deletee',
+        confirmButtonText: 'Delete',
         buttonsStyling: false,
         showClass: {
             popup: 'animate__animated animate__fadeInDown animate__fast',
