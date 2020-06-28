@@ -37,6 +37,15 @@ class CustomModel
         }
     }
 
+    public function getAllSubMenu()
+    {
+        $builder = $this->db->table('user_sub_menu');
+        $builder->select('user_sub_menu.*, user_menu.menu');
+        $builder->join('user_menu', 'user_sub_menu.id_user_menu = user_menu.id_user_menu');
+        $query = $builder->get()->getResultArray();
+        return $query;
+    }
+
     public function getNotif($id_notification_target)
     {
         $builder = $this->db->table('notification_target');

@@ -1,3 +1,7 @@
+<?= $this->extend('layout/main'); ?>
+
+<?= $this->section('content'); ?>
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -6,16 +10,20 @@
 
     <div class="row">
         <div class="col-lg">
-            <?php if (validation_errors()) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?= validation_errors(); ?>
-            </div>
+            <?php if (isset($validation)) : ?>
+                <div class="alert alert-danger">
+                    <?= $validation->getError(); ?>
+                </div>
             <?php endif; ?>
 
-            <?= $this->session->flashdata('message'); ?>
+            <div>
+                <?= session()->get('message'); ?>
+            </div>
+            <div class="pb-2">
+                <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newSubMenuModal">Add New Sub Menu</a>
+            </div>
 
-            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newSubMenuModal">Add New Sub Menu</a>
-            <table class="table table-hover table-responsive table-striped">
+            <table class="table table-hover table-striped table-submenu">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -31,24 +39,25 @@
                 <tbody>
                     <?php $i = 1; ?>
                     <?php foreach ($subMenu as $sm) : ?>
-                    <tr>
-                        <th scope="row"><?= $i; ?></th>
-                        <td><?= $sm['title']; ?></td>
-                        <td><?= $sm['menu']; ?></td>
-                        <td><?= $sm['url']; ?></td>
-                        <td><?= $sm['icon']; ?></td>
-                        <td><?= $sm['id_user_sub_menu']; ?></td>
-                        <td><?= $sm['is_active_menu']; ?></td>
-                        <td>
-                            <a href="" class="badge badge-primary" data-toggle="modal" data-target="#editSubMenuModal" data-id="<?= $sm['id_user_sub_menu']; ?>" data-currentsubmenu="<?= $sm['menu']; ?>">Edit</a>
-                            <a href="" class="badge badge-danger">Delete</a>
-                        </td>
-                    </tr>
-                    <?php $i++; ?>
+                        <tr>
+                            <th scope="row"><?= $i; ?></th>
+                            <td><?= $sm['title']; ?></td>
+                            <td><?= $sm['menu']; ?></td>
+                            <td><?= $sm['url']; ?></td>
+                            <td><?= $sm['icon']; ?></td>
+                            <td><?= $sm['id_user_sub_menu']; ?></td>
+                            <td><?= $sm['is_active_menu']; ?></td>
+                            <td>
+                                <a href="" class="badge badge-primary" data-toggle="modal" data-target="#editSubMenuModal" data-id="<?= $sm['id_user_sub_menu']; ?>" data-currentsubmenu="<?= $sm['menu']; ?>">Edit</a>
+                                <a href="" class="badge badge-danger">Delete</a>
+                            </td>
+                        </tr>
+                        <?php $i++; ?>
                     <?php endforeach; ?>
 
                 </tbody>
             </table>
+
         </div>
     </div>
 
@@ -81,7 +90,7 @@
                         <select name="id_user_menu" id="id_user_menu" class="form-control">
                             <option value="">Select Menu</option>
                             <?php foreach ($menu as $m) : ?>
-                            <option value="<?= $m['id_user_menu']; ?>"><?= $m['menu']; ?></option>
+                                <option value="<?= $m['id_user_menu']; ?>"><?= $m['menu']; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -134,3 +143,34 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('.table-submenu').dataTable({
+            'destroy': true,
+            'responsive': true,
+            "lengthMenu": [
+                [5, 10, 25, 50, -1],
+                [5, 10, 25, 50, "All"]
+            ],
+            'scrollY': '350px',
+            'scrollX': true,
+            'scrollCollapse': true,
+            'fixedColumns': true,
+            'order': [
+                [1, "asc"]
+            ],
+            'columnDefs': [{
+                'targets': [0, 4, 5, 6, 7],
+                'searchable': false,
+                'orderable': false
+            }, {
+                'targets': 3,
+                'width': '100px'
+            }],
+        });
+    });
+</script>
+
+
+<?= $this->endSection(); ?>
