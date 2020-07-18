@@ -12,9 +12,11 @@ class Menu extends BaseController
     public function index()
     {
         $session = session();
+
         $M_Auth = new M_Auth();
         $M_Menu = new M_Menu();
         $M_Role = new M_Role();
+
         $data['title'] = 'Menu Manajemen';
         $data['user'] = $M_Auth->find($session->get('id_user'));
         $data['role'] =  $M_Role->find($session->get('id_role'));
@@ -22,25 +24,34 @@ class Menu extends BaseController
 
         $data['menu'] = $M_Menu->findAll();
 
-        if ($this->request->getMethod() == 'post') {
-            $rules = [
-                'menu' => [
-                    'label' => 'Menu',
-                    'rules' => 'required'
-                ]
-            ];
-            if (!$this->validate($rules)) {
-                $data['validation'] = $this->validator;
-            } else {
-                $data = ['menu' => $this->request->getPost('menu')];
-                $M_Menu->save($data);
-                $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
-                    Menu has been Added!</div>');
-                return redirect()->to('menu');
-            }
-        }
+
 
         return view('menu/index', $data);
+    }
+
+    public function add()
+    {
+        // echo 'kntll';
+        $session = session();
+        $M_Auth = new M_Auth();
+        $M_Menu = new M_Menu();
+        $M_Role = new M_Role();
+
+        $rules = [
+            'menu' => [
+                'label' => 'Menu',
+                'rules' => 'required'
+            ]
+        ];
+        if (!$this->validate($rules)) {
+            session()->setFlashdata('message', '<div class="alert alert-danger" role="alert">' . $this->validator->getError() . '</div>');
+            return redirect()->back();
+        }
+        $data = ['menu' => $this->request->getPost('menu')];
+        $M_Menu->save($data);
+        $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
+                    Menu has been Added!</div>');
+        return redirect()->route('menu');
     }
 
     public function edit()

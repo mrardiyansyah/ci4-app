@@ -11,7 +11,7 @@
         <div class="col-lg-6">
             <?php if (isset($validation)) : ?>
                 <div class="alert alert-danger">
-                    <?= $validation->getError(); ?>
+                    <?= $validation->getErrors(); ?>
                 </div>
             <?php endif; ?>
 
@@ -67,7 +67,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('menu'); ?>" method="post">
+            <form action="<?= base_url('menu/add-menu'); ?>" method="post">
+                <?= csrf_field(); ?>
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="text" class="form-control" id="menu" name="menu" placeholder="Menu name">

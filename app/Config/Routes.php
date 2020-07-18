@@ -55,6 +55,7 @@ $routes->group('admin', ['filter' => 'auth'], function ($routes) {
 // Menu Manajemen
 $routes->group('menu', ['filter' => 'auth'], function ($routes) {
 	$routes->match(['get', 'post'], '/', 'Admin\Menu::index');
+	$routes->post('add-menu', 'Admin\Menu::add');
 	$routes->post('edit-menu', 'Admin\Menu::edit');
 	$routes->get('delete-menu/(:any)', 'Admin\Menu::delete/$1');
 	$routes->addRedirect('delete-menu', '/');
@@ -63,6 +64,7 @@ $routes->group('menu', ['filter' => 'auth'], function ($routes) {
 // Sub Menu Manajemen
 $routes->group('submenu', ['filter' => 'auth'], function ($routes) {
 	$routes->match(['get', 'post'], '/', 'Admin\SubMenu::index');
+	$routes->post('add-submenu', 'Admin\SubMenu::add');
 	$routes->post('edit-submenu', 'Admin\SubMenu::edit');
 	$routes->get('delete-submenu/(:any)', 'Admin\SubMenu::delete/$1');
 	$routes->addRedirect('delete-menu', '/');

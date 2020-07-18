@@ -12,7 +12,7 @@
         <div class="col-lg">
             <?php if (isset($validation)) : ?>
                 <div class="alert alert-danger">
-                    <?= $validation->getError(); ?>
+                    <?= $validation->listErrors(); ?>
                 </div>
             <?php endif; ?>
 
@@ -71,7 +71,7 @@
 <!-- Modal -->
 
 
-<!-- Modal -->
+<!-- Modal Add Sub Menu -->
 <div class="modal fade" id="newSubMenuModal" tabindex="-1" role="dialog" aria-labelledby="newSubMenuModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -81,7 +81,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('menu/submenu'); ?>" method="post" id="form-add-sm" name="form-add-sm">
+            <form action="<?= base_url('submenu/add-submenu'); ?>" method="post" id="form-add-sm" name="form-add-sm">
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="text" class="form-control" id="title" name="title" placeholder="Sub menu title">
@@ -102,8 +102,9 @@
                     </div>
                     <div class="form-group">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="is_active_menu" name="is_active_menu" checked>
-                            <label class="form-check-label" for="is_active_menu">
+                            <input class="form-check-input" type="hidden" value="0" id="is_active_menu" name="is_active_menu">
+                            <input class="form-check-input" type="checkbox" value="1" id="is_active_menu1" name="is_active_menu" checked>
+                            <label class="form-check-label" for="is_active_menu1">
                                 Active?
                             </label>
                         </div>
@@ -169,6 +170,28 @@
                 'width': '100px'
             }],
         });
+    });
+
+    $(document).ready(function() {
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+
     });
 </script>
 

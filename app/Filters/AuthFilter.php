@@ -9,7 +9,7 @@ use App\Models\CustomModel;
 
 class AuthFilter implements FilterInterface
 {
-    public function before(RequestInterface $request)
+    public function before(RequestInterface $request, $arguments = NULL)
     {
         if (!session()->has('isLoggedIn')) {
             $session = session();
@@ -33,7 +33,7 @@ class AuthFilter implements FilterInterface
             }
         }
     }
-    public function after(RequestInterface $request, ResponseInterface $response)
+    public function after(RequestInterface $request, ResponseInterface $response, $arguments = NULL)
     {
         // Do Something Here
     }
