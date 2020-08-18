@@ -132,25 +132,6 @@
     });
 
     $(document).ready(function() {
-        $('#editSubMenuModal').on('show.bs.modal', function(e) {
-            const rowIdSubMenu = $(e.relatedTarget).data('id');
-            const rowmenu = $(e.relatedTarget).data('currentsubmenu');
-            //menggunakan fungsi ajax untuk pengambilan data
-            $.ajax({
-                type: 'post',
-                url: '<?= base_url('menu/editSubMenu'); ?>',
-                data: {
-                    rowidsm: rowIdSubMenu,
-                    rowmenu: rowmenu
-                },
-                success: function(data) {
-                    $('.modal-data-submenu').html(data); //menampilkan data ke dalam modal
-                }
-            });
-        });
-    });
-
-    $(document).ready(function() {
         $("#confirm-submit-probing").click(function() {
             $("#addProblemMapping").submit();
         });

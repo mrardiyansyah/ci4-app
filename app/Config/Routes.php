@@ -65,6 +65,7 @@ $routes->group('menu', ['filter' => 'auth'], function ($routes) {
 $routes->group('submenu', ['filter' => 'auth'], function ($routes) {
 	$routes->match(['get', 'post'], '/', 'Admin\SubMenu::index');
 	$routes->post('add-submenu', 'Admin\SubMenu::add');
+	$routes->add('editSubMenu', 'Admin\SubMenu::editSubMenuModal');
 	$routes->post('edit-submenu', 'Admin\SubMenu::edit');
 	$routes->get('delete-submenu/(:any)', 'Admin\SubMenu::delete/$1');
 	$routes->addRedirect('delete-menu', '/');

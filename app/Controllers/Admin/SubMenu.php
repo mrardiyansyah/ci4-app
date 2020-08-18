@@ -65,6 +65,7 @@ class SubMenu extends BaseController
 
         if (!$this->validate($rules)) {
             session()->setFlashdata('message', '<div class="alert alert-danger" role="alert">' . $this->validator->listErrors() . '</div>');
+            echo 'gagal';
             return redirect()->back();
         } else {
             $data = [
@@ -79,6 +80,66 @@ class SubMenu extends BaseController
             $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
                    Sub Menu has been Added!</div>');
             return redirect()->route('submenu');
+        }
+    }
+
+    public function editSubMenuModal()
+    {
+        $M_Menu = new M_Menu();
+        $M_SubMenu = new M_SubMenu();
+
+        $id = $this->request->getPost('id');
+        $data['row_submenu'] = $M_SubMenu->find($id);
+        echo json_encode($data['row_submenu']);
+    }
+
+    public function edit()
+    {
+        $session = session();
+        $M_SubMenu = new M_SubMenu();
+
+        $rules = [
+            'title' => [
+                'label' => 'Sub Menu Title',
+                'rules' => 'required|alpha_space',
+                'errors' => [
+                    'required' => 'Sub Menu Title is required',
+                    'alpha_space' => 'Sub Menu Title must be alphabetic'
+                ]
+            ],
+            'id_user_menu' => [
+                'label' => 'Menu',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Menu field is required'
+                ]
+            ],
+            'url' => [
+                'label' => 'URL',
+                'rules' => 'required',
+            ],
+            'icon' => [
+                'label' => 'Icon',
+                'rules' => 'required',
+            ],
+        ];
+
+        if (!$this->validate($rules)) {
+            session()->setFlashdata('message', '<div class="alert alert-danger" role="alert">' . $this->validator->listErrors() . '</div>');
+            return redirect()->back();
+        } else {
+            $data = [
+                'title' => $this->request->getPost('title'),
+                'id_user_menu' => $this->request->getPost('id_user_menu'),
+                'url' => $this->request->getPost('url'),
+                'icon' => $this->request->getPost('icon'),
+                'is_active_menu' => $this->request->getPost('is_active_menu'),
+            ];
+            dd($data);
+            // $M_SubMenu->update($data);
+            // $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
+            //        Sub Menu has been Updated!</div>');
+            // return redirect()->route('submenu');
         }
     }
 }

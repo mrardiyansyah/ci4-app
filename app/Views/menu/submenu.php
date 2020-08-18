@@ -20,7 +20,7 @@
                 <?= session()->get('message'); ?>
             </div>
             <div class="pb-2">
-                <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newSubMenuModal">Add New Sub Menu</a>
+                <a href="#" onclick="add_submenu()" class="btn btn-primary mb-3">Add New Sub Menu</a>
             </div>
 
             <table class="table table-hover table-striped table-submenu">
@@ -48,8 +48,8 @@
                             <td><?= $sm['id_user_sub_menu']; ?></td>
                             <td><?= $sm['is_active_menu']; ?></td>
                             <td>
-                                <a href="" class="badge badge-primary" data-toggle="modal" data-target="#editSubMenuModal" data-id="<?= $sm['id_user_sub_menu']; ?>" data-currentsubmenu="<?= $sm['menu']; ?>">Edit</a>
-                                <a href="" class="badge badge-danger">Delete</a>
+                                <a href="#" onclick="edit_submenu(<?= $sm['id_user_sub_menu']; ?>)" class="badge badge-primary"">Edit</a>
+                                <a href="" class=" badge badge-danger">Delete</a>
                             </td>
                         </tr>
                         <?php $i++; ?>
@@ -76,12 +76,12 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="newSubMenuModalLabel">Add New Sub Menu</h5>
+                <h5 class="modal-title" id="newSubMenuModalLabel"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('submenu/add-submenu'); ?>" method="post" id="form-add-sm" name="form-add-sm">
+            <form action="#" id="form-submenu" name="form-add-sm" method="POST">
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="text" class="form-control" id="title" name="title" placeholder="Sub menu title">
@@ -109,41 +109,16 @@
                             </label>
                         </div>
                     </div>
-                    <!-- <div class="form-group">
-                        <input type="hidden" class="form-control" id="form_type" name="form_type" value="add-submenu">
-                    </div> -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="Submit" class="btn btn-primary">Add</button>
                 </div>
             </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="btnSave" onclick="save()" class="btn btn-primary">Add</button>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Modal Edit SubMenu -->
-<div class="modal fade" name="editSubMenuModal" id="editSubMenuModal" tabindex="-1" role="dialog" aria-labelledby="editSubMenuLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editSubMenuLabel"> Edit Sub Menu</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="<?= base_url('menu/submitEditsubmenu'); ?>" method="post" id="form-edit-sm" name="form-edit-sm">
-                <div class="modal-body">
-                    <div class="modal-data-submenu"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                    <button type="Submit" class="btn btn-primary" id="edit-data-submenu" name="edit-data-submenu">Edit Data</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <script>
     $(document).ready(function() {
@@ -170,29 +145,81 @@
                 'width': '100px'
             }],
         });
-    });
 
-    $(document).ready(function() {
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        (function() {
-            'use strict';
-            window.addEventListener('load', function() {
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.getElementsByClassName('needs-validation');
-                // Loop over them and prevent submission
-                var validation = Array.prototype.filter.call(forms, function(form) {
-                    form.addEventListener('submit', function(event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                        form.classList.add('was-validated');
-                    }, false);
-                });
-            }, false);
-        })();
-
+        $('#editSubMenuModal').on('show.bs.modal', function(e) {
+            const id_SubMenu = $(e.relatedTarget).data('id');
+            //menggunakan fungsi ajax untuk pengambilan data
+            $.ajax({
+                type: 'post',
+                url: '<?= base_url('submenu/editSubMenu'); ?>',
+                dataType: 'JSON',
+                data: {
+                    id: id_SubMenu,
+                },
+                success: function(data) {
+                    console.log(data);
+                    // $('.modal-data-submenu').html(data); //menampilkan data ke dalam modal
+                }
+            });
+        });
     });
+</script>
+
+<script type="text/javascript">
+    let save_method;
+
+    function add_submenu() {
+        save_method = 'add';
+        $('#form-submenu').trigger("reset");
+        $('#form-submenu').attr("action", '<?= base_url('submenu/add-submenu'); ?>');
+        $('[id="btnSave"]').html("Add");
+        $('#newSubMenuModal').modal('show');
+        $('.modal-title').text('Add New Sub Menu');
+    }
+
+    function edit_submenu(id_submenu) {
+        save_method = 'update';
+        submenu = $('#form-submenu');
+        submenu.attr("action", '<?= base_url('submenu/edit-submenu'); ?>');
+        submenu.trigger("reset")
+        <?php header('Content-type: application/json') ?>
+        $.ajax({
+            type: "post",
+            url: "<?= base_url('submenu/editSubMenu'); ?>",
+            dataType: "JSON",
+            data: {
+                id: id_submenu,
+            },
+            success: function(data) {
+                // console.log(data);
+
+                $('[name="title"]').val(data.title);
+                $('[name="id_user_menu"]').val(data.id_user_menu);
+                $('[name="url"]').val(data.url);
+                $('[name="icon"]').val(data.icon);
+                $('[id="btnSave"]').html("Edit");
+
+                const check_active = data.is_active_menu;
+                if (check_active != 1) {
+                    $('[name="is_active_menu"]').prop('checked', false);
+                }
+
+                $('#newSubMenuModal').modal('show');
+                $('.modal-title').text('Edit Sub Menu');
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+                alert('Error get data from ajax');
+            }
+        });
+    }
+
+    function save() {
+        $("#btnSave").click(function(e) {
+            // e.preventDefault();
+            $("#form-submenu").submit();
+        });
+    }
 </script>
 
 
