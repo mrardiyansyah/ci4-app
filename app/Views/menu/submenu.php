@@ -48,8 +48,8 @@
                             <td><?= $sm['id_user_sub_menu']; ?></td>
                             <td><?= $sm['is_active_menu']; ?></td>
                             <td>
-                                <a href="#" onclick="edit_submenu(<?= $sm['id_user_sub_menu']; ?>)" class="badge badge-primary"">Edit</a>
-                                <a href="" class=" badge badge-danger">Delete</a>
+                                <a href="#" onclick="edit_submenu(<?= $sm['id_user_sub_menu']; ?>)" class="badge badge-primary">Edit</a>
+                                <a href="<?= base_url('submenu/delete-submenu') . '/' . $sm['id_user_sub_menu']; ?>" id="delete-submenu" class=" badge badge-danger btn-hapus-submenu" data-swal="swal" data-submenu="<?= $sm['title']; ?>">Delete</a>
                             </td>
                         </tr>
                         <?php $i++; ?>

@@ -143,4 +143,25 @@ class SubMenu extends BaseController
             return redirect()->route('submenu');
         }
     }
+
+    public function delete($id_user_sub_menu)
+    {
+        $session = session();
+        $M_SubMenu = new M_SubMenu();
+        $uri = service('uri');
+        $uri_id_menu = $uri->getSegment(3);
+        if (filter_var($uri_id_menu, FILTER_VALIDATE_INT)) {
+            $check = $M_SubMenu->find($id_user_sub_menu);
+            if ($check) {
+                $M_SubMenu->delete($id_user_sub_menu);
+                return redirect()->back()->with('message', '<div class="alert alert-success" role="alert">
+                        Menu \'' . $check['title'] . '\' has been Deleted!</div>');
+            } else {
+                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Menu is not found. Please check again!');
+            }
+        } else {
+            return redirect()->back()->with('message', '<div class="alert alert-danger" role="alert">Please check again!</div>');
+        }
+        // $M_Menu->delete($id_user_menu);
+    }
 }
