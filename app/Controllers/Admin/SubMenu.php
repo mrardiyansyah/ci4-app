@@ -128,6 +128,7 @@ class SubMenu extends BaseController
             session()->setFlashdata('message', '<div class="alert alert-danger" role="alert">' . $this->validator->listErrors() . '</div>');
             return redirect()->back();
         } else {
+            $id_user_sub_menu = $this->request->getPost('id_user_sub_menu');
             $data = [
                 'title' => $this->request->getPost('title'),
                 'id_user_menu' => $this->request->getPost('id_user_menu'),
@@ -135,11 +136,11 @@ class SubMenu extends BaseController
                 'icon' => $this->request->getPost('icon'),
                 'is_active_menu' => $this->request->getPost('is_active_menu'),
             ];
-            dd($data);
-            // $M_SubMenu->update($data);
-            // $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
-            //        Sub Menu has been Updated!</div>');
-            // return redirect()->route('submenu');
+            // dd($data);
+            $M_SubMenu->update($id_user_sub_menu, $data);
+            $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
+                   Sub Menu has been Updated!</div>');
+            return redirect()->route('submenu');
         }
     }
 }

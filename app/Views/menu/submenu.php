@@ -84,6 +84,9 @@
             <form action="#" id="form-submenu" name="form-add-sm" method="POST">
                 <div class="modal-body">
                     <div class="form-group">
+                        <input type="hidden" name="id_user_sub_menu" id="id_user_sub_menu" value="">
+                    </div>
+                    <div class="form-group">
                         <input type="text" class="form-control" id="title" name="title" placeholder="Sub menu title">
                     </div>
                     <div class="form-group">
@@ -192,7 +195,8 @@
             },
             success: function(data) {
                 // console.log(data);
-
+                console.log(data);
+                $('[name="id_user_sub_menu"]').val(data.id_user_sub_menu);
                 $('[name="title"]').val(data.title);
                 $('[name="id_user_menu"]').val(data.id_user_menu);
                 $('[name="url"]').val(data.url);
