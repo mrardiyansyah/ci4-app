@@ -11,21 +11,28 @@ use App\Models\M_Role;
 
 class SubMenu extends BaseController
 {
+    protected $M_Auth, $M_Menu, $M_SubMenu, $M_Role;
+
+    public function __construct()
+    {
+        $this->M_Auth = new M_Auth();
+        $this->M_Menu = new M_Menu();
+        $this->M_Role = new M_Role();
+    }
+
     public function index()
     {
         $session = session();
-        $M_Auth = new M_Auth();
-        $M_Menu = new M_Menu();
 
         $db = db_connect();
         $CustomModel = new CustomModel($db);
         $M_Role = new M_Role();
         $data['title'] = 'Sub Menu Manajemen';
-        $data['user'] = $M_Auth->find($session->get('id_user'));
-        $data['role'] =  $M_Role->find($session->get('id_role'));
+        $data['user'] = $this->M_Auth->find($session->get('id_user'));
+        $data['role'] =  $this->M_Role->find($session->get('id_role'));
         $data['notif'] = get_new_notif();
 
-        $data['menu'] = $M_Menu->findAll();
+        $data['menu'] = $this->M_Menu->findAll();
         $data['subMenu'] = $CustomModel->getAllSubMenu();
 
 
@@ -35,7 +42,6 @@ class SubMenu extends BaseController
     public function add()
     {
         $session = session();
-        $M_SubMenu = new M_SubMenu();
 
         $rules = [
             'title' => [
@@ -76,7 +82,7 @@ class SubMenu extends BaseController
                 'is_active_menu' => $this->request->getPost('is_active_menu'),
             ];
             // dd($data);
-            $M_SubMenu->save($data);
+            $this->M_SubMenu->save($data);
             $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
                    Sub Menu has been Added!</div>');
             return redirect()->route('submenu');
@@ -85,18 +91,14 @@ class SubMenu extends BaseController
 
     public function editSubMenuModal()
     {
-        $M_Menu = new M_Menu();
-        $M_SubMenu = new M_SubMenu();
-
         $id = $this->request->getPost('id');
-        $data['row_submenu'] = $M_SubMenu->find($id);
+        $data['row_submenu'] = $this->M_SubMenu->find($id);
         echo json_encode($data['row_submenu']);
     }
 
     public function edit()
     {
         $session = session();
-        $M_SubMenu = new M_SubMenu();
 
         $rules = [
             'title' => [
@@ -137,7 +139,7 @@ class SubMenu extends BaseController
                 'is_active_menu' => $this->request->getPost('is_active_menu'),
             ];
             // dd($data);
-            $M_SubMenu->update($id_user_sub_menu, $data);
+            $this->M_SubMenu->update($id_user_sub_menu, $data);
             $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
                    Sub Menu has been Updated!</div>');
             return redirect()->route('submenu');
@@ -147,13 +149,12 @@ class SubMenu extends BaseController
     public function delete($id_user_sub_menu)
     {
         $session = session();
-        $M_SubMenu = new M_SubMenu();
         $uri = service('uri');
         $uri_id_menu = $uri->getSegment(3);
         if (filter_var($uri_id_menu, FILTER_VALIDATE_INT)) {
-            $check = $M_SubMenu->find($id_user_sub_menu);
+            $check = $this->M_SubMenu->find($id_user_sub_menu);
             if ($check) {
-                $M_SubMenu->delete($id_user_sub_menu);
+                $this->M_SubMenu->delete($id_user_sub_menu);
                 return redirect()->back()->with('message', '<div class="alert alert-success" role="alert">
                         Menu \'' . $check['title'] . '\' has been Deleted!</div>');
             } else {
