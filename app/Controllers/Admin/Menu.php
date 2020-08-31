@@ -31,14 +31,11 @@ class Menu extends BaseController
 
         $data['menu'] = $this->M_Menu->findAll();
 
-
-
         return view('menu/index', $data);
     }
 
     public function add()
     {
-        // echo 'kntll';
         $session = session();
         $rules = [
             'menu' => [

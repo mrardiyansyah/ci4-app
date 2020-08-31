@@ -148,23 +148,6 @@
                 'width': '100px'
             }],
         });
-
-        $('#editSubMenuModal').on('show.bs.modal', function(e) {
-            const id_SubMenu = $(e.relatedTarget).data('id');
-            //menggunakan fungsi ajax untuk pengambilan data
-            $.ajax({
-                type: 'post',
-                url: '<?= base_url('submenu/editSubMenu'); ?>',
-                dataType: 'JSON',
-                data: {
-                    id: id_SubMenu,
-                },
-                success: function(data) {
-                    console.log(data);
-                    // $('.modal-data-submenu').html(data); //menampilkan data ke dalam modal
-                }
-            });
-        });
     });
 </script>
 
@@ -194,7 +177,6 @@
                 id: id_submenu,
             },
             success: function(data) {
-                // console.log(data);
                 console.log(data);
                 $('[name="id_user_sub_menu"]').val(data.id_user_sub_menu);
                 $('[name="title"]').val(data.title);
