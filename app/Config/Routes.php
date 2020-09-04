@@ -50,6 +50,7 @@ $routes->match(['get', 'post'], '/edit-profile', 'Users\profile::editProfile');
 // Users
 $routes->group('admin', ['filter' => 'auth'], function ($routes) {
 	$routes->get('/', 'Users\profile::index');
+	$routes->get('role-access', 'Admin\RoleManagement::index');
 });
 
 // Menu Manajemen

@@ -3,14 +3,16 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
+use App\Models\M_Auth;
 use App\Models\M_Role;
 
 class RoleManagement extends BaseController
 {
-    protected $M_Role;
+    protected $M_Auth, $M_Role;
 
     public function __construct()
     {
+        $this->M_Auth = new M_Auth();
         $this->M_Role = new M_Role();
     }
 
@@ -23,7 +25,17 @@ class RoleManagement extends BaseController
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
         $data['notif'] = get_new_notif();
 
-        $data['menu'] = $this->M_Role->findAll();
+        $current_page = $this->request->getVar('page_user_role') ? $this->request->getVar('page_user_role') : 1;
+        $keyword = $this->request->getVar('keyword');
+        if ($keyword) {
+            $role = $this->M_Role->search($keyword);
+        } else {
+            $role = $this->M_Role;
+        }
+
+        $data['all_role'] = $role->paginate(5, 'user_role');
+        $data['pager'] = $this->M_Role->pager;
+        $data['current_page'] = $current_page;
 
 
 
