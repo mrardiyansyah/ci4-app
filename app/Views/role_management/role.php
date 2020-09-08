@@ -20,49 +20,48 @@
                 <?= session()->get('message'); ?>
             </div>
 
-            <div class="row d-flex">
-                <div class="col-lg mr-auto w-auto">
-                    <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newRoleModal"><i class="fas fa-user-plus"></i> Add Role</a>
-                </div>
-                <div class="col-lg-3 ml-auto" style="max-width:unset;">
-                    <form action=" " method="GET">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Search..." name="keyword">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            <div class="col-lg-3 ml-auto" style="max-width:unset;">
+                <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newRoleModal"><i class="fas fa-user-plus"></i> Add New Role</a>
             </div>
-            <table class="table table-responsive-sm table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Role</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $i = 1 + (5 * ($current_page - 1)); ?>
-                    <?php foreach ($all_role as $r) : ?>
-                        <tr>
-                            <th scope="row"><?= $i; ?></th>
-                            <td><?= $r['role_type']; ?></td>
-                            <td>
-                                <a href="<?= base_url('admin/roleaccess/') . $r['id_role']; ?>" class="badge badge-primary">Access</a>
-                                <!-- <a href="" class="badge badge-primary">Edit</a> -->
-                                <a href="<?= base_url('admin/deleterole/') . $r['id_role']; ?>" class="badge btn-delete-role badge-danger">Delete</a>
-                            </td>
-                        </tr>
-                        <?php $i++; ?>
-                    <?php endforeach; ?>
-
-                </tbody>
-            </table>
-            <?= $pager->links('user_role', 'lpremium_pagination'); ?>
+            <div class="col-lg-6 ml-auto w-auto">
+                <form action=" " method="GET">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Search..." name="keyword">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
+        <table class="table table-responsive-sm table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $i = 1 + (5 * ($current_page - 1)); ?>
+                <?php foreach ($all_role as $r) : ?>
+                    <tr>
+                        <th scope="row"><?= $i; ?></th>
+                        <td><?= $r['role_type']; ?></td>
+                        <td>
+                            <a href="<?= base_url('admin/roleaccess/') . $r['id_role']; ?>" class="badge badge-primary">Access</a>
+                            <!-- <a href="" class="badge badge-primary">Edit</a> -->
+                            <a href="<?= base_url('admin/deleterole/') . $r['id_role']; ?>" class="badge btn-delete-role badge-danger">Delete</a>
+                        </td>
+                    </tr>
+                    <?php $i++; ?>
+                <?php endforeach; ?>
+
+            </tbody>
+        </table>
+        <?= $pager->links('user_role', 'lpremium_pagination'); ?>
     </div>
+</div>
 
 
 </div>
