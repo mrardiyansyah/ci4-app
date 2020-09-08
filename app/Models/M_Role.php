@@ -23,4 +23,8 @@ class M_Role extends Model
     // protected $validationMessages = [];
     // protected $skipValidation     = false;
 
+    public function search($keyword)
+    {
+        return $this->table('user_role')->like('role_type', $keyword);
+    }
 }
