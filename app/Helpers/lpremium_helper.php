@@ -2,6 +2,17 @@
 
 use App\Models\CustomModel;
 
+function check_access($id_role, $id_menu)
+{
+    $db = db_connect();
+    $builder = $db->table('user_access_menu');
+    $result = $builder->getWhere(['id_role' => $id_role, 'id_user_menu' => $id_menu])->getRowArray();
+
+    if ($result > 0) {
+        return "checked='checked'";
+    }
+}
+
 function check_access_active($id_user_sub_menu)
 {
     $db = db_connect();

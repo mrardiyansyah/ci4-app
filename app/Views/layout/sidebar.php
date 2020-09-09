@@ -1,5 +1,5 @@
 <!-- Sidebar -->
-<ul style="background-color: #046b7b;" class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul style="background-color: #046b7b; " class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="
@@ -49,6 +49,7 @@
         $subMenu = $db->query($querySubMenu)->getResultArray();
         ?>
 
+
         <?php foreach ($subMenu as $sm) : ?>
             <?php if ($title == $sm['title']) : ?>
                 <li class="nav-item active">
@@ -79,7 +80,6 @@
                 </a>
                 </li>
             <?php endforeach ?>
-
             <!-- Divider -->
             <hr class="sidebar-divider mt-3">
         <?php endforeach; ?>
@@ -98,6 +98,7 @@
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
         </div>
+
 
 </ul>
 <!-- End of Sidebar -->

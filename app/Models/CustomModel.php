@@ -24,7 +24,8 @@ class CustomModel
     public function getAccessMenu($id_role, $menu)
     {
         $queryMenu = $this->getIdMenu($menu);
-        $id_menu = $queryMenu['id_user_menu'];
+
+        $id_menu = isset($queryMenu['id_user_menu']) ? $queryMenu['id_user_menu'] : 0;
 
         $builder = $this->db->table('user_access_menu');
         $userAccess = $builder->getWhere(['id_role' => $id_role, 'id_user_menu' => $id_menu]);
