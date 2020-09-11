@@ -56,9 +56,13 @@
                                 <th scope="row"><?= $i; ?></th>
                                 <td><?= $r['role_type']; ?></td>
                                 <td>
-                                    <a href="<?= base_url('admin/role-access/' . $r['id_role']); ?>" class="badge badge-primary">Access</a>
+                                    <a href="<?= base_url('admin/role-access/' . $r['id_role']); ?>" class="btn btn-sm btn-primary">Access</a>
                                     <!-- <a href="" class="badge badge-primary">Edit</a> -->
-                                    <a href="<?= base_url('admin/delete-role/' . $r['id_role']); ?>" id="delete-role" class="badge btn-delete-role badge-danger" data-swal="swal" data-role="<?= $r['role_type']; ?>">Delete</a>
+                                    <form action="<?= base_url('admin/role-management/' . $r['id_role']); ?>" method="post" class="d-inline" id="form-delete-role<?= $r['id_role']; ?>">
+                                        <?= csrf_field(); ?>
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="btn btn-delete-role btn-sm btn-danger" data-swal="swal" data-role="<?= $r['role_type']; ?>">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                             <?php $i++; ?>

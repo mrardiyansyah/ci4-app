@@ -54,7 +54,8 @@ $routes->group('admin', ['filter' => 'auth'], function ($routes) {
 	$routes->get('role-management', 'Admin\RoleManagement::index');
 	$routes->get('role-access/(:num)', 'Admin\RoleManagement::roleAccess/$1');
 	$routes->post('change-access', 'Admin\RoleManagement::edit');
-	$routes->get('delete-role/(:any)', 'Admin\RoleManagement::delete/$1');
+	$routes->delete('role-management/(:num)', 'Admin\RoleManagement::delete/$1');
+	$routes->addRedirect('role-management/(:any)', 'admin/role-management');
 	$routes->addRedirect('delete-role', '/');
 });
 
@@ -64,7 +65,7 @@ $routes->group('menu', ['filter' => 'auth'], function ($routes) {
 	$routes->post('add-menu', 'Admin\Menu::add');
 	$routes->post('edit-menu', 'Admin\Menu::edit');
 	$routes->get('delete-menu/(:any)', 'Admin\Menu::delete/$1');
-	$routes->addRedirect('delete-menu', '/');
+	$routes->addRedirect('delete-menu', 'profile');
 });
 
 // Sub Menu Manajemen
@@ -73,8 +74,8 @@ $routes->group('submenu', ['filter' => 'auth'], function ($routes) {
 	$routes->post('add-submenu', 'Admin\SubMenu::add');
 	$routes->add('editSubMenu', 'Admin\SubMenu::editSubMenuModal');
 	$routes->post('edit-submenu', 'Admin\SubMenu::edit');
-	$routes->get('delete-submenu/(:any)', 'Admin\SubMenu::delete/$1');
-	$routes->addRedirect('delete-menu', '/');
+	$routes->delete('info/(:num)', 'Admin\Submenu::delete/$1');
+	$routes->addRedirect('delete-submenu', '/');
 });
 /**
  * --------------------------------------------------------------------

@@ -12,7 +12,7 @@ const swal = $('.swal').data('swal');
 // DELETE MENU BUTTON
 $(document).on('click', '#delete-menu', function (e) {
     e.preventDefault();
-    const href = $(this).attr('href');
+    const action_link = $("#form-delete-role").attr('action');
     let menu = $(this).data('menu');
 
     Swal.fire({
@@ -44,9 +44,8 @@ $(document).on('click', '#delete-menu', function (e) {
 });
 
 // DELETE SUB MENU BUTTON
-$(document).on('click', '#delete-submenu', function (e) {
+$(document).on('click', '.btn-delete-submenu', function (e) {
     e.preventDefault();
-    const href = $(this).attr('href');
     let submenu = $(this).data('submenu');
 
     Swal.fire({
@@ -72,15 +71,14 @@ $(document).on('click', '#delete-submenu', function (e) {
         }
     }).then((result) => {
         if (result.value) {
-            document.location.href = href;
+            $(this).parent().submit();
         }
     });
 });
 
 // DELETE ROLE BUTTON
-$(document).on('click', '#delete-role', function (e) {
+$(document).on('click', '.btn-delete-role', function (e) {
     e.preventDefault();
-    const href = $(this).attr('href');
     let role = $(this).data('role');
 
     Swal.fire({
@@ -106,7 +104,7 @@ $(document).on('click', '#delete-role', function (e) {
         }
     }).then((result) => {
         if (result.value) {
-            document.location.href = href;
+            $(this).parent().submit();
         }
     });
 });

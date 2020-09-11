@@ -20,7 +20,7 @@
                 <?= session()->get('message'); ?>
             </div>
             <div class="pb-2">
-                <a href="#" onclick="add_submenu()" class="btn btn-primary mb-3">Add New Sub Menu</a>
+                <a href="#" onclick="add_submenu()" class="btn btn-primary mb-3" data-toggle="tooltip" data-placement="right" title="Add New Sub Menu">Add New Sub Menu</a>
             </div>
 
             <table class="table table-hover table-striped table-submenu">
@@ -48,8 +48,12 @@
                             <td><?= $sm['id_user_sub_menu']; ?></td>
                             <td><?= $sm['is_active_menu']; ?></td>
                             <td>
-                                <a href="#" onclick="edit_submenu(<?= $sm['id_user_sub_menu']; ?>)" class="badge badge-primary">Edit</a>
-                                <a href="<?= base_url('submenu/delete-submenu') . '/' . $sm['id_user_sub_menu']; ?>" id="delete-submenu" class=" badge badge-danger btn-hapus-submenu" data-swal="swal" data-submenu="<?= $sm['title']; ?>">Delete</a>
+                                <a href="#" onclick="edit_submenu(<?= $sm['id_user_sub_menu']; ?>)" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="left" title="Edit Submenu <?= $sm['title']; ?>"><i class="far fa-fw fa-edit"></i></a>
+                                <form action="<?= base_url('submenu/info') . '/' . $sm['id_user_sub_menu']; ?>" method="post" id="form-delete-submenu<?= $sm['id_user_sub_menu']; ?>">
+                                    <?= csrf_field(); ?>
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button class=" btn btn-sm btn-danger btn-delete-submenu mt-1" data-toggle="tooltip" data-placement="bottom" title="Delete Submenu <?= $sm['title']; ?>" data-swal="swal" data-submenu="<?= $sm['title']; ?>"><i class="fas fa-fw fa-trash-alt"></i></button>
+                                </form>
                             </td>
                         </tr>
                         <?php $i++; ?>
