@@ -71,7 +71,6 @@ class SubMenu extends BaseController
 
         if (!$this->validate($rules)) {
             session()->setFlashdata('message', '<div class="alert alert-danger" role="alert">' . $this->validator->listErrors() . '</div>');
-            echo 'gagal';
             return redirect()->back();
         } else {
             $data = [
@@ -85,7 +84,7 @@ class SubMenu extends BaseController
             $this->M_SubMenu->save($data);
             $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
                    Sub Menu has been Added!</div>');
-            return redirect()->route('submenu');
+            return redirect()->back();
         }
     }
 

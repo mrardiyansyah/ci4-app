@@ -50,9 +50,12 @@ $routes->match(['get', 'post'], '/edit-profile', 'Users\profile::editProfile');
 // Users
 $routes->group('admin', ['filter' => 'auth'], function ($routes) {
 	$routes->get('/', 'Users\profile::index');
+	$routes->post('add-role', 'Admin\RoleManagement::add');
 	$routes->get('role-management', 'Admin\RoleManagement::index');
 	$routes->get('role-access/(:num)', 'Admin\RoleManagement::roleAccess/$1');
 	$routes->post('change-access', 'Admin\RoleManagement::edit');
+	$routes->get('delete-role/(:any)', 'Admin\RoleManagement::delete/$1');
+	$routes->addRedirect('delete-role', '/');
 });
 
 // Menu Manajemen

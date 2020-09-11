@@ -12,7 +12,7 @@ class M_userAccess extends Model
     // protected $returnType     = 'array';
     // protected $useSoftDeletes = true;
 
-    protected $allowedFields = ['id_role, id_user_menu'];
+    protected $allowedFields = ['id_role', 'id_user_menu'];
 
     // protected $useTimestamps = false;
     // protected $createdField  = 'created_at';

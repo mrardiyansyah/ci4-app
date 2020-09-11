@@ -74,7 +74,7 @@
                 roleId: roleId
             },
             success: function(data) {
-                alert(data);
+                document.location.href = "<?= base_url('admin/role-access/'); ?>" + "/" + roleId;
             }
         });
     });

@@ -177,7 +177,7 @@
                 id: id_submenu,
             },
             success: function(data) {
-                console.log(data);
+                // console.log(data);
                 $('[name="id_user_sub_menu"]').val(data.id_user_sub_menu);
                 $('[name="title"]').val(data.title);
                 $('[name="id_user_menu"]').val(data.id_user_menu);
