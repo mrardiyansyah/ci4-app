@@ -84,7 +84,7 @@ class RoleManagement extends BaseController
             $this->M_Role->save($data);
             $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
                    New Role has been Added!</div>');
-            return redirect()->route('role-management');
+            return redirect()->back();
         }
     }
 
