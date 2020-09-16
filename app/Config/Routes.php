@@ -44,10 +44,14 @@ $routes->get('logout', 'Auth::logout');
 $routes->get('blocked', 'Auth::blocked');
 
 // Profile
-$routes->get('/profile', 'Users\profile::index');
-$routes->match(['get', 'post'], '/edit-profile', 'Users\profile::editProfile');
+$routes->get('profile', 'Users\profile::index', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'edit-profile', 'Users\profile::editProfile', ['filter' => 'auth']);
+$routes->get('change-password', 'Users\profile::changePassword', ['filter' => 'auth']);
+$routes->PUT('change-password', 'Users\profile::changePassword', ['filter' => 'auth']);
 
-// Users
+
+
+// Administrator
 $routes->group('admin', ['filter' => 'auth'], function ($routes) {
 	$routes->get('/', 'Users\profile::index');
 	$routes->post('add-role', 'Admin\RoleManagement::add');
@@ -57,6 +61,9 @@ $routes->group('admin', ['filter' => 'auth'], function ($routes) {
 	$routes->delete('role-management/(:num)', 'Admin\RoleManagement::delete/$1');
 	$routes->addRedirect('role-management/(:any)', 'admin/role-management');
 	$routes->addRedirect('delete-role', '/');
+
+	// User List
+	$routes->get('user_list', 'Admin\UserAccounts::index');
 });
 
 // Menu Manajemen

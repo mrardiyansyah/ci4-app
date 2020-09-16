@@ -1,3 +1,25 @@
+$("#icon-show-password").click(function () {
+	$("#icon").toggleClass("fa-eye-slash");
+	const input = $("#password");
+	const tooltip = $("#icon-click")
+	if (input.attr("type") === "password") {
+		input.attr("type", "text");
+		tooltip.attr("title", "Hide Password")
+	} else {
+		input.attr("type", "password");
+		tooltip.attr("title", "Show Password")
+	}
+})
+
+$(document).ready(function () {
+	$(".input-group > input").focus(function (e) {
+		$(this).parent().addClass("input-group-focus");
+	}).blur(function (e) {
+		$(this).parent().removeClass("input-group-focus");
+	});
+});
+
+
 $('.btn-confirm-closing').on('click', function (e) {
 
 	const href = $(this).attr('href');

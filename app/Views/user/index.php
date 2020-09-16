@@ -1,3 +1,7 @@
+<?= $this->extend('layout/main'); ?>
+
+<?= $this->section('content'); ?>
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -36,3 +40,5 @@
 
 </div>
 <!-- End of Main Content -->
+
+<?= $this->endSection(); ?>

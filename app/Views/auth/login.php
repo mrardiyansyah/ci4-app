@@ -30,7 +30,7 @@
                                                 <input type="password" class="form-control form-control-user" id="password" name="password" placeholder="Password">
                                                 <div class="input-group-prepend">
                                                     <div class="btn-outline-primary input-group-text rounded-left" style="border-radius: 10rem; background-color: #FFFFFF;">
-                                                        <a href="#" id="icon-click" data-toggle="tooltip" data-placement="right" title="Show Password">
+                                                        <a href="#" id="icon-show-password" data-toggle="tooltip" data-placement="right" title="Show Password">
                                                             <i class="fas fa-eye" id="icon"></i>
                                                         </a>
                                                     </div>
@@ -65,19 +65,3 @@
     </div>
 
 </div>
-<script type="text/javascript">
-    $(document).ready(
-        $("#icon-click").click(function() {
-            $("#icon").toggleClass("fa-eye-slash");
-            const input = $("#password");
-            const tooltip = $("#icon-click")
-            if (input.attr("type") === "password") {
-                input.attr("type", "text");
-                tooltip.attr("title", "Hide Password")
-            } else {
-                input.attr("type", "password");
-                tooltip.attr("title", "Show Password")
-            }
-        })
-    );
-</script>
