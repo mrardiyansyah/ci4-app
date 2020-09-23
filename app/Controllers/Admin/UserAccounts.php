@@ -45,8 +45,6 @@ class UserAccounts extends BaseController
 
         $data['detail'] = $this->M_Auth->find($id_user);
         $data['detail_role'] = $this->M_Role->find($data['detail']['id_role']);
-        $encrypter = \Config\Services::encrypter();
-        d($encrypter->decrypt($data['detail']['password']));
 
         return view('admin/detail_user', $data);
     }

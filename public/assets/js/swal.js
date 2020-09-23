@@ -12,7 +12,8 @@ const swal = $('.swal').data('swal');
 // DELETE MENU BUTTON
 $(document).on('click', '#delete-menu', function (e) {
     e.preventDefault();
-    const action_link = $("#form-delete-role").attr('action');
+    // const action_link = $("#form-delete-role").attr('action');
+    const href = $(this).attr('href');
     let menu = $(this).data('menu');
 
     Swal.fire({

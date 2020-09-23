@@ -29,7 +29,9 @@
                     <h5 class="card-title"><?= $detail['name']; ?></h5>
                     <p class="card-text">Email : <?= $detail['email']; ?></p>
                     <p class="card-text">Role : <?= $detail_role['role_type']; ?></p>
-                    <p class="card-text">Role : <?= $detail['password']; ?></p>
+                    <p class="card-text">
+                        Active : <span class="<?= ($detail['is_active']) ? 'text-primary' : 'text-danger'; ?>"><?= ($detail['is_active']) ? 'Active' : 'Not Active'; ?></span>
+                    </p>
                     <p class="card-text"><small class="text-muted">Member Since : <?= date('d F Y', strtotime($detail['created_at'])); ?></small></p>
                 </div>
             </div>
