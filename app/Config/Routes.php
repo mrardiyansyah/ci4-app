@@ -45,6 +45,10 @@ $routes->match(['get', 'post'], 'forgot-password', 'Auth::forgotPassword');
 $routes->get('verify-email', 'Auth::sendEmail');
 $routes->get('verify-account', 'Auth::verify');
 
+// Reset Password
+$routes->get('reset-password', 'Auth::resetPassword');
+$routes->put('reset-password', 'Auth::changePassword');
+
 // Blocked Page
 $routes->get('blocked', 'Auth::blocked');
 

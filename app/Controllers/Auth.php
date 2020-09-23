@@ -153,6 +153,7 @@ class Auth extends BaseController
                 $session = session();
 
                 // Siapkan Token
+                //Bin2Hex untuk Konversi String dari karakter ASCII ke nilai Hexadecimal, openssl_random_pseudo_bytes untuk generate token yang aman secara kriptografi.
                 $token = bin2hex(openssl_random_pseudo_bytes(32));
                 $user_token = [
                     'email' => $email,
@@ -185,6 +186,9 @@ class Auth extends BaseController
         if ($type == 'verify') {
             $subject = "Account Verification Layanan Premium PLN DISJAYA";
             $message = 'Hi ' . $name . ', <br><br> Thanks, Your account created successfully. Please click the link below to activate your account<br>' . '<a href="' . base_url() . '/verify-account?email=' . $email . '&token=' . $token . '" target="_blank">Activate Now</a><br>This link will Expired before <strong>' . date('d F Y H:i:s', strtotime('+1 day', $startDate)) . ' Western Indonesia Time (WIB)</strong>.<br><br>Thanks.<br>Layanan Premium Team';
+        } else if ($type == 'forgot-password') {
+            $subject = "Reset your password Account Layanan Premium PLN DISJAYA";
+            $message = 'Hi ' . $name . ', <br><br> Need to reset your password? No problem! Just click the link below and you\'ll be on your way. If you did not make this request, please ignore this email.<br>' . '<a href="' . base_url() . '/reset-password?email=' . $email . '&token=' . $token . '" target="_blank">Reset Password Now</a><br><br>This link will Expired before <strong>' . date('d F Y H:i:s', strtotime('+1 day', $startDate)) . ' Western Indonesia Time (WIB)</strong>.<br><br>Thanks.<br>Layanan Premium Team';
         }
 
         $email = \Config\Services::email();
@@ -262,17 +266,24 @@ class Auth extends BaseController
                 echo view('templates/auth_footer');
             } else {
                 $M_Auth = new M_Auth();
+                $M_Token = new M_Token();
                 $email = $this->request->getPost('email');
                 $users = $M_Auth->where('email', $email)->first();
 
                 if ($users) {
-                    $token = base64_encode(openssl_random_pseudo_bytes(32));
-                    $token = bin2hex($token);
+                    $token = bin2hex(openssl_random_pseudo_bytes(32));
                     $user_token = [
                         'email' => $email,
                         'token' => $token,
-                        'created_at' => time()
                     ];
+                    $name = $users['name'];
+
+                    // Simpan token dan kirim email
+                    $M_Token->save($user_token);
+                    $this->_sendEmail($name, $email, $token, 'forgot-password');
+
+                    $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Please check your email to reset your password!</div>');
+                    return redirect()->back();
                 } else {
                     $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Email is Not Registered!</div>');
                     return redirect()->back();
@@ -285,6 +296,90 @@ class Auth extends BaseController
             echo view('auth/forgot-password');
             echo view('templates/auth_footer');
         }
+    }
+
+    public function resetPassword()
+    {
+        $session = session();
+
+        $email = $this->request->getGet('email');
+        $token = $this->request->getGet('token');
+
+        $M_Auth = new M_Auth();
+        $M_Token = new M_Token();
+        $user = $M_Auth->where('email', $email)->first();
+
+        if ($user) {
+            $user_token = $M_Token->where('token', $token)->first();
+            if ($user_token) {
+                if (time() - strtotime($user_token['created_at']) < (60 * 60 * 24)) {
+                    $data = [
+                        'reset_email' => $email,
+                        'token_reset' => $user_token['token']
+                    ];
+                    $session->set($data);
+                    $this->changePassword();
+                } else {
+                    $M_Token->where('token', $token)->delete();
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Account Activation <strong>Failed</strong>! Token Expired</div>');
+                    return redirect()->route('login');
+                }
+            } else {
+                $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Reset Password <strong>Failed</strong>! Invalid Token</div>');
+                return redirect()->to('login');
+            }
+        } else {
+            $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Reset Password <strong>Failed</strong>! Wrong Email</div>');
+            return redirect()->to('login');
+        }
+    }
+
+    public function changePassword()
+    {
+        $session = session();
+        $data['title'] = 'Recovery Password';
+
+        if ($this->request->getMethod() === "put") {
+            $rules = [
+                'password1' => [
+                    'label' => 'New Password',
+                    'rules' => 'required|min_length[8]|regex_match[^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$]|matches[password2]',
+                    'errors' => [
+                        'required' => 'New Password field is required',
+                        'min_length'
+                        => 'Password too short! Minimal 8 Characters',
+                        'regex_match' => "Password must contain at least One Uppercase Letter, One Lowercase Letter and One Number",
+                        'matches' => "Those password didn't match!",
+
+                    ]
+                ],
+                'password2' => [
+                    'label' => 'Repeat Password',
+                    'rules' => 'required',
+                    'errors' => ['required' => 'Repeat Password is required']
+                ]
+            ];
+
+            if (!$this->validate($rules)) {
+                $data['validation'] = $this->validator;
+            } else {
+                $new_password = $this->request->getPost('password1');
+                $email = $session->get('reset_email');
+                $data = [
+                    'password' => $new_password
+                ];
+                $M_Auth = new M_Auth();
+                $M_Token = new M_Token();
+                $M_Auth->where('email', $email)->set($data)->update();
+                $M_Token->where('token', $session->get('token_reset'))->delete();
+                unset($_SESSION['reset_email']);
+                unset($_SESSION['token_email']);
+                return redirect()->to('login')->with('message', '<div class="alert alert-success" role="alert">Your Password changed successfully. Please login</div>');
+            }
+        }
+        echo view('templates/auth_header', $data);
+        echo view('auth/change-password');
+        echo view('templates/auth_footer');
     }
 
     public function logout()
