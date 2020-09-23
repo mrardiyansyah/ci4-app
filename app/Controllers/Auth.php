@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\M_Auth;
 use App\Models\M_Role;
+use App\Models\M_Token;
 use CodeIgniter\Controller;
 
 class Auth extends BaseController
@@ -12,7 +13,7 @@ class Auth extends BaseController
     {
         $data = [];
         if (session()->has('email')) {
-            return redirect()->to('users');
+            return redirect()->to('profile');
         }
 
         if ($this->request->getMethod() == 'post') {
@@ -72,6 +73,8 @@ class Auth extends BaseController
                     $session->set($data);
                     if ($user['id_role'] == 1) {
                         return redirect()->to('admin');
+                    } else {
+                        return redirect()->to('profile');
                     }
                 } else {
                     $session = session();
@@ -81,7 +84,7 @@ class Auth extends BaseController
                 }
             } else {
                 $session = session();
-                $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Your Email address has not been Activated! Please contact administrator.</div>');
+                $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Your Email address has not been Activated! Please activate your account or contact Administrator.</div>');
                 return redirect()->to('login');
             }
         } else {
@@ -137,29 +140,151 @@ class Auth extends BaseController
             } else {
                 $signUp = new M_Auth();
 
+                $name = $this->request->getVar('name');
+                $email = $this->request->getVar('email');
                 $signUpData = [
-                    'name' => htmlspecialchars($this->request->getVar('name')),
-                    'email' => htmlspecialchars($this->request->getVar('email')),
+                    'name' => htmlspecialchars($name),
+                    'email' => htmlspecialchars($email),
                     'password' => $this->request->getVar('password1'),
                     'image' => 'default.jpg',
                     'id_role' => $this->request->getVar('role_type'),
-                    'is_active' => 1
+                    'is_active' => 0
                 ];
-                $signUp->save($signUpData);
                 $session = session();
-                $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Your Account has been <strong>Activated</strong>. Please Login</div>');
+
+                // Siapkan Token
+                $token = bin2hex(openssl_random_pseudo_bytes(32));
+                $user_token = [
+                    'email' => $email,
+                    'token' => $token
+                ];
+                // Kirim token aktifasi lewat email
+                $M_Token = new M_Token();
+                $M_Token->save($user_token);
+                $this->_sendEmail($name, $email, $token, "verify");
+
+                // Insert Data Registrasi
+                $signUp->save($signUpData);
+                $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Your Account successfully <strong>Registered</strong>. Please check your inbox Email for Activation</div>');
                 return redirect()->route('login');
             }
         }
-
-
         echo view('templates/auth_header', $data);
         echo view('auth/registration');
         echo view('templates/auth_footer');
     }
 
+    public function _sendEmail($name, $email, $token, $type)
+    {
+        // Fungsi Kirim email Aktivasi atau Forgot Password
+
+        $session = session();
+        $startDate = time();
+
+        $to = $email;
+        if ($type == 'verify') {
+            $subject = "Account Verification Layanan Premium PLN DISJAYA";
+            $message = 'Hi ' . $name . ', <br><br> Thanks, Your account created successfully. Please click the link below to activate your account<br>' . '<a href="' . base_url() . '/verify-account?email=' . $email . '&token=' . $token . '" target="_blank">Activate Now</a><br>This link will Expired before <strong>' . date('d F Y H:i:s', strtotime('+1 day', $startDate)) . ' Western Indonesia Time (WIB)</strong>.<br><br>Thanks.<br>Layanan Premium Team';
+        }
+
+        $email = \Config\Services::email();
+        $email->setTo($to);
+        $email->setFrom('lpremium.pln@gmail.com', 'Administrator Layanan Premium');
+        $email->setSubject($subject);
+        $email->setMessage($message);
+
+
+        if ($email->send()) {
+            return true;
+        } else {
+            $data = $email->printDebugger(['headers']);
+            print_r($data);
+            die;
+            // d($to);
+        }
+    }
+
+    public function verify()
+    {
+        $session = session();
+
+        $email = $this->request->getGet('email');
+        $token = $this->request->getGet('token');
+
+        $M_Auth = new M_Auth();
+        $user = $M_Auth->where('email', $email)->first();
+
+        $M_Token = new M_Token();
+        if ($user) {
+            $user_token = $M_Token->where('token', $token)->first();
+            if ($user_token) {
+                if (time() - strtotime($user_token['created_at']) < (60 * 60 * 24)) {
+                    $M_Auth->where('email', $email)->set(['is_active' => 1])->update();
+                    $M_Token->where('token', $token)->delete();
+                    $session->setFlashdata('message', '<div class="alert alert-success" role="alert"><strong>' . $email . '</strong> has been Activated! Please login.</div>');
+                    return redirect()->route('login');
+                } else {
+                    $M_Auth->where('email', $email)->delete();
+                    $M_Token->where('token', $token)->delete();
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Account Activation <strong>Failed</strong>! Token Expired</div>');
+                    return redirect()->route('login');
+                }
+            } else {
+                $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Account Activation <strong>Failed</strong>! Invalid Token</div>');
+                return redirect()->route('login');
+            }
+        } else {
+            $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Account Activation <strong>Failed</strong>! Wrong Email</div>');
+            return redirect()->to('login');
+        }
+    }
+
     public function forgotPassword()
     {
+        $data = [];
+        $session = session();
+        if ($this->request->getMethod() == 'post') {
+            $rules = [
+                'email' => [
+                    'label' => 'Email',
+                    'rules' => 'required|valid_email',
+                    'errors' => [
+                        'valid_email' => 'Please enter a valid email address',
+                    ]
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $data['validation'] = $this->validator;
+                $data['title'] = "Forgot Password";
+                echo view('templates/auth_header', $data);
+                echo view('auth/forgot-password');
+                echo view('templates/auth_footer');
+            } else {
+                $M_Auth = new M_Auth();
+                $email = $this->request->getPost('email');
+                $users = $M_Auth->where('email', $email)->first();
+
+                if ($users) {
+                    $token = base64_encode(openssl_random_pseudo_bytes(32));
+                    $token = bin2hex($token);
+                    $user_token = [
+                        'email' => $email,
+                        'token' => $token,
+                        'created_at' => time()
+                    ];
+                } else {
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Email is Not Registered!</div>');
+                    return redirect()->back();
+                }
+                d($users);
+            }
+        } else {
+            $data['title'] = "Forgot Password";
+            echo view('templates/auth_header', $data);
+            echo view('auth/forgot-password');
+            echo view('templates/auth_footer');
+        }
     }
 
     public function logout()

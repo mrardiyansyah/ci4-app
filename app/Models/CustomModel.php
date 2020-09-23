@@ -47,6 +47,15 @@ class CustomModel
         return $query;
     }
 
+    public function getAllUser()
+    {
+        $builder = $this->db->table('user');
+        $builder->select('user.*, user_role.role_type');
+        $builder->join('user_role', 'user.id_role = user_role.id_role');
+        $query = $builder->get()->getResultArray();
+        return $query;
+    }
+
     public function getNotif($id_notification_target)
     {
         $builder = $this->db->table('notification_target');

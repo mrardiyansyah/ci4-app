@@ -15,22 +15,30 @@
                                     <h1 class="h4 text-gray-900 mb-4">Forgot Your Password?</h1>
                                 </div>
 
-                                <?= $this->session->flashdata('message'); ?>
-                                <form class="user" method="post" action="<?= base_url('auth/forgotpassword') ?>">
-                                    <form class="user">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control form-control-user" id="email" name="email" placeholder="Enter Email Address..." value="<?= set_value('email'); ?>">
-                                            <?= form_error('email', '<small class="text-danger pl-3">', '</small>'); ?>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            Reset Password
-                                        </button>
 
-                                    </form>
-                                    <hr>
-                                    <div class="text-center">
-                                        <a class="small" href="<?= base_url('auth'); ?>registration">Back To Login</a>
+                                <div>
+                                    <?= session()->get('message'); ?>
+                                </div>
+
+                                <form class="user" method="post" action="<?= base_url('forgot-password') ?>">
+                                    <?= csrf_field(); ?>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control form-control-user" id="email" name="email" placeholder="Enter Email Address...">
+                                        <?php if (isset($validation)) : ?>
+                                            <div class="text-danger pl-3" role="alert">
+                                                <?= $validation->getError('email'); ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
+                                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                                        Reset Password
+                                    </button>
+
+                                </form>
+                                <hr>
+                                <div class="text-center">
+                                    <a class="small" href="<?= base_url('login'); ?>">Back To Login</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -42,22 +50,3 @@
     </div>
 
 </div>
-
-<script>
-    $(document).ready(
-        $("button").click(function() {
-            $()
-            $.ajax({
-                url: "http://localhost/pln_backend/auth/_login",
-                method: post,
-                data: {
-                    'email': $("#email").val(),
-                    'password': $("#password").val(),
-                }
-                success: function(result) {
-                    alert(result);
-                }
-            });
-        });
-    );
-</script>

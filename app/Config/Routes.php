@@ -39,6 +39,11 @@ $routes->addRedirect('/login/(:any)', 'login');
 $routes->match(['get', 'post'], '/signup', 'Auth::registration');
 $routes->addRedirect('/signup/(:any)', 'signup');
 $routes->get('logout', 'Auth::logout');
+$routes->match(['get', 'post'], 'forgot-password', 'Auth::forgotPassword');
+
+// Activation Account with Email
+$routes->get('verify-email', 'Auth::sendEmail');
+$routes->get('verify-account', 'Auth::verify');
 
 // Blocked Page
 $routes->get('blocked', 'Auth::blocked');
@@ -64,6 +69,7 @@ $routes->group('admin', ['filter' => 'auth'], function ($routes) {
 
 	// User List
 	$routes->get('user_list', 'Admin\UserAccounts::index');
+	$routes->get('detail-user/(:num)', 'Admin\UserAccounts::detailUser/$1');
 });
 
 // Menu Manajemen

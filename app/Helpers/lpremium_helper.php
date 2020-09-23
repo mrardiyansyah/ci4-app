@@ -37,14 +37,11 @@ function truncateText($text, $chars = 25)
     return $text;
 }
 
-function change_format_time($timestamp)
+function change_format_date($timestamp)
 {
-    $timestamp = (string) $timestamp;
-    $datetime = explode(' ', $timestamp);
-    $date = explode('-', $datetime[0]);
-    $time = explode(':', $datetime[1]);
-
-    return $date + " " + $time;
+    $timestamp = strtotime($timestamp);
+    $result = date("m/d/y g:i A", $timestamp);
+    return $result;
 }
 
 function open_folder($name_customer, $timestamp)

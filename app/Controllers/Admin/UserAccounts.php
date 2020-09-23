@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
+use App\Models\CustomModel;
 use App\Models\M_Auth;
 use App\Models\M_Role;
 
@@ -26,9 +27,28 @@ class UserAccounts extends BaseController
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
         $data['notif'] = get_new_notif();
 
-        $data['all_user'] = $this->M_Auth->findAll();
+        $db = db_connect();
+        $CustomModel = new CustomModel($db);
+        $data['all_user'] = $CustomModel->getAllUser();
 
         return view('admin/user_list', $data);
+    }
+
+    public function detailUser($id_user)
+    {
+        $session = session();
+
+        $data['title'] = 'Detail User';
+        $data['user'] = $this->M_Auth->find($session->get('id_user'));
+        $data['role'] =  $this->M_Role->find($session->get('id_role'));
+        $data['notif'] = get_new_notif();
+
+        $data['detail'] = $this->M_Auth->find($id_user);
+        $data['detail_role'] = $this->M_Role->find($data['detail']['id_role']);
+        $encrypter = \Config\Services::encrypter();
+        d($encrypter->decrypt($data['detail']['password']));
+
+        return view('admin/detail_user', $data);
     }
 
     public function add()
