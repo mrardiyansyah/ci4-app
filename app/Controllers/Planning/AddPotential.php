@@ -38,21 +38,12 @@ class AddPotential extends BaseController
         $data['feeder_substation'] = $this->CustomerModel->getFeederSubstation();
         $data['tariff'] = $this->CustomerModel->getTariff();
 
-        if ($this->request->getMethod() == "PUT") {
-            $session = session();
-            $rules = [
-                '' => [
-                    'label' => '',
-                    'rules' => 'required|',
-                    'errors' => [
-                        '' => ''
-                    ]
-                ],
-            ];
+        if ($this->request->getMethod() == "put") {
+
             $rules = [
                 'cust-name' => [
                     'label' => 'Customer Name',
-                    'rules' => 'Required'
+                    'rules' => 'required'
                 ],
                 'cust-id' => [
                     'label' => 'ID Customer',
@@ -102,11 +93,11 @@ class AddPotential extends BaseController
             ];
 
             if (!$this->validate($rules)) {
-                $data['validator'] = $this->validator;
+                $data['validation'] = $this->validator;
             } else {
                 $data = [
                     'name_customer' => $this->request->getPost('cust-name'),
-                    'id_customer' => $this->request->getPost('cust-id'),
+                    'id_pelanggan' => $this->request->getPost('cust-id'),
                     'id_tariff' => $this->request->getPost('tariff'),
                     'power' => $this->request->getPost('power'),
                     'address_customer' => $this->request->getPost('cust-address'),
@@ -120,6 +111,9 @@ class AddPotential extends BaseController
                 ];
 
                 $this->M_Customer->insert($data);
+                $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
+                    Data has been added!</div>');
+                return redirect()->back();
             }
         }
 

@@ -48,7 +48,13 @@
 
     <!-- tail.select Library -->
     <link type="text/css" rel="stylesheet" href="<?= base_url('assets/css/tail.select-default.min.css'); ?>">
-
+    <style>
+        .custom-line-height {
+            line-height: 1.2;
+            height: calc(1.5em + .5rem + 2px);
+            font-size: .875rem;
+        }
+    </style>
 
 </head>
 

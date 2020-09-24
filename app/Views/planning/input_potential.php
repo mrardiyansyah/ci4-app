@@ -16,97 +16,149 @@
                 <div class="col-lg-4">
                     <?= session()->get('message'); ?>
                 </div>
+
             </div>
-            <?= form_open_multipart('planning/addPotencial'); ?>
-            <?= csrf_field(); ?>
-            <div class="card col-lg">
-                <div class="card-body col-lg-11">
-                    <div class="form-group row">
-                        <label for="cust-name" class="col-sm-2 col-form-label col-form-label-sm">Customer Name *</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control form-control-sm" id="cust-name" name="cust-name" placeholder="Customer's Name" value="<?= set_value('cust-name'); ?>">
+            <form action="<?= base_url('planning/add-potential'); ?>" method="post">
+                <?= csrf_field(); ?>
+                <input type="hidden" name="_method" value="PUT">
+                <div class="card col-lg">
+                    <div class="card-body col-lg-11">
+                        <div class="form-group row">
+                            <label for="cust-name" class="col-sm-2 col-form-label col-form-label-sm">Customer Name *</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm" id="cust-name" name="cust-name" placeholder="Customer's Name" value="<?= set_value('cust-name'); ?>">
+                                <?php if (isset($validation)) : ?>
+                                    <div class="text-danger pl-1" role="alert">
+                                        <?= $validation->getError('cust-name'); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="cust-id" class="col-sm-2 col-form-label col-form-label-sm">ID Customer *</label>
-                        <div class="col-sm-8">
-                            <input type="number" class="form-control form-control-sm" id="cust-id" name="cust-id" placeholder="ID Customer's" value="<?= set_value('cust-id'); ?>">
+                        <div class="form-group row">
+                            <label for="cust-id" class="col-sm-2 col-form-label col-form-label-sm">ID Customer *</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control form-control-sm" id="cust-id" name="cust-id" placeholder="ID Customer's" value="<?= set_value('cust-id'); ?>">
+                                <?php if (isset($validation)) : ?>
+                                    <div class="text-danger pl-1" role="alert">
+                                        <?= $validation->getError('cust-id'); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="tariff" class="col-sm-2 col-form-label col-form-label-sm">Tarif *</label>
-                        <div class="col-sm-2">
-                            <select id="tariff" name="tariff" class="form-control custom-select-sm">
-                                <?php foreach ($tariff as $tarif) { ?>
-                                    <option value="<?= $tarif['id_tariff'] ?>" <?= set_select('tariff', $tarif['id_tariff']); ?>><?= $tarif['tariff'] ?></option>
-                                <?php } ?>
-                            </select>
+                        <div class="form-group row">
+                            <label for="tariff" class="col-sm-2 col-form-label col-form-label-sm">Tarif *</label>
+                            <div class="col-sm-8">
+                                <select id="tariff" name="tariff" class="col-sm-4 form-control custom-select custom-line-height custom-select-sm">
+                                    <?php foreach ($tariff as $tarif) { ?>
+                                        <option value=" <?= $tarif['id_tariff'] ?>" <?= set_select('tariff', $tarif['id_tariff']); ?>><?= $tarif['tariff'] ?></option>
+                                    <?php } ?>
+                                </select>
+                                <?php if (isset($validation)) : ?>
+                                    <div class="text-danger pl-1" role="alert">
+                                        <?= $validation->getError('tariff'); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="power" class="col-sm-2 col-form-label col-form-label-sm">Daya *</label>
-                        <div class="col-sm-2">
-                            <input type="text" class="form-control form-control-sm" id="power" name="power" value="<?= set_value('power'); ?>">
+                        <div class="form-group row">
+                            <label for="power" class="col-sm-2 col-form-label col-form-label-sm">Daya (VA) *</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="col-sm-2 form-control form-control-sm" id="power" name="power" value="<?= set_value('power'); ?>">
+                                <?php if (isset($validation)) : ?>
+                                    <div class="text-danger pl-1" role="alert">
+                                        <?= $validation->getError('power'); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="cust-address" class="col-sm-2 col-form-label col-form-label-sm">Address *</label>
-                        <div class="col-sm-8">
-                            <textarea class="form-control form-control-sm" name="cust-address" id="cust-address" cols="30" rows="4" placeholder="Address Customer's" value="<?= set_value('cust-address'); ?>"><?= set_value('cust-address'); ?></textarea>
+                        <div class="form-group row">
+                            <label for="cust-address" class="col-sm-2 col-form-label col-form-label-sm">Address *</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control form-control-sm" name="cust-address" id="cust-address" cols="30" rows="4" placeholder="Address Customer's" value="<?= set_value('cust-address'); ?>"><?= set_value('cust-address'); ?></textarea>
+                                <?php if (isset($validation)) : ?>
+                                    <div class="text-danger pl-1" role="alert">
+                                        <?= $validation->getError('cust-address'); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="substation" class="col-sm-2 col-form-label col-form-label-sm">Substation *</label>
-                        <div class="col-sm-8">
-                            <!-- <input type="text" class="form-control form-control-sm" id="substation" name="substation"> -->
-                            <select id="substation" name="substation" class="form-control custom-select-sm" value="<?= set_value('substation'); ?>">
-                                <?php foreach ($substation as $subs) { ?>
-                                    <option value="<?= $subs['id_substation'] ?>" <?= set_select('substation', $subs['id_substation']); ?>><?= $subs['name_substation'] ?></option>
-                                <?php } ?>
-                            </select>
+                        <div class="form-group row">
+                            <label for="substation" class="col-sm-2 col-form-label col-form-label-sm">Substation *</label>
+                            <div class="col-sm-8">
+                                <!-- <input type="text" class="form-control form-control-sm" id="substation" name="substation"> -->
+                                <select id="substation" name="substation" class="col-sm-4 form-control custom-select custom-line-height custom-select-sm" value="<?= set_value('substation'); ?>">
+                                    <?php foreach ($substation as $subs) { ?>
+                                        <option value="<?= $subs['id_substation'] ?>" <?= set_select('substation', $subs['id_substation']); ?>><?= $subs['name_substation'] ?></option>
+                                    <?php } ?>
+                                </select>
+                                <?php if (isset($validation)) : ?>
+                                    <div class="text-danger pl-1" role="alert">
+                                        <?= $validation->getError('substation'); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="feeder-substation" class="col-sm-2 col-form-label col-form-label-sm">Feeder Substation *</label>
-                        <div class="col-sm-8">
-                            <!-- <input type="text" class="form-control form-control-sm" id="feeder-substation" name="feeder-substation"> -->
-                            <select id="feeder-substation" name="feeder-substation" class="form-control custom-select-sm" value="<?= set_value('feeder-substation'); ?>">
-                                <?php foreach ($feeder_substation as $fsubs) { ?>
-                                    <option value="<?= $fsubs['id_feeder_substation'] ?>" <?= set_select('feeder-substation', $fsubs['id_feeder_substation']); ?>><?= $fsubs['name_feeder_substation'] ?></option>
-                                <?php } ?>
-                            </select>
+                        <div class="form-group row">
+                            <label for="feeder-substation" class="col-sm-2 col-form-label col-form-label-sm">Feeder Substation *</label>
+                            <div class="col-sm-8">
+                                <!-- <input type="text" class="form-control form-control-sm" id="feeder-substation" name="feeder-substation"> -->
+                                <select id="feeder-substation" name="feeder-substation" class="col-sm-4 form-control custom-select custom-line-height custom-select-sm" value="<?= set_value('feeder-substation'); ?>">
+                                    <?php foreach ($feeder_substation as $fsubs) { ?>
+                                        <option value="<?= $fsubs['id_feeder_substation'] ?>" <?= set_select('feeder-substation', $fsubs['id_feeder_substation']); ?>><?= $fsubs['name_feeder_substation'] ?></option>
+                                    <?php } ?>
+                                </select>
+                                <?php if (isset($validation)) : ?>
+                                    <div class="text-danger pl-1" role="alert">
+                                        <?= $validation->getError('feeder-substation'); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="subsistem" class="col-sm-2 col-form-label col-form-label-sm">Subsistem *</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control form-control-sm" id="subsistem" name="subsistem" value="<?= set_value('subsistem'); ?>">
+                        <div class="form-group row">
+                            <label for="subsistem" class="col-sm-2 col-form-label col-form-label-sm">Subsistem *</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm" id="subsistem" name="subsistem" value="<?= set_value('subsistem'); ?>">
+                                <?php if (isset($validation)) : ?>
+                                    <div class="text-danger pl-1" role="alert">
+                                        <?= $validation->getError('subsistem'); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="bep-value" class="col-sm-2 col-form-label col-form-label-sm">BEP Value *</label>
-                        <div class="col-sm-8">
-                            <input type="number" step="any" class="form-control form-control-sm" id="bep-value" name="bep-value" value="<?= set_value('bep-value'); ?>">
+                        <div class="form-group row">
+                            <label for="bep-value" class="col-sm-2 col-form-label col-form-label-sm">BEP Value *</label>
+                            <div class="col-sm-8">
+                                <input type="number" step="any" class="form-control form-control-sm" id="bep-value" name="bep-value" value="<?= set_value('bep-value'); ?>">
+                                <?php if (isset($validation)) : ?>
+                                    <div class="text-danger pl-1" role="alert">
+                                        <?= $validation->getError('bep-value'); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="recommend-service" class="col-sm-2 col-form-label col-form-label-sm">Service Recommendation*</label>
-                        <div class="col-sm-8">
-                            <select id="recommend-service" name="recommend-service" class="form-control custom-select-sm">
-                                <?php foreach ($service as $down) { ?>
-                                    <option value="<?= $down['id_type_of_service'] ?>" <?= set_select('recommend-service', $down['id_type_of_service']); ?>><?= $down['type_of_service'] ?></option>
-                                <?php } ?>
-                            </select>
+                        <div class="form-group row">
+                            <label for="recommend-service" class="col-sm-2 col-form-label col-form-label-sm">Service Recommendation*</label>
+                            <div class="col-sm-8">
+                                <select id="recommend-service" name="recommend-service" class="col-sm-4 form-control custom-select custom-select-sm custom-line-height">
+                                    <?php foreach ($service as $down) { ?>
+                                        <option value="<?= $down['id_type_of_service'] ?>" <?= set_select('recommend-service', $down['id_type_of_service']); ?>><?= $down['type_of_service'] ?></option>
+                                    <?php } ?>
+                                </select>
+                                <?php if (isset($validation)) : ?>
+                                    <div class="text-danger pl-1" role="alert">
+                                        <?= $validation->getError('recommend-service'); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row justify-content-end">
-                        <div class="col-sm-10">
-                            <button class="btn btn-sm btn-primary" type="submit" name="save" id="save">Input Data</button>
+                        <div class="form-group row justify-content-end">
+                            <div class="col-sm-10">
+                                <button class="btn btn-sm btn-primary" type="submit" name="save" id="save">Input Data</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <?= form_close(); ?>
+                <?= form_close(); ?>
         </div>
     </div>
 

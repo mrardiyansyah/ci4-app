@@ -103,6 +103,7 @@ $routes->group('account-executive', ['filter' => 'auth'], function ($routes) {
 // Planning
 $routes->group('planning', ['filter' => 'auth'], function ($routes) {
 	$routes->get('add-potential', 'Planning\AddPotential::index');
+	$routes->put('add-potential', 'Planning\AddPotential::index');
 });
 /**
  * --------------------------------------------------------------------

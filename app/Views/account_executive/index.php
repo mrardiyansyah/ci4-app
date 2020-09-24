@@ -31,7 +31,7 @@
                         <tr>
                             <th scope="row"><?= $i; ?></th>
                             <td><?= $c['name_customer']; ?></td>
-                            <td class="text-center"><?= $c['id_customer']; ?></td>
+                            <td class="text-center"><?= $c['id_pelanggan'] ?? "Not Defined"; ?></td>
                             <td class="text-center"><?= $c['tariff']; ?> / <?= $c['power']; ?></td>
                             <td class="text-center">
                                 <span class="badge <?= $c['badge']; ?>">
