@@ -23,15 +23,14 @@
                 <a href="#" onclick="add_submenu()" class="btn btn-primary mb-3" data-toggle="tooltip" data-placement="right" title="Add New Sub Menu">Add New Sub Menu</a>
             </div>
 
-            <table class="table table-hover table-striped table-submenu">
+            <table class="table table-hover table-striped table-submenu" style="width: 100%;">
                 <thead>
-                    <tr>
+                    <tr class="text-center">
                         <th scope="col">#</th>
                         <th scope="col">Title</th>
                         <th scope="col">Role</th>
                         <th scope="col">Url</th>
                         <th scope="col">Icon</th>
-                        <th scope="col">ID SM</th>
                         <th scope="col">Active</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -40,13 +39,16 @@
                     <?php $i = 1; ?>
                     <?php foreach ($subMenu as $sm) : ?>
                         <tr>
-                            <th scope="row"><?= $i; ?></th>
+                            <th scope="row" class="text-center"><?= $i; ?></th>
                             <td><?= $sm['title']; ?></td>
                             <td><?= $sm['menu']; ?></td>
                             <td><?= $sm['url']; ?></td>
                             <td><?= $sm['icon']; ?></td>
-                            <td><?= $sm['id_user_sub_menu']; ?></td>
-                            <td><?= $sm['is_active_menu']; ?></td>
+                            <td class="text-center">
+                                <span class="<?= ($sm['is_active_menu']) ? 'text-success' : 'text-danger'; ?>">
+                                    <?= ($sm['is_active_menu']) ? "Active" : "Not Active"; ?>
+                                </span>
+                            </td>
                             <td>
                                 <a href="#" onclick="edit_submenu(<?= $sm['id_user_sub_menu']; ?>)" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="left" title="Edit Submenu <?= $sm['title']; ?>"><i class="far fa-fw fa-edit"></i></a>
                                 <form action="<?= base_url('submenu/info') . '/' . $sm['id_user_sub_menu']; ?>" method="post" id="form-delete-submenu<?= $sm['id_user_sub_menu']; ?>">
@@ -129,9 +131,10 @@
 
 <script>
     $(document).ready(function() {
-        $('.table-submenu').dataTable({
+        var table = $('.table-submenu').dataTable({
             'destroy': true,
             'responsive': true,
+            "pageLength": -1,
             "lengthMenu": [
                 [5, 10, 25, 50, -1],
                 [5, 10, 25, 50, "All"]
@@ -144,7 +147,7 @@
                 [1, "asc"]
             ],
             'columnDefs': [{
-                'targets': [0, 4, 5, 6, 7],
+                'targets': [0, 4, 6],
                 'searchable': false,
                 'orderable': false
             }, {

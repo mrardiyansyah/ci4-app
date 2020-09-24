@@ -39,16 +39,20 @@
     <!-- Mdbootstrap style -->
     <link rel="stylesheet" href="<?= base_url('assets/vendor/animate.css/animate.css'); ?>">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.css" />
-    <script src="<?= base_url('assets/vendor/jquery/jquery.min.js'); ?>"></script>
+    <script src="<?= base_url('assets/js/jquery-3.5.1.min.js'); ?>"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.js"></script>
 
     <!-- Sweet Alert 2 -->
     <script src="<?= base_url('assets/vendor/sweetalert2/dist/sweetalert2.all.min.js'); ?>"></script>
 
 
+    <!-- tail.select Library -->
+    <link type="text/css" rel="stylesheet" href="<?= base_url('assets/css/tail.select-default.min.css'); ?>">
+
+
 </head>
 
-<body id="page-top">
+<body id=" page-top">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -102,14 +106,8 @@
     </div>
 
 
-    <!-- Core plugin JavaScript-->
-    <script src="<?= base_url('assets/vendor/jquery-easing/jquery.easing.min.js'); ?>"></script>
-
     <!-- Custom scripts for Popper -->
-    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
-
-    <!-- Custom scripts for Tippy -->
-    <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
 
     <!-- Bootstrap core JavaScript-->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
@@ -120,8 +118,14 @@
 
     <script src="<?= base_url('assets/js/pln_premium.js'); ?>"></script>
     <script src="<?= base_url('assets/js/swal.js'); ?>"></script>
+    <script src="<?= base_url('assets/js/tail_lpremium.js'); ?>"></script>
 
 
+    <script>
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+    </script>
 
     <script type="text/javascript">
         $('.btnNext').click(function() {

@@ -56,6 +56,7 @@ class CustomModel
         return $query;
     }
 
+
     public function getNotif($id_notification_target)
     {
         $builder = $this->db->table('notification_target');

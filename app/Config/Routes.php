@@ -94,6 +94,16 @@ $routes->group('submenu', ['filter' => 'auth'], function ($routes) {
 	$routes->delete('info/(:num)', 'Admin\Submenu::delete/$1');
 	$routes->addRedirect('delete-submenu', '/');
 });
+
+// Account Executive
+$routes->group('account-executive', ['filter' => 'auth'], function ($routes) {
+	$routes->get('/', 'AccountExecutive\DataPotential::index');
+});
+
+// Planning
+$routes->group('planning', ['filter' => 'auth'], function ($routes) {
+	$routes->get('add-potential', 'Planning\AddPotential::index');
+});
 /**
  * --------------------------------------------------------------------
  * Additional Routing
