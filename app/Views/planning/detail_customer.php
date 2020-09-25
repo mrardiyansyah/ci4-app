@@ -1,3 +1,7 @@
+<?= $this->extend('layout/main'); ?>
+
+<?= $this->section('content'); ?>
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -7,7 +11,9 @@
     <div class="row">
         <div class="col-lg">
 
-            <?= $this->session->flashdata('message'); ?>
+            <div class="col-lg-9">
+                <?= session()->get('message'); ?>
+            </div>
 
             <div class="card text-left">
                 <div class="card-header">
@@ -22,38 +28,46 @@
                 <!-- Tab Panes -->
                 <div class="card-body tab-content">
                     <div class="tab-pane active" id="profileCustomer" name="profileCustomer">
+
+                        <!-- Button Edit and Delete -->
+                        <a href="<?= base_url('planning/edit-customer/' . $customer['id_customer']); ?>" class="btn btn-sm btn-primary float-right" id="btn-edit-customer">
+                            <i class="far fa-fw fa-edit"></i>
+                            Edit
+                        </a>
+
                         <h5 class="card-title text-uppercase text-dark font-weight-bold"><?= $customer['name_customer']; ?></h5>
+
                         <table class="table table-sm table-borderless col-lg-9 table-responsive">
                             <tbody>
                                 <tr>
                                     <td>ID Pelanggan</td>
                                     <td>:</td>
-                                    <td><?= $customer['id_customer']; ?></td>
+                                    <td id="id_pelanggan"><?= $customer['id_pelanggan']; ?></td>
                                 </tr>
                                 <tr>
                                     <td>Alamat</td>
                                     <td>:</td>
-                                    <td><?= $customer['address_customer']; ?></td>
+                                    <td id="address_customer"><?= $customer['address_customer']; ?></td>
                                 </tr>
                                 <tr>
                                     <td>Tarif</td>
                                     <td>:</td>
-                                    <td><?= $customer['tariff']; ?></td>
+                                    <td id="tariff"><?= $customer['tariff']; ?></td>
                                 </tr>
                                 <tr>
                                     <td>Daya</td>
                                     <td>:</td>
-                                    <td><?= $customer['power']; ?> VA</td>
+                                    <td id="power"><?= $customer['power']; ?> VA</td>
                                 </tr>
                                 <tr>
                                     <td>Substation</td>
                                     <td>:</td>
-                                    <td><?= $customer['name_substation']; ?></td>
+                                    <td id="substation"><?= $customer['name_substation']; ?></td>
                                 </tr>
                                 <tr>
                                     <td style="min-width: 140px;">Feeder Substation</td>
                                     <td>:</td>
-                                    <td><?= $customer['name_feeder_substation']; ?></td>
+                                    <td id="feeder_substation"><?= $customer['name_feeder_substation']; ?></td>
                                 </tr>
                                 <tr>
                                     <td>Layanan</td>
@@ -79,3 +93,5 @@
 
 </div>
 <!-- End of Main Content -->
+
+<?= $this->endSection(); ?>

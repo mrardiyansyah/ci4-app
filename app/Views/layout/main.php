@@ -45,9 +45,10 @@
     <!-- Sweet Alert 2 -->
     <script src="<?= base_url('assets/vendor/sweetalert2/dist/sweetalert2.all.min.js'); ?>"></script>
 
-
     <!-- tail.select Library -->
     <link type="text/css" rel="stylesheet" href="<?= base_url('assets/css/tail.select-default.min.css'); ?>">
+
+
     <style>
         .custom-line-height {
             line-height: 1.2;
@@ -124,7 +125,7 @@
 
     <script src="<?= base_url('assets/js/pln_premium.js'); ?>"></script>
     <script src="<?= base_url('assets/js/swal.js'); ?>"></script>
-    <script src="<?= base_url('assets/js/tail_lpremium.js'); ?>"></script>
+
 
 
     <script>

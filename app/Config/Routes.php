@@ -102,9 +102,13 @@ $routes->group('account-executive', ['filter' => 'auth'], function ($routes) {
 
 // Planning
 $routes->group('planning', ['filter' => 'auth'], function ($routes) {
+	$routes->get('/', 'Planning\DataPotential::index');
 	$routes->get('add-potential', 'Planning\AddPotential::index');
 	$routes->put('add-potential', 'Planning\AddPotential::index');
 	$routes->put('import-file', 'Planning\AddPotential::importFile');
+	$routes->get('detail-customer/(:num)', 'Planning\DataPotential::detailCustomer/$1');
+	$routes->get('edit-customer/(:num)', 'Planning\DataPotential::editCustomer/$1');
+	$routes->put('edit-customer/(:num)', 'Planning\DataPotential::editCustomer/$1');
 });
 /**
  * --------------------------------------------------------------------

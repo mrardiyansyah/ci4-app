@@ -4,7 +4,6 @@
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
-    <script type="text/javascript" src="<?= base_url('assets/js/tail.select-full.min.js'); ?>"></script>
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
     <div class="row">
@@ -17,7 +16,9 @@
             </div>
             <button class="btn btn-sm btn-facebook mb-3 input-file-potential" type="button" data-toggle="modal" data-target="#modalInputFilePotential">
                 <i class="fas fa-plus-circle text-white mr-2"></i>
-                Input Data With Excel</button>
+                Input Data With Excel
+            </button>
+
             <form action="<?= base_url('planning/add-potential'); ?>" method="post">
                 <?= csrf_field(); ?>
                 <input type="hidden" name="_method" value="PUT">
@@ -205,7 +206,7 @@
         </div>
     </div>
 </div>
-
 <script type="text/javascript" src="<?= base_url('assets/js/tail.select-full.min.js'); ?>"></script>
+<script src="<?= base_url('assets/js/tail_lpremium.js'); ?>"></script>
 
 <?= $this->endSection(); ?>

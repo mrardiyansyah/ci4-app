@@ -19,7 +19,8 @@ class CustomerModel
         $builder->select('*');
         return $builder
             ->join('service', 'customer.id_type_of_service = service.id_type_of_service')
-            ->join('status', 'customer.id_status = status.id_status')->join('tariff', 'customer.id_tariff = tariff.id_tariff')
+            ->join('status', 'customer.id_status = status.id_status')
+            ->join('tariff', 'customer.id_tariff = tariff.id_tariff')
             ->join('information', 'customer.id_information = information.id_information')
             ->get()
             ->getResultArray();
@@ -27,6 +28,18 @@ class CustomerModel
 
     public function getCustomerById($id_customer)
     {
+        $builder = $this->db->table('customer');
+        $builder->select('*');
+        return $builder
+            ->where('id_customer', $id_customer)
+            ->join('service', 'customer.id_type_of_service = service.id_type_of_service')
+            ->join('status', 'customer.id_status = status.id_status')
+            ->join('tariff', 'customer.id_tariff = tariff.id_tariff')
+            ->join('substation', 'customer.id_substation = substation.id_substation')
+            ->join('feeder_substation', 'customer.id_feeder_substation = feeder_substation.id_feeder_substation')
+            ->join('information', 'customer.id_information = information.id_information')
+            ->get()
+            ->getRowArray();
     }
 
     public function getService()
