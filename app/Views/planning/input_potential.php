@@ -9,15 +9,15 @@
     <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
     <div class="row">
         <div class="col-lg">
-            <button class="btn btn-sm btn-facebook mb-3 input-file-potential" type="button" data-toggle="modal" data-target="#modalInputFilePotential">
-                <i class="fas fa-plus-circle text-white mr-2"></i>
-                Input Data With Excel</button>
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                     <?= session()->get('message'); ?>
                 </div>
 
             </div>
+            <button class="btn btn-sm btn-facebook mb-3 input-file-potential" type="button" data-toggle="modal" data-target="#modalInputFilePotential">
+                <i class="fas fa-plus-circle text-white mr-2"></i>
+                Input Data With Excel</button>
             <form action="<?= base_url('planning/add-potential'); ?>" method="post">
                 <?= csrf_field(); ?>
                 <input type="hidden" name="_method" value="PUT">
@@ -180,7 +180,9 @@
                 </button>
             </div>
             <div class="modal-body mt-3">
-                <form action="<?= base_url('planning/ajax_add') ?>" method="post" enctype="multipart/form-data">
+                <form action="<?= base_url('planning/import-file') ?>" method="post" enctype="multipart/form-data">
+                    <?= csrf_field(); ?>
+                    <input type="hidden" name="_method" value="PUT">
                     <div class="form-group row">
                         <label for="file_excel" class="col-sm-2 col-form-label">File</label>
                         <div class="col-sm-10">

@@ -20,6 +20,19 @@ class Validation
 		\CodeIgniter\Validation\FileRules::class,
 		\CodeIgniter\Validation\CreditCardRules::class,
 		\App\Validations\AuthRules::class,
+		// \App\Validations\FileRules::class,
+	];
+
+	public $transaction = [
+		'file_excel' => 'uploaded[file_excel]|ext_in[file_excel,xls,xlsx]|max_size[file_excel,2048]',
+	];
+
+	public $transaction_errors = [
+		'file_excel' => [
+			'ext_in'    => 'File Excel hanya boleh diisi dengan extension .xls atau .xlsx',
+			'max_size'  => 'File Excel maksimal 2MB',
+			'uploaded'  => 'File Excel wajib diisi'
+		]
 	];
 
 	/**

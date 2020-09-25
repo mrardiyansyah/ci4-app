@@ -8,6 +8,7 @@ use App\Models\CustomerModel;
 use App\Models\CustomModel;
 use App\Models\M_Customer;
 use App\Models\M_Role;
+use Exception;
 
 class AddPotential extends BaseController
 {
@@ -120,7 +121,100 @@ class AddPotential extends BaseController
         return view('planning/input_potential', $data);
     }
 
-    public function add()
+    public function importFile()
     {
+        $session = session();
+        $validation = \Config\Services::validation();
+
+        // Get File Import
+        $file = $this->request->getFile('file_excel');
+        $data = [
+            'file_excel' => $file,
+        ];
+
+        if ($validation->run($data, 'transaction') == FALSE) {
+            $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">' . $validation->getError('file_excel') . '</div>');
+            return redirect()->back();
+        } else {
+
+            // Ambil Tipe Extension dari File Excel
+            $extension = $file->getClientExtension();
+
+            // format excel 2007 ke bawah
+            if ('xls' == $extension) {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+                // format excel 2010 ke atas
+            } else {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+            }
+
+            $spreadsheet = $reader->load($file);
+            $cell = $spreadsheet->getActiveSheet()->toArray();
+
+
+            // lewati baris ke 0 pada file excel
+            // dalam kasus ini, array ke 0 adalah title
+            foreach ($cell as $idx => $row) {
+                if ($idx == 0) {
+                    continue;
+                } else if (is_null($row[0])) {
+                    // Kondisi dimana jika mengecek value didalam baris ada null maka berhenti
+                    break;
+                }
+                // Get Nama Pelanggan
+                $name_customer = $row[0];
+                // Get ID Pel
+                $id_pelanggan = $row[1];
+                // Get Jenis Tarif
+                (int)$tariff =  $this->CustomerModel->getIdByTariff($row[2]);
+                // Get Daya
+                $power = $row[3];
+                // Get Alamat Pelanggan
+                $address_customer = $row[4];
+                // Get Gardu Induk (Substation)
+                (int) $id_substation = $this->CustomerModel->getIdBySubstation($row[5]);
+                // Get Gardu Penyulang (Feeder Substation)
+                $id_feeder_substation = $this->CustomerModel->getIdByFeederSubstation($row[6]);
+                // Get Subsistem
+                $subsistem = $row[7];
+                // Get Nilai Break Even Point (BEP Value)
+                $bep_value = $row[8];
+                // Get Rekomendasi Layanan (Service)
+                (int) $service = $this->CustomerModel->getIdByService($row[9]);
+
+                $data = [
+                    'name_customer' => $name_customer ?? '',
+                    'id_pelanggan' => $id_pelanggan ?? '',
+                    'id_tariff' => $tariff['id_tariff'] ?? '',
+                    'power' => $power,
+                    'address_customer' => $address_customer ?? '',
+                    'id_substation' => $id_substation['id_substation'] ?? '',
+                    'id_feeder_substation' => $id_feeder_substation['id_feeder_substation'] ?? '',
+                    'subsistem' => $subsistem ?? '',
+                    'bep_value' => $bep_value ?? '',
+                    'id_type_of_service' => $service['id_type_of_service'] ?? '',
+                    'id_status' => 1,
+                    'id_information' => 1
+                ];
+
+                $input_data[] = $data;
+            }
+            try {
+                $insert = $this->M_Customer->insertBatch($input_data);
+            } catch (Exception $e) {
+                $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Failed to Input Data. Please double check the data entered is correct and appropriate</div>');
+                return redirect()->back();
+            }
+
+
+            if ($insert) {
+                $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
+                    Data successfully added!</div>');
+                return redirect()->back();
+            } else {
+                $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">' . $this->M_Customer->errors() . '</div>');
+                return redirect()->back();
+            }
+        }
     }
 }
