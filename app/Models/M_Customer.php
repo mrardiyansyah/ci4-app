@@ -11,7 +11,7 @@ class M_Customer extends Model
 
     // protected $returnType     = 'array';
 
-    protected $allowedFields = ['id_company_profile', 'id_company_leader', 'id_company_finance', 'id_company_engineering', 'id_company_general', 'name_customer', 'address_customer', 'id_tariff', 'power', 'subsistem', 'bep-value', 'id_substation', 'id_feeder_substation', 'id_type_of_service', 'id_status', 'id_information', 'captive_power', 'amount_of_power', 'next_meeting', 'suggestion'];
+    protected $allowedFields = ['id_company_profile', 'id_company_leader', 'id_company_finance', 'id_company_engineering', 'id_company_general', 'name_customer', 'address_customer', 'id_tariff', 'power', 'subsistem', 'bep-value', 'id_substation', 'id_feeder_substation', 'id_type_of_service', 'id_status', 'id_information', 'captive_power', 'amount_of_power', 'next_meeting', 'suggestion', 'is_deleted', 'id_deletedby'];
 
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;

@@ -45,8 +45,9 @@ class DataPotential extends BaseController
         $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
 
         if (!isset($data['customer'])) {
-            return redirect()->back()->with('message', '<div class="alert alert-danger" role="alert">There\'s something Went Wrong! Please double check</div>');
+            return redirect()->to(site_url('planning'));
         }
+
         $data['title'] = 'Detail Customer';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
@@ -58,12 +59,17 @@ class DataPotential extends BaseController
     public function editCustomer($id_customer)
     {
         $session = session();
+
+        $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
+        if (!isset($data['customer'])) {
+            return redirect()->to(site_url('planning'))->with('message', '<div class="alert alert-danger" role="alert">Data is not found!</div>');
+        }
+
         $data['title'] = 'Edit Customer';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
         $data['notif'] = get_new_notif();
 
-        $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
         $data['service'] = $this->CustomerModel->getService();
         $data['substation'] = $this->CustomerModel->getSubstation();
         $data['feeder_substation'] = $this->CustomerModel->getFeederSubstation();
