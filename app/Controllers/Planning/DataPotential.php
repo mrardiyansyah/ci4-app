@@ -6,16 +6,19 @@ use App\Controllers\BaseController;
 use App\Models\M_Auth;
 use App\Models\CustomerModel;
 use App\Models\M_Role;
+use App\Models\M_Customer;
+use Exception;
 
 class DataPotential extends BaseController
 {
-    protected $M_Auth, $M_Role, $CustomerModel;
+    protected $M_Auth, $M_Role, $M_Customer, $CustomerModel;
 
 
     public function __construct()
     {
         $this->M_Auth = new M_Auth();
         $this->M_Role = new M_Role();
+        $this->M_Customer = new M_Customer();
         $db = db_connect();
         $this->CustomerModel = new CustomerModel($db);
     }
@@ -85,9 +88,9 @@ class DataPotential extends BaseController
                 ],
                 'tariff' => [
                     'label' => 'Tarif',
-                    'rules' => 'required|max_length[2]',
+                    'rules' => 'required',
                     'errors' => [
-                        'max_length' => '3 Characters Only'
+                        'required' => '{field} is required'
                     ]
                 ],
                 'address_customer' => [
@@ -117,6 +120,7 @@ class DataPotential extends BaseController
             ];
 
             if (!$this->validate($rules)) {
+                // print_r($this->request->getPost());
                 $data['validation'] = $this->validator;
             } else {
                 $data = [
@@ -124,20 +128,30 @@ class DataPotential extends BaseController
                     'id_pelanggan' => $this->request->getPost('cust-id'),
                     'id_tariff' => $this->request->getPost('tariff'),
                     'power' => $this->request->getPost('power'),
-                    'address_customer' => $this->request->getPost('cust-address'),
+                    'address_customer' => $this->request->getPost('address_customer'),
                     'id_substation' => $this->request->getPost('substation'),
                     'id_feeder_substation' => $this->request->getPost('feeder-substation'),
                     'subsistem' => $this->request->getPost('subsistem'),
                     'bep_value' => $this->request->getPost('bep-value'),
                     'id_type_of_service' => $this->request->getPost('recommend-service'),
-                    'id_status' => '1',
-                    'id_information' => 1
                 ];
 
-                $this->M_Customer->insert($data);
-                $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
-                    Data has been added!</div>');
-                return redirect()->back();
+                try {
+                    $update = $this->M_Customer->update($id_customer, $data);
+                } catch (Exception $e) {
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">
+                    Failed to update Data!</div>');
+                    return redirect()->to(site_url("planning/detail-customer/$id_customer"));
+                }
+
+                if ($update) {
+                    $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
+                    Data successfully added!</div>');
+                    return redirect()->to(site_url("planning/detail-customer/$id_customer"));
+                } else {
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">' . $this->M_Customer->errors() . '</div>');
+                    return redirect()->to(site_url("planning/detail-customer/$id_customer"));
+                }
             }
         }
 
