@@ -18,6 +18,7 @@ class CustomerModel
         $builder = $this->db->table('customer');
         $builder->select('*');
         return $builder
+            ->where('deleted_at', null)
             ->join('service', 'customer.id_type_of_service = service.id_type_of_service')
             ->join('status', 'customer.id_status = status.id_status')
             ->join('tariff', 'customer.id_tariff = tariff.id_tariff')
@@ -32,6 +33,7 @@ class CustomerModel
         $builder->select('*');
         return $builder
             ->where('id_customer', $id_customer)
+            ->where('is_deleted !=', 1)
             ->join('service', 'customer.id_type_of_service = service.id_type_of_service')
             ->join('status', 'customer.id_status = status.id_status')
             ->join('tariff', 'customer.id_tariff = tariff.id_tariff')

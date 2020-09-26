@@ -26,19 +26,34 @@
                 </div>
 
                 <!-- Tab Panes -->
-                <div class="card-body tab-content">
+                <div class="card-body tab-content d-block">
                     <div class="tab-pane active" id="profileCustomer" name="profileCustomer">
 
-                        <!-- Button Edit and Delete -->
-                        <a href="<?= base_url('planning/edit-customer/' . $customer['id_customer']); ?>" class="btn btn-sm btn-primary float-right" id="btn-edit-customer">
-                            <i class="far fa-fw fa-edit"></i>
-                            Edit
-                        </a>
+                        <div class="d-flex justify-content-end">
+                            <!-- Button Edit and Delete -->
+                            <a href="<?= base_url('planning/edit-customer/' . $customer['id_customer']); ?>" class="btn btn-sm btn-primary float-right mr-1" id="btn-edit-customer">
+                                <i class="far fa-fw fa-edit"></i>
+                                Edit
+                            </a>
 
-                        <h5 class="card-title text-uppercase text-dark font-weight-bold"><?= $customer['name_customer']; ?></h5>
+                            <form action="<?= base_url('planning/detail-customer/' . $customer['id_customer']); ?>" method="post">
+                                <?= csrf_field(); ?>
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="button" class="btn btn-sm btn-danger float-right" data-customer="<?= $customer['name_customer']; ?>" id="btn-delete-customer">
+                                    <i class="far fa-fw fa-trash-alt"></i>
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
                         <div style="overflow-x: auto;">
                             <table class="table table-sm table-borderless col-lg-9 table-responsive">
                                 <tbody>
+                                    <tr>
+                                        <td>
+                                            <h5 class="card-title text-uppercase text-dark font-weight-bold d-inline-block"><?= $customer['name_customer']; ?></h5>
+                                        </td>
+                                        <td></td>
+                                    </tr>
                                     <tr>
                                         <td>ID Pelanggan</td>
                                         <td>:</td>

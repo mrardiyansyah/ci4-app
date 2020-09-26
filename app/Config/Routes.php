@@ -109,6 +109,7 @@ $routes->group('planning', ['filter' => 'auth'], function ($routes) {
 	$routes->get('detail-customer/(:num)', 'Planning\DataPotential::detailCustomer/$1');
 	$routes->get('edit-customer/(:num)', 'Planning\DataPotential::editCustomer/$1');
 	$routes->put('edit-customer/(:num)', 'Planning\DataPotential::editCustomer/$1');
+	$routes->delete('detail-customer/(:num)', 'Planning\DataPotential::delete/$1');
 });
 /**
  * --------------------------------------------------------------------

@@ -40,13 +40,17 @@ class DataPotential extends BaseController
     public function detailCustomer($id_customer)
     {
         $session = session();
+
+        // Data Semua customer
+        $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
+
+        if (!isset($data['customer'])) {
+            return redirect()->back()->with('message', '<div class="alert alert-danger" role="alert">There\'s something Went Wrong! Please double check</div>');
+        }
         $data['title'] = 'Detail Customer';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
         $data['notif'] = get_new_notif();
-
-        // Data Semua customer
-        $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
 
         return view('planning/detail_customer', $data);
     }
@@ -156,5 +160,33 @@ class DataPotential extends BaseController
         }
 
         return view('planning/edit_customer', $data);
+    }
+
+    public function delete($id_customer)
+    {
+        $session = session();
+        $uri = service('uri');
+        $uri_id_customer = $uri->getSegment(3);
+        if (filter_var($uri_id_customer, FILTER_VALIDATE_INT)) {
+            $check = $this->M_Customer->find($id_customer);
+            if ($check) {
+                $name_customer = $check['name_customer'];
+                $data = [
+                    'is_deleted' => 1,
+                    'id_deletedby' => $session->get('id_user')
+                ];
+                try {
+                    $this->M_Customer->update($id_customer, $data);
+                    $this->M_Customer->delete($id_customer);
+                    return redirect()->to(site_url('planning'))->with('message', '<div class="alert alert-success" role="alert">Customer \'' . $name_customer . '\' has been Deleted!</div>');
+                } catch (Exception $e) {
+                    return redirect()->to(site_url('planning'))->with('message', '<div class="alert alert-danger" role="alert">There Something Went Wrong! Please Contact Admin</div>');
+                }
+            } else {
+                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Data is not found. Please check again!');
+            }
+        } else {
+            return redirect()->to(site_url('planning'))->with('message', '<div class="alert alert-danger" role="alert">Please check again!</div>');
+        }
     }
 }
