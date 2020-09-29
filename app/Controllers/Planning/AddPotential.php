@@ -14,7 +14,6 @@ class AddPotential extends BaseController
 {
     protected $M_Auth, $M_Role, $M_Customer, $CustomerModel, $CustomModel;
 
-
     public function __construct()
     {
         $this->M_Auth = new M_Auth();
@@ -152,8 +151,16 @@ class AddPotential extends BaseController
             $cell = $spreadsheet->getActiveSheet()->toArray();
 
 
+            // Data Salesman
+            $all_sales = $this->M_Auth->getAllSales();
+
+            foreach ($all_sales as $sales) {
+                // Store ID User Salesman to variable id_salesman for input
+                $id_salesman[] = $sales['id_user'];
+            }
             // lewati baris ke 0 pada file excel
             // dalam kasus ini, array ke 0 adalah title
+            $temp = 0;
             foreach ($cell as $idx => $row) {
                 if ($idx == 0) {
                     continue;
@@ -161,6 +168,7 @@ class AddPotential extends BaseController
                     // Kondisi dimana jika mengecek value didalam baris ada null maka berhenti
                     break;
                 }
+
                 // Get Nama Pelanggan
                 $name_customer = $row[0];
                 // Get ID Pel
@@ -197,15 +205,24 @@ class AddPotential extends BaseController
                     'id_information' => 1
                 ];
 
+                $data['id_salesman'] = $id_salesman[$temp];
+                $temp++;
+
+                if ($temp % count($id_salesman) == 0) {
+                    $temp = 0;
+                }
+
+                // Input Data Variable
                 $input_data[] = $data;
             }
+            // d($input_data);
+
             try {
                 $insert = $this->M_Customer->insertBatch($input_data);
             } catch (Exception $e) {
                 $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Failed to Input Data. Please double check the data entered is correct and appropriate</div>');
                 return redirect()->back();
             }
-
 
             if ($insert) {
                 $session->setFlashdata('message', '<div class="alert alert-success" role="alert">

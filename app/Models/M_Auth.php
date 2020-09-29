@@ -45,4 +45,11 @@ class M_Auth extends Model
 
         return $data;
     }
+
+    public function getAllSales()
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('id_user, name');
+        return $builder->where('id_role', 3)->get()->getResultArray();
+    }
 }
