@@ -102,14 +102,32 @@ $routes->group('account-executive', ['filter' => 'auth'], function ($routes) {
 
 // Planning
 $routes->group('planning', ['filter' => 'auth'], function ($routes) {
+	// Master Data Pelanggan
 	$routes->get('/', 'Planning\DataPotential::index');
+
+	// Add Data Potential
 	$routes->get('add-potential', 'Planning\AddPotential::index');
 	$routes->put('add-potential', 'Planning\AddPotential::index');
 	$routes->put('import-file', 'Planning\AddPotential::importFile');
+
+	// Detail Customer
 	$routes->get('detail-customer/(:num)', 'Planning\DataPotential::detailCustomer/$1');
+
+	// Edit Detail Customer
 	$routes->get('edit-customer/(:num)', 'Planning\DataPotential::editCustomer/$1');
 	$routes->put('edit-customer/(:num)', 'Planning\DataPotential::editCustomer/$1');
+
+	// Delete Customer
 	$routes->delete('detail-customer/(:num)', 'Planning\DataPotential::delete/$1');
+
+	// Incoming Request
+	$routes->get('incoming-request', 'Planning\IncomingRequest::index');
+
+	// Request Recommendation System
+	$routes->get('request-potential', 'Planning\IncomingRequest::listRequestReksis');
+	$routes->addRedirect('request-potential/(:any)', 'planning/request-potential');
+	$routes->post('request-potential/(:num)', 'Planning\IncomingRequest::uploadReksis/$1');
+	$routes->put('request-potential/(:num)', 'Planning\IncomingRequest::uploadReksis/$1');
 });
 /**
  * --------------------------------------------------------------------

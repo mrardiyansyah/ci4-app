@@ -73,8 +73,9 @@ class SubMenu extends BaseController
             session()->setFlashdata('message', '<div class="alert alert-danger" role="alert">' . $this->validator->listErrors() . '</div>');
             return redirect()->back();
         } else {
+            $title = $this->request->getPost('title');
             $data = [
-                'title' => $this->request->getPost('title'),
+                'title' => $title,
                 'id_user_menu' => $this->request->getPost('id_user_menu'),
                 'url' => $this->request->getPost('url'),
                 'icon' => $this->request->getPost('icon'),
@@ -83,7 +84,7 @@ class SubMenu extends BaseController
             // dd($data);
             $this->M_SubMenu->save($data);
             $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
-                   Sub Menu has been Added!</div>');
+                   Sub Menu' . $title . ' has been Added!</div>');
             return redirect()->back();
         }
     }

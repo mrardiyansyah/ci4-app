@@ -23,6 +23,7 @@ class CustomerModel
             ->join('status', 'customer.id_status = status.id_status')
             ->join('tariff', 'customer.id_tariff = tariff.id_tariff')
             ->join('information', 'customer.id_information = information.id_information')
+            ->orderBy('id_customer', 'ASC')
             ->get()
             ->getResultArray();
     }
@@ -98,5 +99,24 @@ class CustomerModel
         $builder = $this->db->table('service');
         $builder->select('id_type_of_service');
         return $builder->where('type_of_service', $service)->get()->getRowArray();
+    }
+
+    public function getInformationForReksis()
+    {
+        $builder = $this->db->table('customer');
+        $builder->select('*');
+        return $builder
+            ->where('deleted_at', null) //WHERE CUSTOMER IS NOT DELETED
+            ->where('customer.id_information', 3) // WHERE ID INFORMATION = 3 == INFORMATION = Menunggu Reksis
+            ->orWhere('customer.id_information', 4) // WHERE ID INFORMATION = r == INFORMATION = Proses Reksis
+            ->join('service', 'customer.id_type_of_service = service.id_type_of_service')
+            ->join('status', 'customer.id_status = status.id_status')
+            ->join('tariff', 'customer.id_tariff = tariff.id_tariff')
+            ->join('substation', 'customer.id_substation = substation.id_substation')
+            ->join('feeder_substation', 'customer.id_feeder_substation = feeder_substation.id_feeder_substation')
+            ->join('information', 'customer.id_information = information.id_information')
+            ->orderBy('id_customer', 'ASC')
+            ->get()
+            ->getResultArray();
     }
 }

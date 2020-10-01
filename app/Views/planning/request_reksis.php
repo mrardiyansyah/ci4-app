@@ -9,15 +9,15 @@
     <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
     <div class="row">
         <div class="col-lg">
-            <div class="col-lg-9">
+            <div class="col-lg-6">
                 <?= session()->get('message'); ?>
             </div>
-            <table class="table table-hover table-customer" style="width: 100%;">
+            <table class="table table-hover table-reksis" style="width: 100%;">
                 <thead>
                     <tr class="text-center">
                         <th scope="col">#</th>
                         <th scope="col">Nama Pelanggan</th>
-                        <th scope="col">ID Pel</th>
+                        <th scope="col">ID</th>
                         <th scope="col">Tarif / Daya</th>
                         <th scope="col">Layanan</th>
                         <th scope="col">Status</th>
@@ -27,9 +27,9 @@
                 </thead>
                 <tbody>
                     <?php $i = 1; ?>
-                    <?php foreach ($customer as $c) : ?>
+                    <?php foreach ($request_reksis as $c) : ?>
                         <tr>
-                            <th scope="row"><?= $i; ?></th>
+                            <th scope="row" class="text-center"><?= $i; ?></th>
                             <td><?= $c['name_customer']; ?></td>
                             <td class="text-center"><?= $c['id_pelanggan'] ?? "Not Defined"; ?></td>
                             <td class="text-center"><?= $c['tariff']; ?> / <?= $c['power']; ?></td>
@@ -41,7 +41,10 @@
                             <td class="text-center"><?= $c['status']; ?></td>
                             <td class="text-center"><?= $c['information']; ?></td>
                             <td class="text-center">
-                                <a href="<?= base_url('planning/detail-customer/' . $c['id_customer']); ?>" class="btn btn-sm btn-primary"><i class="far fa-fw fa-eye"></i></a>
+                                <form action="<?= base_url('planning/request-potential/' . $c['id_customer']); ?>" method="post">
+                                    <?= csrf_field(); ?>
+                                    <button type="submit" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="bottom" title="Upload Reksis for <?= $c['name_customer']; ?>"><i class="far fa-fw fa-eye"></i></button>
+                                </form>
                             </td>
                         </tr>
                         <?php $i++; ?>
@@ -59,7 +62,7 @@
 
 <script>
     $(document).ready(function() {
-        $('.table-customer').dataTable({
+        $('.table-reksis').dataTable({
             'destroy': true,
             'responsive': true,
             "pageLength": -1,
@@ -80,7 +83,7 @@
                 'orderable': false
             }, {
                 'targets': 3,
-                'width': '83px'
+                'width': '120px'
             }, {
                 'targets': 6,
                 'width': "161px"
