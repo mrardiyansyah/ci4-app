@@ -27,7 +27,7 @@ class SubMenu extends BaseController
 
         $db = db_connect();
         $CustomModel = new CustomModel($db);
-        $data['title'] = 'Sub Menu Manajemen';
+        $data['title'] = 'Submenu Manajemen';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
         $data['notif'] = get_new_notif();

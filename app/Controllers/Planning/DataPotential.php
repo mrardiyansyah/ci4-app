@@ -82,13 +82,6 @@ class DataPotential extends BaseController
                     'label' => 'Customer Name',
                     'rules' => 'required'
                 ],
-                'id_pelanggan' => [
-                    'label' => 'ID Customer',
-                    'rules' => 'required|max_length[9]',
-                    'errors' => [
-                        'max_length' => 'ID Customer maximum length is 9'
-                    ]
-                ],
                 'power' => [
                     'label' => 'Daya',
                     'rules' => 'required|numeric',
@@ -135,7 +128,6 @@ class DataPotential extends BaseController
             } else {
                 $data = [
                     'name_customer' => $this->request->getPost('cust-name'),
-                    'id_pelanggan' => $this->request->getPost('cust-id'),
                     'id_tariff' => $this->request->getPost('tariff'),
                     'power' => $this->request->getPost('power'),
                     'address_customer' => $this->request->getPost('address_customer'),

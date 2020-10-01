@@ -49,9 +49,9 @@
                         <div class="form-group row">
                             <label for="tariff" class="col-sm-2 col-form-label col-form-label-sm">Tarif *</label>
                             <div class="col-sm-8">
-                                <select id="tariff" name="tariff" class="col-sm-4 form-control custom-select custom-line-height custom-select-sm">
+                                <select id="tariff" name="tariff" class="col-sm-4 form-control custom-select custom-line-height custom-select-sm" value="<?= set_value('tariff'); ?>">
                                     <?php foreach ($tariff as $tarif) { ?>
-                                        <option value=" <?= $tarif['id_tariff'] ?>" <?= set_select('tariff', $tarif['id_tariff']); ?>><?= $tarif['tariff'] ?></option>
+                                        <option value="<?= $tarif['id_tariff'] ?>" <?= set_select('tariff', $tarif['id_tariff']); ?>><?= $tarif['tariff'] ?></option>
                                     <?php } ?>
                                 </select>
                                 <?php if (isset($validation)) : ?>

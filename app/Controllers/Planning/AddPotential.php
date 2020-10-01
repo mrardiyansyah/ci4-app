@@ -27,7 +27,7 @@ class AddPotential extends BaseController
     public function index()
     {
         $session = session();
-        $data['title'] = 'Input Customer Potential';
+        $data['title'] = 'Add Data Potential';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
         $data['notif'] = get_new_notif();
@@ -95,6 +95,26 @@ class AddPotential extends BaseController
             if (!$this->validate($rules)) {
                 $data['validation'] = $this->validator;
             } else {
+                $all_sales = $this->M_Auth->getAllSales();
+
+
+                foreach ($all_sales as $key => $sales) {
+                    $compare = $this->M_Customer->countDataPerSalesman($sales['id_user']);
+
+                    $data_sales[] = [
+                        'id_salesman' => $sales['id_user'],
+                        'dataPerSales' => $compare
+                    ];
+                }
+
+                // Sort value 'dataPerSales' by ASC
+                usort($data_sales, function ($a, $b) {
+                    return $a['dataPerSales'] <=> $b['dataPerSales'];
+                });
+
+                // Get ID user which 'dataPerSales' is the least
+                $id_salesman = $data_sales[0]['id_salesman'];
+
                 $data = [
                     'name_customer' => $this->request->getPost('cust-name'),
                     'id_pelanggan' => $this->request->getPost('cust-id'),
@@ -107,9 +127,11 @@ class AddPotential extends BaseController
                     'bep_value' => $this->request->getPost('bep-value'),
                     'id_type_of_service' => $this->request->getPost('recommend-service'),
                     'id_status' => '1',
-                    'id_information' => 1
+                    'id_information' => 1,
+                    'id_salesman' => $id_salesman
                 ];
 
+                // dd($data);
                 $this->M_Customer->insert($data);
                 $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
                     Data has been added!</div>');
@@ -118,6 +140,13 @@ class AddPotential extends BaseController
         }
 
         return view('planning/input_potential', $data);
+    }
+
+    protected function sortMultidimensionalArray($myArray)
+    {
+        usort($myArray, function ($a, $b) {
+            return $a['dataPerSales'] <=> $b['dataPerSales'];
+        });
     }
 
     public function importFile()
@@ -158,6 +187,8 @@ class AddPotential extends BaseController
                 // Store ID User Salesman to variable id_salesman for input
                 $id_salesman[] = $sales['id_user'];
             }
+
+
             // lewati baris ke 0 pada file excel
             // dalam kasus ini, array ke 0 adalah title
             $temp = 0;

@@ -61,7 +61,9 @@
                                         <td>ID Pelanggan</td>
                                         <td>:</td>
                                         <td>
-                                            <input class="form-control form-control-sm <?php if (isset($validation)) echo $validation->hasError('id_pelanggan') ? 'is-invalid' : ''; ?>" type="number" name="id_pelanggan" placeholder="ID Pelanggan" id="id_pelanggan" value="<?= $customer['id_pelanggan']; ?>">
+                                            <div data-toggle="tooltip" data-placement="right" title="ID Pelanggan cannot be changed">
+                                                <input class="form-control form-control-sm <?php if (isset($validation)) echo $validation->hasError('id_pelanggan') ? 'is-invalid' : ''; ?>" type="number" name="id_pelanggan" placeholder="ID Pelanggan" id="id_pelanggan" value="<?= $customer['id_pelanggan']; ?>" disabled>
+                                            </div>
                                             <?php if (isset($validation)) : ?>
                                                 <div class="invalid-feedback">
                                                     <?= $validation->getError('id_pelanggan'); ?>
