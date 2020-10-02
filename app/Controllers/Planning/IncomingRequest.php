@@ -6,17 +6,19 @@ use App\Controllers\BaseController;
 use App\Models\M_Auth;
 use App\Models\CustomerModel;
 use App\Models\M_Role;
+use App\Models\M_UserClosing;
 use App\Models\M_Customer;
 use Exception;
 
 class IncomingRequest extends BaseController
 {
-    protected $M_Auth, $M_Role, $M_Customer, $CustomerModel;
+    protected $M_Auth, $M_Role, $M_Customer, $M_UserClosing, $CustomerModel;
 
     public function __construct()
     {
         $this->M_Auth = new M_Auth();
         $this->M_Role = new M_Role();
+        $this->M_UserClosing = new M_UserClosing();
         $this->M_Customer = new M_Customer();
         $db = db_connect();
         $this->CustomerModel = new CustomerModel($db);
@@ -73,48 +75,83 @@ class IncomingRequest extends BaseController
             ];
 
             if (!$this->validate($rules)) {
+                // Validation
                 $data['validation'] = $this->validator;
             } else {
                 $id_salesman = $data['customer']['id_salesman'];
                 $cust_name = $data['customer']['name_customer'];
-                $file = $this->request->getFileMultiple('reksisSLD');
+                $file = $this->request->getFiles();
+                $import = $this->importFile($file, $id_salesman, $cust_name);
 
-                d($id_salesman);
-                d($cust_name);
-                dd($file);
-                // $this->importFile($file, $id_salesman, $cust_name);
+                if ($import) {
+                    // Timestamp Reksis + SLD Filed for update to database
+                    $reksis_sld_field = date("Y-m-d H:i:s");
+
+                    try {
+                        $this->M_UserClosing->update($id_customer, ['reksis_sld' => $reksis_sld_field]);
+                    } catch (Exception $e) {
+                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Failed to Upload Reksis! Please try again</div>');
+                        return redirect()->to(site_url("planning/request-potential"));
+                    }
+                } else {
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Failed to Upload Reksis! Please try again</div>');
+                    return redirect()->to(site_url("planning/request-potential"));
+                // }
             }
         }
-
         return view('planning/upload_reksis', $data);
     }
 
     protected function importFile($file, $id_salesman, $cust_name)
     {
-        (string) $folder = date("Y-m-d H:i:s");
-        $datetime = explode(' ', $folder);
-        $date = explode('-', $datetime[0]);
-        $time = explode(':', $datetime[1]);
-        $structure = "assets/berkas/"; //Nama Folder berkas didalam struktur assets
+        $structure = ROOTPATH . "public/assets/berkas/"; //Nama Folder berkas didalam struktur assets
         $reksisSLDFolder = 'Reksis+SLD/'; //Nama Folder REKSIS dan SLD
 
+        /* 
+        Menghapus karakter "." (dots) diakhir string karena terdapat beberapa Nama Customer / Perusahan yang dibelakangnya ada titik 
+        */
+        $cust_name = rtrim($cust_name, ".");
+
         // Membuat Folder "berkas" didalam folder assets jika belum ada
-        if (!file_exists($structure)) {
-            mkdir($structure, 0777);
+        if (!is_dir($structure)) {
+            mkdir($structure, 0755);
         }
 
         // Membuat Folder dengan Nama Customer didalam folder berkas jika belum ada
-        if (!file_exists($structure . $cust_name)) {
-            mkdir($structure . $cust_name, 0777);
+        if (!is_dir($structure . $cust_name)) {
+            mkdir($structure . $cust_name, 0755);
         }
 
-        // Membuat Folder REKSIS DAN SLD didalam folder dengan nama customer
+        // // Membuat Folder REKSIS DAN SLD didalam folder dengan nama customer
         if (!file_exists($structure . $cust_name . '/' . $reksisSLDFolder)) {
-            mkdir($structure . $cust_name . '/' . $reksisSLDFolder, 0777);
+            mkdir($structure . $cust_name . '/' . $reksisSLDFolder, 0755);
         }
-
 
         // Direktori Folder Reksis SLD
-        $reportDirectoryName = $structure . '/' . $cust_name . '/' . $reksisSLDFolder;
+        $reportDirectoryName = $structure . $cust_name . '/' . $reksisSLDFolder;
+
+        $count = 1;
+        foreach ($file['reksisSLD'] as $upload) {
+            // Regex untuk menggantikan character menjadi '-' dan menjadikan huruf kecil
+            $customer = preg_replace('/[^a-zA-Z0-9\']/', '-', strtolower($cust_name));
+
+            // Get Extension
+            $ext = $upload->getExtension();
+
+            //Nama file yang akan disimpan
+            $fileName = "reksis-sld-$customer($count).$ext";
+            $count = $count + 1;
+
+            // Memindahkan file kedalam Direktori yang telah ditentukan
+            if ($upload->isValid() && !$upload->hasMoved()) {
+                $upload->move($reportDirectoryName, $fileName, TRUE);
+            } else {
+                // Jika gagal memindahkan return FALSE
+                break;
+                return false;
+            }
+        }
+        // Jika berhasil memindahkan semua file yang di upload return TRUE
+        return true;
     }
 }
