@@ -96,7 +96,7 @@ class IncomingRequest extends BaseController
                 } else {
                     $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Failed to Upload Reksis! Please try again</div>');
                     return redirect()->to(site_url("planning/request-potential"));
-                // }
+                }
             }
         }
         return view('planning/upload_reksis', $data);
