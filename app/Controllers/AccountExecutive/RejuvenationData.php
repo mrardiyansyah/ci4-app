@@ -35,13 +35,6 @@ class RejuvenationData extends BaseController
         $data['feeder_substation'] = $this->CustomerModel->getFeederSubstation();
         $data['tariff'] = $this->CustomerModel->getTariff();
 
-        return view('account_executive/rejuvenate_data', $data);
-    }
-
-    public function add($id_customer)
-    {
-        $session = session();
-
         if ($this->request->getMethod() == "put") {
             $rules = [
                 // Profile
@@ -73,64 +66,210 @@ class RejuvenationData extends BaseController
                 ],
 
                 // Company Profile
-
                 'company-name' => [
                     'label' => 'Company\'s Name',
-                    'rules' => 'required|',
+                    'rules' => 'required',
                     'errors' => [
                         'required' => '{field} field is required.'
                     ]
                 ],
                 'address-company' => [
-                    'label' => 'Company\'s Name',
-                    'rules' => 'required|',
+                    'label' => 'Company\'s Address',
+                    'rules' => 'required',
                     'errors' => [
                         'required' => '{field} field is required.'
                     ]
                 ],
                 'phone-company' => [
-                    'label' => 'Company\'s Name',
-                    'rules' => 'required|',
+                    'label' => 'Company\'s Phone Number',
+                    'rules' => 'required',
                     'errors' => [
                         'required' => '{field} field is required.'
                     ]
                 ],
-                'company-name' => [
-                    'label' => 'Company\'s Name',
-                    'rules' => 'required|',
+                'facsimile' => [
+                    'label' => 'Facsimile',
+                    'rules' => 'required',
                     'errors' => [
                         'required' => '{field} field is required.'
                     ]
                 ],
-                'company-name' => [
-                    'label' => 'Company\'s Name',
-                    'rules' => 'required|',
+                'email-company' => [
+                    'label' => 'Company\'s Email',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required.'
+                    ]
+                ],
+                'establishment' => [
+                    'label' => 'Company Establishment Date',
+                    'rules' => 'required',
                     'errors' => [
                         'required' => '{field} field is required.'
                     ]
                 ],
 
-                'substation' => [
-                    'label' => 'Substation',
-                    'rules' => 'required'
+                // Chief Information
+                'company-leader-name' => [
+                    'label' => 'Leader\'s Name',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
                 ],
-                'feeder-substation' => [
-                    'label' => 'Feeder Substation',
-                    'rules' => 'required'
+                'leader-position-company' => [
+                    'label' => 'Leader\'s Position',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
                 ],
-                'subsistem' => [
-                    'label' => 'Subsistem',
-                    'rules' => 'required'
+                'phone-leader-company' => [
+                    'label' => 'Leader\'s Phone Number',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
                 ],
-                'bep-value' => [
-                    'label' => 'BEP Value',
-                    'rules' => 'required'
+                'email-leader-company' => [
+                    'label' => 'Leader\'s Email',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
                 ],
+
+                // Finance Information
+                'company-finance-name' => [
+                    'label' => 'Finance\'s Name',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'finance-position-company' => [
+                    'label' => 'Finance\'s Position',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'phone-finance-company' => [
+                    'label' => 'Finance\'s Phone Number',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'email-finance-company' => [
+                    'label' => 'Finance\'s Email',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+
+                // Engineering Affairs Information
+                'company-engineering-name' => [
+                    'label' => 'Engineer\'s Name',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'engineering-position-company' => [
+                    'label' => 'Engineer\'s Position',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'phone-engineering-company' => [
+                    'label' => 'Engineer\'s Phone Number',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'email-engineering-company' => [
+                    'label' => 'Engineer\'s Email',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+
+                // General Affairs Information
+                'company-general-name' => [
+                    'label' => 'General Affairs Name',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'general-position-company' => [
+                    'label' => 'General Affairs Position',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'phone-general-company' => [
+                    'label' => 'General Affairs Phone Number',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'email-general-company' => [
+                    'label' => 'General Affairs Email',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+
+                // Technical Specification
+                'captive-power' => [
+                    'label' => 'Captive Power',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'amount-of-power' => [
+                    'label' => 'Amount of Power',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'next-meeting' => [
+                    'label' => 'Next Meeting',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'suggestion' => [
+                    'label' => 'Suggestion',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ]
             ];
 
             if (!$this->validate($rules)) {
                 $data['validation'] = $this->validator;
+                d($this->request->getPost());
             }
         }
+        return view('account_executive/rejuvenate_data', $data);
+    }
+
+    public function add($id_customer)
+    {
+        $session = session();
     }
 }

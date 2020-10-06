@@ -49,6 +49,12 @@
     <!-- tail.select Library -->
     <link type="text/css" rel="stylesheet" href="<?= base_url('assets/css/tail.select-default.min.css'); ?>">
 
+    <!-- Moment JS -->
+    <script src="<?= base_url('assets/js/moment-with-locales.min.js'); ?>"></script>
+
+    <!-- Tempus Dominus Bootstrap 4 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js" integrity="sha512-2JBCbWoMJPH+Uj7Wq5OLub8E5edWHlTM4ar/YJkZh3plwB2INhhOC3eDoqHm1Za/ZOSksrLlURLoyXVdfQXqwg==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css" integrity="sha512-PMjWzHVtwxdq7m7GIxBot5vdxUY+5aKP9wpKtvnNBZrVv1srI8tU6xvFMzG8crLNcMj/8Xl/WWmo/oAP/40p1g==" crossorigin="anonymous" />
 
     <style>
         .custom-line-height {
@@ -128,12 +134,13 @@
     <script src="<?= base_url('assets/js/swal.js'); ?>"></script>
 
 
-
     <script>
         $(document).ready(function() {
             $('[data-toggle="tooltip"]').tooltip()
         });
     </script>
+
+
 
     <script type="text/javascript">
         $(document).ready(function() {

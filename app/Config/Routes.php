@@ -102,7 +102,7 @@ $routes->group('account-executive', ['filter' => 'auth'], function ($routes) {
 
 	// Peremajaan Data Pelanggan
 	$routes->post('rejuvenate/(:num)', 'AccountExecutive\RejuvenationData::index/$1');
-	$routes->put('rejuvenate/(:num)', 'AccountExecutive\RejuvenationData::add/$1');
+	$routes->put('rejuvenate/(:num)', 'AccountExecutive\RejuvenationData::index/$1');
 });
 
 // Planning
