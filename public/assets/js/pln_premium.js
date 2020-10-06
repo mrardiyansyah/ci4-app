@@ -1,13 +1,14 @@
 $("#icon-show-password").click(function () {
 	$("#icon").toggleClass("fa-eye-slash");
 	const input = $("#password");
-	const tooltip = $("#icon-click")
 	if (input.attr("type") === "password") {
 		input.attr("type", "text");
-		tooltip.attr("title", "Hide Password")
+		$(this).attr('data-original-title', 'Hide Password')
+		$(this).attr('title', 'Hide Password')
 	} else {
 		input.attr("type", "password");
-		tooltip.attr("title", "Show Password")
+		$(this).attr('data-original-title', 'Show Password')
+		$(this).attr('title', 'Show Password')
 	}
 })
 

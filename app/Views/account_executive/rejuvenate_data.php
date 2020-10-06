@@ -10,9 +10,6 @@
     <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1><br>
     <div class="row">
         <div class="col-lg">
-            <?= form_open_multipart('accountexecutive/problemMapping/' . $customer['id_customer'], array('id' => 'addProblemMapping')); ?>
-
-            <input type="hidden" name="id_karyawan" id="id_karyawan" value="<?php echo $user['id_user']; ?>">
 
             <div class="row">
                 <div class="col-lg-4">
@@ -49,6 +46,7 @@
                 </div>
                 <!-- End Nav Tabs -->
 
+                <?= form_open_multipart('accountexecutive/problemMapping/' . $customer['id_customer'], array('id' => 'addProblemMapping')); ?>
                 <!-- Tab Panes -->
                 <div class="card-body tab-content col-lg-9">
 
