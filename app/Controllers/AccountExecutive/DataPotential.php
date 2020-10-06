@@ -28,8 +28,10 @@ class DataPotential extends BaseController
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
         $data['notif'] = get_new_notif();
 
-        // Data Semua customer
-        $data['customer'] = $this->CustomerModel->getCustomer();
+        // Data Potential Customer Sesuai dengan Salesnya
+        $data['customer'] =
+            ($data['role']['id_role'] == 1) ? $this->CustomerModel->getCustomer() : $this->CustomerModel->getCustomerBySales($session->get('id_user'));
+
 
         return view('account_executive/index', $data);
     }

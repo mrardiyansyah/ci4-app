@@ -142,13 +142,6 @@ class AddPotential extends BaseController
         return view('planning/input_potential', $data);
     }
 
-    protected function sortMultidimensionalArray($myArray)
-    {
-        usort($myArray, function ($a, $b) {
-            return $a['dataPerSales'] <=> $b['dataPerSales'];
-        });
-    }
-
     public function importFile()
     {
         $session = session();

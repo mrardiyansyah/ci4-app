@@ -45,6 +45,24 @@ class CustomerModel
             ->getRowArray();
     }
 
+    public function getCustomerBySales($id_salesman)
+    {
+        $builder = $this->db->table('customer');
+        $builder->select('*');
+        return $builder
+            ->where('id_salesman', $id_salesman)
+            ->where('is_deleted !=', 1)
+            ->join('service', 'customer.id_type_of_service = service.id_type_of_service')
+            ->join('status', 'customer.id_status = status.id_status')
+            ->join('tariff', 'customer.id_tariff = tariff.id_tariff')
+            ->join('substation', 'customer.id_substation = substation.id_substation')
+            ->join('feeder_substation', 'customer.id_feeder_substation = feeder_substation.id_feeder_substation')
+            ->join('information', 'customer.id_information = information.id_information')
+            ->orderBy('id_customer', 'ASC')
+            ->get()
+            ->getResultArray();
+    }
+
     public function getService()
     {
         $builder = $this->db->table('service');

@@ -41,7 +41,12 @@
                             <td class="text-center"><?= $c['status']; ?></td>
                             <td class="text-center"><?= $c['information']; ?></td>
                             <td class="text-center">
-                                <a href="#" class="btn btn-sm btn-primary"><i class="far fa-fw fa-eye"></i></a>
+                                <form action="#" class="form-cust-sales" method="post">
+                                    <?= csrf_field(); ?>
+                                    <button type="submit" class="btn btn-sm btn-primary btn-cust-sales" data-id="<?= $c['id_customer']; ?>" data-information="<?= $c['information']; ?>" data-url="<?= base_url('account-executive'); ?>">
+                                        <i class="far fa-fw fa-eye"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         <?php $i++; ?>
@@ -71,7 +76,7 @@
             'scrollCollapse': true,
             'fixedColumns': true,
             'order': [
-                [1, "asc"]
+                [2, "asc"]
             ],
             'columnDefs': [{
                 'targets': [0],
@@ -87,5 +92,6 @@
         });
     });
 </script>
+<script src="<?= base_url('assets/js/btnSalesman.js'); ?>"></script>
 
 <?= $this->endSection(); ?>
