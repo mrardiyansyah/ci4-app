@@ -20,4 +20,17 @@ class AuthRules
             return false;
         }
     }
+
+    public function sameOldPassword(string $newPassword, string $email = null): bool
+    {
+        $M_Auth = new M_Auth();
+
+        $user = $M_Auth->where('email', $email)->first();
+
+        // Old Password Variable
+        $oldPassword = $user['password'];
+
+        // Verify with the Old Password
+        return (password_verify($newPassword, $oldPassword)) ? false : true;
+    }
 }

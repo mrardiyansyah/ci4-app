@@ -340,23 +340,28 @@ class Auth extends BaseController
         $data['title'] = 'Recovery Password';
 
         if ($this->request->getMethod() === "put") {
+
+            $email = $session->get('reset_email');
             $rules = [
                 'password1' => [
                     'label' => 'New Password',
-                    'rules' => 'required|min_length[8]|regex_match[^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$]|matches[password2]',
+                    'rules' => "required|min_length[8]|regex_match[^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$]|sameOldPassword[$email]",
                     'errors' => [
                         'required' => 'New Password field is required',
                         'min_length'
                         => 'Password too short! Minimal 8 Characters',
                         'regex_match' => "Password must contain at least One Uppercase Letter, One Lowercase Letter and One Number",
-                        'matches' => "Those password didn't match!",
+                        'sameOldPassword' => "Please choose a password that you haven't used before!",
 
                     ]
                 ],
                 'password2' => [
                     'label' => 'Repeat Password',
-                    'rules' => 'required',
-                    'errors' => ['required' => 'Repeat Password is required']
+                    'rules' => 'required|matches[password1]',
+                    'errors' => [
+                        'required' => 'Repeat Password is required',
+                        'matches' => "Those password didn't match!",
+                    ]
                 ]
             ];
 
@@ -364,7 +369,6 @@ class Auth extends BaseController
                 $data['validation'] = $this->validator;
             } else {
                 $new_password = $this->request->getPost('password1');
-                $email = $session->get('reset_email');
                 $data = [
                     'password' => $new_password
                 ];
