@@ -81,3 +81,28 @@
 .has-warning .input-group-addon {
 	border-color: #66512c !important;
 }
+
+.hide {
+	display: none;
+}
+
+label.error-msg {
+	color: #e74a3b;
+}
+
+input[type=tel].error-msg {
+	border: 1px solid #e74a3b;
+	padding-right: calc(1.5em + .75rem);
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23e74a3b' viewBox='-2 -2 7 7'%3e%3cpath stroke='%23e74a3b' d='M0 0l3 3m0-3L0 3'/%3e%3ccircle r='.5'/%3e%3ccircle cx='3' r='.5'/%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E");
+	background-repeat: no-repeat;
+	background-position: center right calc(.375em + .1875rem);
+	background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+}
+
+.valid-msg {
+	color: #28A745;
+}
+
+.error-msg {
+	color: #e74a3b;
+}

@@ -2,7 +2,8 @@
 
 <?= $this->section('content'); ?>
 
-<link rel="stylesheet" href="<?= base_url('assets/vendor/intl-tel-input/build/css/intlTelInput.min.css'); ?>">
+<!-- Intl Tel Input -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.6/css/intlTelInput.css" integrity="sha512-gxWow8Mo6q6pLa1XH/CcH8JyiSDEtiwJV78E+D+QP0EVasFs8wKXq16G8CLD4CJ2SnonHr4Lm/yY2fSI2+cbmw==" crossorigin="anonymous" />
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -147,13 +148,10 @@
                             </div>
                             <div class="form-group row">
                                 <label for="phone-company" class="col-sm-2 col-form-label-sm">Phone Number</label>
-                                <div class="col-sm-10">
-                                    <input type="tel" class="form-control form-control-sm <?php if (isset($validation)) echo $validation->hasError('phone-company') ? 'is-invalid' : ''; ?>" name="phone-company" id="phone-company" value="<?= set_value('phone-company'); ?>">
-                                    <?php if (isset($validation)) : ?>
-                                        <div class="invalid-feedback">
-                                            <?= $validation->getError('phone-company'); ?>
-                                        </div>
-                                    <?php endif; ?>
+                                <div class="col-sm phone">
+                                    <input type="tel" class="form-control form-control-sm phone_flag" name="phone_tab1[main]" value="<?= set_value('phone-company'); ?>">
+                                    <span class="valid-msg hide">✓ Valid</span>
+                                    <span class="error-msg hide"></span>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -229,13 +227,10 @@
                             </div>
                             <div class="form-group row">
                                 <label for="phone-leader-company" class="col-sm-2 col-form-label-sm">Phone Number</label>
-                                <div class="col-sm-10">
-                                    <input type="tel" class="form-control form-control-sm <?php if (isset($validation)) echo $validation->hasError('phone-leader-company') ? 'is-invalid' : ''; ?>" name="phone-leader-company" id="phone-leader-company" value="<?= set_value('phone-leader-company'); ?>">
-                                    <?php if (isset($validation)) : ?>
-                                        <div class="invalid-feedback">
-                                            <?= $validation->getError('phone-leader-company'); ?>
-                                        </div>
-                                    <?php endif; ?>
+                                <div class="col-sm-10 phone">
+                                    <input type="tel" class="form-control form-control-sm phone_flag" name="phone_tab2[main]" value="<?= set_value('phone-leader-company'); ?>">
+                                    <span class="valid-msg hide">✓ Valid</span>
+                                    <span class="error-msg hide"></span>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -284,13 +279,10 @@
                             </div>
                             <div class="form-group row">
                                 <label for="phone-finance-company" class="col-sm-2 col-form-label-sm">Phone Number</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control form-control-sm <?php if (isset($validation)) echo $validation->hasError('phone-finance-company') ? 'is-invalid' : ''; ?>" name="phone-finance-company" id="phone-finance-company" value="<?= set_value('phone-finance-company'); ?>">
-                                    <?php if (isset($validation)) : ?>
-                                        <div class="invalid-feedback">
-                                            <?= $validation->getError('phone-finance-company'); ?>
-                                        </div>
-                                    <?php endif; ?>
+                                <div class="col-sm-10 phone">
+                                    <input type="tel" class="form-control form-control-sm phone_flag" name="phone_tab3[main]" value="<?= set_value('phone-finance-company'); ?>">
+                                    <span class="valid-msg hide">✓ Valid</span>
+                                    <span class="error-msg hide"></span>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -339,13 +331,10 @@
                             </div>
                             <div class="form-group row">
                                 <label for="phone-engineering-company" class="col-sm-2 col-form-label-sm">Phone Number</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control form-control-sm <?php if (isset($validation)) echo $validation->hasError('phone-engineering-company') ? 'is-invalid' : ''; ?>" name="phone-engineering-company" id="phone-engineering-company" value="<?= set_value('phone-engineering-company'); ?>">
-                                    <?php if (isset($validation)) : ?>
-                                        <div class="invalid-feedback">
-                                            <?= $validation->getError('phone-engineering-company'); ?>
-                                        </div>
-                                    <?php endif; ?>
+                                <div class="col-sm-10 phone">
+                                    <input type="tel" class="form-control form-control-sm phone_flag" name="phone_tab4[main]" value="<?= set_value('phone-engineering-company'); ?>">
+                                    <span class="valid-msg hide">✓ Valid</span>
+                                    <span class="error-msg hide"></span>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -394,13 +383,10 @@
                             </div>
                             <div class="form-group row">
                                 <label for="phone-general-company" class="col-sm-2 col-form-label-sm">Phone Number</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control form-control-sm <?php if (isset($validation)) echo $validation->hasError('phone-general-company') ? 'is-invalid' : ''; ?>" name="phone-general-company" id="phone-general-company" value="<?= set_value('phone-general-company'); ?>">
-                                    <?php if (isset($validation)) : ?>
-                                        <div class="invalid-feedback">
-                                            <?= $validation->getError('phone-general-company'); ?>
-                                        </div>
-                                    <?php endif; ?>
+                                <div class="col-sm-10 phone">
+                                    <input type="tel" class="form-control form-control-sm phone_flag" name="phone_tab5[main]" value="<?= set_value('phone-general-company'); ?>">
+                                    <span class="valid-msg hide">✓ Valid</span>
+                                    <span class="error-msg hide"></span>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -558,26 +544,43 @@
 
 <script type="text/javascript">
     $(function() {
+        var today = new Date();
+        var year = today.getFullYear;
+
         $('#datetimepicker-establishment').datetimepicker({
             format: 'L',
-            locale: 'id'
+            locale: 'id',
+            todayHighlight: true,
+            icons: {
+                time: "fas fa-clock",
+                date: "fas fa-calendar-alt",
+                up: "fas fa-arrow-up",
+                down: "fas fa-arrow-down",
+                today: "fas fa-calendar-check",
+                clear: "fas fa-trash-alt"
+            },
+            buttons: {
+                showToday: true,
+                showClear: true,
+            },
+            minDate: today,
         });
 
         $('#datetimepicker-nextmeeting').datetimepicker({
-            format: 'lll',
+            format: 'LLL',
             icons: {
                 time: "fas fa-clock",
                 date: "fas fa-calendar-alt",
                 up: "fas fa-arrow-up",
                 down: "fas fa-arrow-down"
-            }
+            },
         });
 
     });
 </script>
 
 <!-- Intl Telephone Input -->
-<script src="<?= base_url('assets/vendor/intl-tel-input/build/js/intlTelInput.min.js'); ?>"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.6/js/intlTelInput.min.js" integrity="sha512-p7KMhWOBzQOB7XHRi5pMula0Z4n8zxb09+ftlz+4lor1ZwmEp8SGi9Ki/JQ4VTrJEImAyrnw2vnE5faPPu3c0w==" crossorigin="anonymous"></script>
 <script src="<?= base_url('assets/js/intlTelInput_lpremium.js'); ?>"></script>
 
 <!-- Tail Select JS -->
