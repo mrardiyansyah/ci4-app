@@ -80,13 +80,13 @@ class RejuvenationData extends BaseController
                         'required' => '{field} field is required.'
                     ]
                 ],
-                // 'phone-company' => [
-                //     'label' => 'Company\'s Phone Number',
-                //     'rules' => 'required',
-                //     'errors' => [
-                //         'required' => '{field} field is required.'
-                //     ]
-                // ],
+                'phone-company.main' => [
+                    'label' => 'Company\'s Phone Number',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required.'
+                    ]
+                ],
                 'facsimile' => [
                     'label' => 'Facsimile',
                     'rules' => 'required',
@@ -124,13 +124,13 @@ class RejuvenationData extends BaseController
                         'required' => '{field} field is required'
                     ]
                 ],
-                // 'phone-leader-company' => [
-                //     'label' => 'Leader\'s Phone Number',
-                //     'rules' => 'required',
-                //     'errors' => [
-                //         'required' => '{field} field is required'
-                //     ]
-                // ],
+                'phone-leader-company.main' => [
+                    'label' => 'Leader\'s Phone Number',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
                 'email-leader-company' => [
                     'label' => 'Leader\'s Email',
                     'rules' => 'required',
@@ -154,13 +154,13 @@ class RejuvenationData extends BaseController
                         'required' => '{field} field is required'
                     ]
                 ],
-                // 'phone-finance-company' => [
-                //     'label' => 'Finance\'s Phone Number',
-                //     'rules' => 'required',
-                //     'errors' => [
-                //         'required' => '{field} field is required'
-                //     ]
-                // ],
+                'phone-finance-company.main' => [
+                    'label' => 'Finance\'s Phone Number',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
                 'email-finance-company' => [
                     'label' => 'Finance\'s Email',
                     'rules' => 'required',
@@ -184,13 +184,13 @@ class RejuvenationData extends BaseController
                         'required' => '{field} field is required'
                     ]
                 ],
-                // 'phone-engineering-company' => [
-                //     'label' => 'Engineer\'s Phone Number',
-                //     'rules' => 'required',
-                //     'errors' => [
-                //         'required' => '{field} field is required'
-                //     ]
-                // ],
+                'phone-engineering-company.main' => [
+                    'label' => 'Engineer\'s Phone Number',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
                 'email-engineering-company' => [
                     'label' => 'Engineer\'s Email',
                     'rules' => 'required',
@@ -214,13 +214,13 @@ class RejuvenationData extends BaseController
                         'required' => '{field} field is required'
                     ]
                 ],
-                // 'phone-general-company' => [
-                //     'label' => 'General Affairs Phone Number',
-                //     'rules' => 'required',
-                //     'errors' => [
-                //         'required' => '{field} field is required'
-                //     ]
-                // ],
+                'phone-general-company.main' => [
+                    'label' => 'General Affairs Phone Number',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
                 'email-general-company' => [
                     'label' => 'General Affairs Email',
                     'rules' => 'required',
@@ -239,13 +239,6 @@ class RejuvenationData extends BaseController
                 ],
                 'amount-of-power' => [
                     'label' => 'Amount of Power',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} field is required'
-                    ]
-                ],
-                'next-meeting' => [
-                    'label' => 'Next Meeting',
                     'rules' => 'required',
                     'errors' => [
                         'required' => '{field} field is required'

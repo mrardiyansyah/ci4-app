@@ -143,6 +143,19 @@
 
 
     <script type="text/javascript">
+        $('.custom-file-input').on('change', function() {
+            let fileName = $(this).val().split('\\').pop();
+            let numFiles = $("input:file")[0].files.length;
+
+            if (numFiles > 1) {
+                $(this).next('.custom-file-label').addClass("selected alert-info").removeClass("alert-danger").html(numFiles + " Files selected");
+            } else if (numFiles == 1) {
+                $(this).next('.custom-file-label').addClass("selected alert-info").removeClass("alert-danger").html(fileName);
+            } else {
+                $(this).next('.custom-file-label').addClass("selected alert-danger").html('No File Selected');
+            }
+
+        });
         $(document).ready(function() {
             $('#detailReportModal').on('show.bs.modal', function(e) {
                 const rowid = $(e.relatedTarget).data('id');

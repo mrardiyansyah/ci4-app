@@ -17,7 +17,7 @@
                     <?= session()->get('message'); ?>
                 </div>
             </div>
-            <div class="card text-left">
+            <div class="card ">
                 <div class="card-header">
                     <!-- Nav Tabs -->
                     <ul class="nav nav-pills card-header-pills" role="tablist" id="myTab">
@@ -50,10 +50,10 @@
                     <?= csrf_field(); ?>
                     <input type="hidden" name="_method" value="PUT">
                     <!-- Tab Panes -->
-                    <div class="card-body tab-content col-lg-9">
+                    <div class="card-body tab-content col-lg-12">
                         <!-- Tab Pane Customer's Profile -->
                         <div class="tab-pane active" id="updateCustomerProfile" name="updateCustomerProfile">
-                            <h5 class="text-dark font-weight-light">Customer's Profile</h5><br>
+                            <h5 class="text-dark text-center font-weight-light">Customer's Profile</h5><br>
                             <div class="form-group row">
                                 <label for="cust-name" class="col-sm-2 col-form-label-sm">Customer</label>
                                 <div class="col-sm-10">
@@ -123,7 +123,7 @@
 
                         <!-- Tab Pane Company's Profile -->
                         <div class="tab-pane fade" id="updateCompanyProfile" name="updateCompanyProfile">
-                            <h5 class="text-dark font-weight-light">Company's Profile</h5><br>
+                            <h5 class="text-dark text-center font-weight-light">Company's Profile</h5><br>
                             <div class="form-group row">
                                 <label for="company-name" class="col-sm-2 col-form-label-sm">Company</label>
                                 <div class="col-sm-10">
@@ -149,9 +149,14 @@
                             <div class="form-group row">
                                 <label for="phone-company" class="col-sm-2 col-form-label-sm">Phone Number</label>
                                 <div class="col-sm phone">
-                                    <input type="tel" class="form-control form-control-sm phone_flag" name="phone_tab1[main]" value="<?= set_value('phone-company'); ?>">
+                                    <input type="tel" class="form-control form-control-sm phone_flag <?php if (isset($validation)) echo $validation->hasError('phone-company[main]') ? 'is-invalid' : ''; ?> " name="phone-company[main]" value="<?= set_value('phone-company[main]'); ?>">
                                     <span class="valid-msg hide">✓ Valid</span>
                                     <span class="error-msg hide"></span>
+                                    <?php if (isset($validation)) : ?>
+                                        <div class="error-msg pt-1" style="font-size: 80%;">
+                                            <?= $validation->getError('phone-company.main'); ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -202,7 +207,7 @@
 
                         <!-- Tab Pane Chief Info -->
                         <div class="tab-pane fade" id="chiefInfo" name="chiefInfo">
-                            <h5 class="text-dark font-weight-light">Chief of The Company</h5><br>
+                            <h5 class="text-dark text-center font-weight-light">Chief of The Company</h5><br>
                             <div class="form-group row">
                                 <label for="company-leader-name" class="col-sm-2 col-form-label-sm">Name</label>
                                 <div class="col-sm-10">
@@ -228,9 +233,14 @@
                             <div class="form-group row">
                                 <label for="phone-leader-company" class="col-sm-2 col-form-label-sm">Phone Number</label>
                                 <div class="col-sm-10 phone">
-                                    <input type="tel" class="form-control form-control-sm phone_flag" name="phone_tab2[main]" value="<?= set_value('phone-leader-company'); ?>">
+                                    <input type="tel" class="form-control form-control-sm phone_flag <?php if (isset($validation)) echo $validation->hasError('phone-leader-company[main]') ? 'is-invalid' : ''; ?>" name="phone-leader-company[main]" value="<?= set_value('phone-leader-company[main]'); ?>">
                                     <span class="valid-msg hide">✓ Valid</span>
                                     <span class="error-msg hide"></span>
+                                    <?php if (isset($validation)) : ?>
+                                        <div class="error-msg pt-1" style="font-size: 80%;">
+                                            <?= $validation->getError('phone-leader-company.main'); ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -254,7 +264,7 @@
 
                         <!-- Tab Pane Finance Affairs -->
                         <div class="tab-pane fade" id="financeAffairs" name="financeAffairs">
-                            <h5 class="text-dark font-weight-light">Finance of The Company</h5><br>
+                            <h5 class="text-dark text-center font-weight-light">Finance of The Company</h5><br>
                             <div class="form-group row">
                                 <label for="company-finance-name" class="col-sm-2 col-form-label-sm">Name</label>
                                 <div class="col-sm-10">
@@ -280,9 +290,14 @@
                             <div class="form-group row">
                                 <label for="phone-finance-company" class="col-sm-2 col-form-label-sm">Phone Number</label>
                                 <div class="col-sm-10 phone">
-                                    <input type="tel" class="form-control form-control-sm phone_flag" name="phone_tab3[main]" value="<?= set_value('phone-finance-company'); ?>">
+                                    <input type="tel" class="form-control form-control-sm phone_flag <?php if (isset($validation)) echo $validation->hasError('phone-finance-company[main]') ? 'is-invalid' : ''; ?>" name="phone-finance-company[main]" value="<?= set_value('phone-finance-company[main]'); ?>">
                                     <span class="valid-msg hide">✓ Valid</span>
                                     <span class="error-msg hide"></span>
+                                    <?php if (isset($validation)) : ?>
+                                        <div class="error-msg pt-1" style="font-size: 80%;">
+                                            <?= $validation->getError('phone-finance-company.main'); ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -306,7 +321,7 @@
 
                         <!-- Tab Pane Engineering Affairs -->
                         <div class="tab-pane fade" id="engineeringAffairs" name="engineeringAffairs">
-                            <h5 class="text-dark font-weight-light">Engineering of The Company</h5><br>
+                            <h5 class="text-dark text-center font-weight-light">Engineering of The Company</h5><br>
                             <div class="form-group row">
                                 <label for="company-engineering-name" class="col-sm-2 col-form-label-sm">Name</label>
                                 <div class="col-sm-10">
@@ -332,9 +347,14 @@
                             <div class="form-group row">
                                 <label for="phone-engineering-company" class="col-sm-2 col-form-label-sm">Phone Number</label>
                                 <div class="col-sm-10 phone">
-                                    <input type="tel" class="form-control form-control-sm phone_flag" name="phone_tab4[main]" value="<?= set_value('phone-engineering-company'); ?>">
+                                    <input type="tel" class="form-control form-control-sm phone_flag <?php if (isset($validation)) echo $validation->hasError('phone-engineering-company[main]') ? 'is-invalid' : ''; ?>" name="phone-engineering-company[main]" value="<?= set_value('phone-engineering-company[main]'); ?>">
                                     <span class="valid-msg hide">✓ Valid</span>
                                     <span class="error-msg hide"></span>
+                                    <?php if (isset($validation)) : ?>
+                                        <div class="error-msg pt-1" style="font-size: 80%;">
+                                            <?= $validation->getError('phone-engineering-company.main'); ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -358,7 +378,7 @@
 
                         <!-- Tab Pane General Affairs -->
                         <div class="tab-pane fade" id="generalAffairs" name="generalAffairs">
-                            <h5 class="text-dark font-weight-light">General Affairs of The Company</h5><br>
+                            <h5 class="text-dark text-center font-weight-light">General Affairs of The Company</h5><br>
                             <div class="form-group row">
                                 <label for="company-general-name" class="col-sm-2 col-form-label-sm">Name</label>
                                 <div class="col-sm-10">
@@ -384,9 +404,14 @@
                             <div class="form-group row">
                                 <label for="phone-general-company" class="col-sm-2 col-form-label-sm">Phone Number</label>
                                 <div class="col-sm-10 phone">
-                                    <input type="tel" class="form-control form-control-sm phone_flag" name="phone_tab5[main]" value="<?= set_value('phone-general-company'); ?>">
+                                    <input type="tel" class="form-control form-control-sm phone_flag <?php if (isset($validation)) echo $validation->hasError('phone-general-company[main]') ? 'is-invalid' : ''; ?>" name="phone-general-company[main]" value="<?= set_value('phone-general-company[main]'); ?>">
                                     <span class="valid-msg hide">✓ Valid</span>
                                     <span class="error-msg hide"></span>
+                                    <?php if (isset($validation)) : ?>
+                                        <div class="error-msg pt-1" style="font-size: 80%;">
+                                            <?= $validation->getError('phone-general-company.main'); ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -410,7 +435,7 @@
 
                         <!-- Tab Pane Technical Specification -->
                         <div class="tab-pane fade" id="techSpecification" name="techSpecification">
-                            <h5 class="text-dark font-weight-light">Technical Specification</h5><br>
+                            <h5 class="text-dark text-center font-weight-light">Technical Specification</h5><br>
                             <div class="form-group row">
                                 <label for="captive-power" class="col-sm-2 col-form-label-sm">Captive Power</label>
                                 <div class="col-sm-4">
@@ -431,22 +456,6 @@
                                             <?= $validation->getError('amount-of-power'); ?>
                                         </div>
                                     <?php endif; ?>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="next-meeting" class="col-sm-2 col-form-label-sm">Next Meeting</label>
-                                <div class="col-sm-4">
-                                    <div class="input-group date" id="datetimepicker-nextmeeting" data-target-input="nearest">
-                                        <input type="text" class="form-control form-control-sm datepicker datetimepicker-input <?php if (isset($validation)) echo $validation->hasError('next-meeting') ? 'is-invalid' : ''; ?>" data-toggle="datetimepicker" data-target="#datetimepicker-nextmeeting" name="next-meeting" id="next-meeting" value="<?= set_value('next-meeting'); ?>" placeholder="Next Meet" />
-                                        <div class="input-group-append" data-target="#datetimepicker-nextmeeting" data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                        </div>
-                                        <?php if (isset($validation)) : ?>
-                                            <div class="invalid-feedback">
-                                                <?= $validation->getError('next-meeting'); ?>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -483,41 +492,6 @@
 </div>
 <!-- End of Main Content -->
 
-<!-- Central Modal Medium Info -->
-<div class="modal fade" id="modalRejuvenateData" name="modalRejuvenateData" tabindex="-1" role="dialog" aria-labelledby="modalRejuvenateData" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <!--Content-->
-        <div class="modal-content">
-            <!--Header-->
-            <div class="modal-header bg-gradient-primary">
-                <h5 class="modal-title lead text-white" id="modalRejuvenateDataLabel" name="modalRejuvenateDataLabel">Add Rejuvenate Data</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <!--Body-->
-            <div class="modal-body">
-                <div class="text-center">
-                    <i class="fas fa-question fa-4x mb-3 animated tada infinite" style="color:#007bff;"></i>
-                    <p class="font-weight-bold text-dark">Are you sure you want to add the following data? If this is correct, click the save button.
-                        If not, click the cancel button</p>
-                </div>
-            </div>
-
-            <!--Footer-->
-            <div class="modal-footer justify-content-center">
-                <!-- <a type="button" class="btn btn-info text-white">Yes, sure. <i class="fas fa-save ml-1 text-white"></i></a>
-                <a type="button" class="btn btn-outline-secondary" data-dismiss="modal">Not sure</a> -->
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary animated lightSpeedIn" id="confirm-submit-probing" name="confirm-submit-probing">Save data <i class="fas fa-save ml-1 text-white"></i></button>
-
-
-            </div>
-        </div>
-        <!--/.Content-->
-    </div>
-</div>
 <script type="text/javascript">
     $('.btnNext').click(function() {
         $('.nav-pills > .nav-item > .active').parent().next('li').find('a').trigger('click');
@@ -525,20 +499,6 @@
 
     $('.btnPrevious').click(function() {
         $('.nav-pills > .nav-item > .active').parent().prev('li').find('a').trigger('click');
-    });
-
-    $('.custom-file-input').on('change', function() {
-        let fileName = $(this).val().split('\\').pop();
-        let numFiles = $("input:file")[0].files.length;
-
-        if (numFiles > 1) {
-            $(this).next('.custom-file-label').addClass("selected alert-info").removeClass("alert-danger").html(numFiles + " Files selected");
-        } else if (numFiles == 1) {
-            $(this).next('.custom-file-label').addClass("selected alert-info").removeClass("alert-danger").html(fileName);
-        } else {
-            $(this).next('.custom-file-label').addClass("selected alert-danger").html('No File Selected');
-        }
-
     });
 </script>
 
