@@ -142,7 +142,7 @@ $(document).on('click', '#btn-delete-customer', function (e) {
     });
 });
 
-$(document).one('submit', '#form-rejuvenate', function (e) {
+$(document).on('submit', '#form-rejuvenate', function (e) {
     e.preventDefault();
     Swal.fire({
         title: false,
@@ -167,7 +167,37 @@ $(document).one('submit', '#form-rejuvenate', function (e) {
         }
     }).then((result) => {
         if (result.value) {
-            $(this).submit();
+            // console.log($(this));
+            $(this)[0].submit();
         }
     });
 });
+// $(document).on('click', '.btn-rejuvenation', function (e) {
+//     e.preventDefault();
+//     Swal.fire({
+//         title: false,
+//         html: `Are you sure want to save this changes? This action cannot be undo. Make sure you want to do this.`,
+//         icon: 'warning',
+//         padding: '1em',
+//         width: 400,
+//         showCancelButton: true,
+//         cancelButtonText: `Cancel`,
+//         confirmButtonText: 'Save',
+//         buttonsStyling: false,
+//         showClass: {
+//             popup: 'animate__animated animate__fadeInDown animate__fast',
+//             icon: 'animate__animated animate__fadeIn animate__delay-1s animate__repeat-3'
+//         },
+//         hideClass: {
+//             popup: 'animate__animated animate__fadeOutUp'
+//         },
+//         customClass: {
+//             confirmButton: 'btn btn-primary btn-sm font-small',
+//             cancelButton: 'btn btn-secondary btn-sm ml-3 font-small',
+//         }
+//     }).then((result) => {
+//         if (result.value) {
+//             $("#form-rejuvenate").submit();
+//         }
+//     });
+// });

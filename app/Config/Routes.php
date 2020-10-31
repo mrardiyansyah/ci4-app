@@ -101,8 +101,8 @@ $routes->group('account-executive', ['filter' => 'auth'], function ($routes) {
 	$routes->get('/', 'AccountExecutive\DataPotential::index');
 
 	// Peremajaan Data Pelanggan
-	$routes->post('rejuvenate/(:num)', 'AccountExecutive\RejuvenationData::index/$1');
-	$routes->put('rejuvenate/(:num)', 'AccountExecutive\RejuvenationData::index/$1');
+	$routes->match(['get', 'post'], 'rejuvenate/(:num)', 'AccountExecutive\RejuvenationData::index/$1');
+	$routes->put('rejuvenate/(:num)', 'AccountExecutive\RejuvenationData::add/$1');
 });
 
 // Planning

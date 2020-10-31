@@ -42,7 +42,7 @@
                             <td class="text-center"><?= $c['information']; ?></td>
                             <td class="text-center">
                                 <form action="#" class="form-cust-sales" method="post">
-                                    <?= csrf_field(); ?>
+
                                     <button type="submit" class="btn btn-sm btn-primary btn-cust-sales" data-id="<?= $c['id_customer']; ?>" data-information="<?= $c['information']; ?>" data-url="<?= base_url('account-executive'); ?>">
                                         <i class="far fa-fw fa-eye"></i>
                                     </button>

@@ -21,7 +21,7 @@ class AuthRules
         }
     }
 
-    public function sameOldPassword(string $newPassword, string $email = null): bool
+    public function sameOldPassword(string $newPassword = null, string $email): bool
     {
         $M_Auth = new M_Auth();
 

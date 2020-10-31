@@ -14,7 +14,7 @@ class AuthFilter implements FilterInterface
         if (!session()->has('isLoggedIn')) {
             $session = session();
             $session->setFlashdata('message', '<div class="alert alert-danger text-center" role="alert"><i class="fas fa-exclamation-circle"></i><strong> Please Login First!</strong></div>');
-            return redirect()->to('login');
+            return redirect()->to(site_url('login'));
         } else {
             $session = session();
             $id_role = $session->get('id_role');

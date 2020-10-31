@@ -9,64 +9,57 @@
 // var inputGeneral = document.querySelector("#phone-general-company");
 
 let ary = Array.prototype.slice.call(document.querySelectorAll(".phone"));
-let isError = false;
-	ary.forEach(function(el) {
-        PhoneDisplay(el);
-        // console.log(el.querySelector("#error-msg"));
-	})	
 
-    function PhoneDisplay(input){		
-	 	let errorMsg = input.querySelector(".error-msg"),
-		 validMsg = input.querySelector(".valid-msg");
-		 
-		let phonePreventKeyup = false;
+ary.forEach(function (el) {
+	PhoneDisplay(el);
+	// console.log(el.querySelector("#error-msg"));
+})
 
-	 	let errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];	
-        
-    	let intl =input.querySelector(".phone_flag");
-    	let iti = window.intlTelInput(intl, {
-			// nationalMode: false,
-			// autoPlaceholder: false,
-			// autoHideDialCode: false,
-			initialCountry: "id",
-			preferredCountries: ["id"],
-			hiddenInput: "full",
-			// separateDialCode: true,
-			utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.6/js/utils.min.js",
-     	});
-	  
-		let reset = function() {
-		  intl.classList.remove("error-msg");
-		  intl.classList.remove("is-invalid");
-		  errorMsg.innerHTML = "";
-		  errorMsg.classList.add("hide");
-		  validMsg.classList.add("hide");
-		};
+function PhoneDisplay(input) {
+	let errorMsg = input.querySelector(".error-msg"),
+		validMsg = input.querySelector(".valid-msg");
 
-		
-		intl.addEventListener('blur', function() {
-		  reset();
-		  if (intl.value.trim()) {
+
+	let errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+
+	let intl = input.querySelector(".phone_flag");
+	let iti = window.intlTelInput(intl, {
+		// nationalMode: false,
+		// autoPlaceholder: false,
+		// autoHideDialCode: false,
+		initialCountry: "id",
+		preferredCountries: ["id"],
+		hiddenInput: "full",
+		// separateDialCode: true,
+		utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.6/js/utils.min.js",
+	});
+
+	let reset = function () {
+		intl.classList.remove("error-msg");
+		intl.classList.remove("is-invalid");
+		errorMsg.innerHTML = "";
+		errorMsg.classList.add("hide");
+		validMsg.classList.add("hide");
+	};
+
+
+	intl.addEventListener('blur', function () {
+		reset();
+		if (intl.value.trim()) {
 			if (iti.isValidNumber()) {
-			  validMsg.classList.remove("hide");
-			  isError = false;
+				validMsg.classList.remove("hide");
 			} else {
-			  intl.classList.add("error-msg");
-			  let errorCode = iti.getValidationError();
-			  errorMsg.innerHTML = errorMap[errorCode];
-			  errorMsg.classList.remove("hide");
-			  isError = true;
+				intl.classList.add("error-msg");
+				let errorCode = iti.getValidationError();
+				errorMsg.innerHTML = errorMap[errorCode];
+				errorMsg.classList.remove("hide");
 			}
-		  }
-		});
+		}
+	});
 
-		intl.addEventListener('change', reset);
-		intl.addEventListener('keyup', reset);	  
-    }
-	$(selector).submit(function (e) { 
-		e.preventDefault();
-				
-			});	  	  
+	intl.addEventListener('change', reset);
+	intl.addEventListener('keyup', reset);
+}
 
 // // here, the index maps to the error code returned from getValidationError - see readme
 // var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];

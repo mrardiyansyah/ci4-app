@@ -8,7 +8,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1><br>
+    <h1 class="h3 text-gray-800"><?= $title; ?></h1><br>
     <div class="row">
         <div class="col-lg">
 
@@ -17,6 +17,7 @@
                     <?= session()->get('message'); ?>
                 </div>
             </div>
+
             <div class="card ">
                 <div class="card-header">
                     <!-- Nav Tabs -->
@@ -53,7 +54,7 @@
                     <div class="card-body tab-content col-lg-12">
                         <!-- Tab Pane Customer's Profile -->
                         <div class="tab-pane active" id="updateCustomerProfile" name="updateCustomerProfile">
-                            <h5 class="text-dark text-center font-weight-light">Customer's Profile</h5><br>
+                            <h5 class="text-dark text-center">Customer's Profile</h5><br>
                             <div class="form-group row">
                                 <label for="cust-name" class="col-sm-2 col-form-label-sm">Customer</label>
                                 <div class="col-sm-10">
@@ -77,7 +78,7 @@
                                 <div class="col-sm-3">
                                     <select id="tariff" name="tariff" class="form-control custom-select-sm <?php if (isset($validation)) echo $validation->hasError('tariff') ? 'is-invalid' : ''; ?>">
                                         <?php foreach ($tariff as $tarif) { ?>
-                                            <option value=" <?= $tarif['id_tariff'] ?>" <?= set_select('tariff', $tarif['id_tariff']); ?> <?= ($customer['tariff'] == $tarif['tariff']) ? 'selected' : ''; ?>><?= $tarif['tariff'] ?></option>
+                                            <option value="<?= $tarif['id_tariff'] ?>" <?= set_select('tariff', $tarif['id_tariff']); ?> <?= ($customer['tariff'] == $tarif['tariff']) ? 'selected' : ''; ?>><?= $tarif['tariff'] ?></option>
                                         <?php } ?>
                                     </select>
                                     <?php if (isset($validation)) : ?>
@@ -123,7 +124,7 @@
 
                         <!-- Tab Pane Company's Profile -->
                         <div class="tab-pane fade" id="updateCompanyProfile" name="updateCompanyProfile">
-                            <h5 class="text-dark text-center font-weight-light">Company's Profile</h5><br>
+                            <h5 class="text-dark text-center">Company's Profile</h5><br>
                             <div class="form-group row">
                                 <label for="company-name" class="col-sm-2 col-form-label-sm">Company</label>
                                 <div class="col-sm-10">
@@ -149,12 +150,12 @@
                             <div class="form-group row">
                                 <label for="phone-company" class="col-sm-2 col-form-label-sm">Phone Number</label>
                                 <div class="col-sm phone">
-                                    <input type="tel" class="form-control form-control-sm phone_flag <?php if (isset($validation)) echo $validation->hasError('phone-company[main]') ? 'is-invalid' : ''; ?> " name="phone-company[main]" value="<?= set_value('phone-company[main]'); ?>">
+                                    <input type="tel" class="form-control form-control-sm phone_flag <?php if (isset($validation)) echo $validation->hasError('phone-company.full') ? 'is-invalid' : ''; ?> " name="phone-company[main]" value="<?= set_value('phone-company[main]'); ?>">
                                     <span class="valid-msg hide">✓ Valid</span>
                                     <span class="error-msg hide"></span>
                                     <?php if (isset($validation)) : ?>
                                         <div class="error-msg pt-1" style="font-size: 80%;">
-                                            <?= $validation->getError('phone-company.main'); ?>
+                                            <?= $validation->getError('phone-company.full'); ?>
                                         </div>
                                     <?php endif; ?>
                                 </div>
@@ -185,7 +186,7 @@
                                 <label for="establishment" class="col-sm-2 col-form-label-sm">Establishment</label>
                                 <div class="col-sm-4">
                                     <div class="input-group date" id="datetimepicker-establishment" data-target-input="nearest">
-                                        <input type="text" class="form-control form-control-sm datepicker datetimepicker-input <?php if (isset($validation)) echo $validation->hasError('establishment') ? 'is-invalid' : ''; ?>" data-toggle="datetimepicker" data-target="#datetimepicker-establishment" name="establishment" id="establishment" value="<?= set_value('establishment'); ?>" placeholder="Date of Establishment" />
+                                        <input type="text" class="form-control form-control-sm datepicker datetimepicker-input <?php if (isset($validation)) echo $validation->hasError('establishment') ? 'is-invalid' : ''; ?>" data-toggle="datetimepicker" data-target="#datetimepicker-establishment" name="establishment" id="establishment" value="<?= set_value('establishment'); ?>" placeholder="DD-MM-YYYY" />
                                         <div class="input-group-append" data-target="#datetimepicker-establishment" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fas fa-calendar"></i></div>
                                         </div>
@@ -207,7 +208,7 @@
 
                         <!-- Tab Pane Chief Info -->
                         <div class="tab-pane fade" id="chiefInfo" name="chiefInfo">
-                            <h5 class="text-dark text-center font-weight-light">Chief of The Company</h5><br>
+                            <h5 class="text-dark text-center">Chief of The Company</h5><br>
                             <div class="form-group row">
                                 <label for="company-leader-name" class="col-sm-2 col-form-label-sm">Name</label>
                                 <div class="col-sm-10">
@@ -233,12 +234,12 @@
                             <div class="form-group row">
                                 <label for="phone-leader-company" class="col-sm-2 col-form-label-sm">Phone Number</label>
                                 <div class="col-sm-10 phone">
-                                    <input type="tel" class="form-control form-control-sm phone_flag <?php if (isset($validation)) echo $validation->hasError('phone-leader-company[main]') ? 'is-invalid' : ''; ?>" name="phone-leader-company[main]" value="<?= set_value('phone-leader-company[main]'); ?>">
+                                    <input type="tel" class="form-control form-control-sm phone_flag <?php if (isset($validation)) echo $validation->hasError('phone-leader-company.full') ? 'is-invalid' : ''; ?>" name="phone-leader-company[main]" value="<?= set_value('phone-leader-company[main]'); ?>">
                                     <span class="valid-msg hide">✓ Valid</span>
                                     <span class="error-msg hide"></span>
                                     <?php if (isset($validation)) : ?>
                                         <div class="error-msg pt-1" style="font-size: 80%;">
-                                            <?= $validation->getError('phone-leader-company.main'); ?>
+                                            <?= $validation->getError('phone-leader-company.full'); ?>
                                         </div>
                                     <?php endif; ?>
                                 </div>
@@ -264,7 +265,8 @@
 
                         <!-- Tab Pane Finance Affairs -->
                         <div class="tab-pane fade" id="financeAffairs" name="financeAffairs">
-                            <h5 class="text-dark text-center font-weight-light">Finance of The Company</h5><br>
+                            <h5 class="text-dark text-center">Finance of The Company<br><small class="text-secondary">(Optional)</small></h5>
+                            <br>
                             <div class="form-group row">
                                 <label for="company-finance-name" class="col-sm-2 col-form-label-sm">Name</label>
                                 <div class="col-sm-10">
@@ -290,12 +292,12 @@
                             <div class="form-group row">
                                 <label for="phone-finance-company" class="col-sm-2 col-form-label-sm">Phone Number</label>
                                 <div class="col-sm-10 phone">
-                                    <input type="tel" class="form-control form-control-sm phone_flag <?php if (isset($validation)) echo $validation->hasError('phone-finance-company[main]') ? 'is-invalid' : ''; ?>" name="phone-finance-company[main]" value="<?= set_value('phone-finance-company[main]'); ?>">
+                                    <input type="tel" class="form-control form-control-sm phone_flag <?php if (isset($validation)) echo $validation->hasError('phone-finance-company.full') ? 'is-invalid' : ''; ?>" name="phone-finance-company[main]" value="<?= set_value('phone-finance-company[main]'); ?>">
                                     <span class="valid-msg hide">✓ Valid</span>
                                     <span class="error-msg hide"></span>
                                     <?php if (isset($validation)) : ?>
                                         <div class="error-msg pt-1" style="font-size: 80%;">
-                                            <?= $validation->getError('phone-finance-company.main'); ?>
+                                            <?= $validation->getError('phone-finance-company.full'); ?>
                                         </div>
                                     <?php endif; ?>
                                 </div>
@@ -321,7 +323,7 @@
 
                         <!-- Tab Pane Engineering Affairs -->
                         <div class="tab-pane fade" id="engineeringAffairs" name="engineeringAffairs">
-                            <h5 class="text-dark text-center font-weight-light">Engineering of The Company</h5><br>
+                            <h5 class="text-dark text-center">Engineering of The Company<br><small class="text-secondary">(Optional)</small></h5><br>
                             <div class="form-group row">
                                 <label for="company-engineering-name" class="col-sm-2 col-form-label-sm">Name</label>
                                 <div class="col-sm-10">
@@ -347,12 +349,12 @@
                             <div class="form-group row">
                                 <label for="phone-engineering-company" class="col-sm-2 col-form-label-sm">Phone Number</label>
                                 <div class="col-sm-10 phone">
-                                    <input type="tel" class="form-control form-control-sm phone_flag <?php if (isset($validation)) echo $validation->hasError('phone-engineering-company[main]') ? 'is-invalid' : ''; ?>" name="phone-engineering-company[main]" value="<?= set_value('phone-engineering-company[main]'); ?>">
+                                    <input type="tel" class="form-control form-control-sm phone_flag <?php if (isset($validation)) echo $validation->hasError('phone-engineering-company.full') ? 'is-invalid' : ''; ?>" name="phone-engineering-company[main]" value="<?= set_value('phone-engineering-company[main]'); ?>">
                                     <span class="valid-msg hide">✓ Valid</span>
                                     <span class="error-msg hide"></span>
                                     <?php if (isset($validation)) : ?>
                                         <div class="error-msg pt-1" style="font-size: 80%;">
-                                            <?= $validation->getError('phone-engineering-company.main'); ?>
+                                            <?= $validation->getError('phone-engineering-company.full'); ?>
                                         </div>
                                     <?php endif; ?>
                                 </div>
@@ -378,7 +380,7 @@
 
                         <!-- Tab Pane General Affairs -->
                         <div class="tab-pane fade" id="generalAffairs" name="generalAffairs">
-                            <h5 class="text-dark text-center font-weight-light">General Affairs of The Company</h5><br>
+                            <h5 class="text-dark text-center">General Affairs of The Company<br><small class="text-secondary">(Optional)</small></h5><br>
                             <div class="form-group row">
                                 <label for="company-general-name" class="col-sm-2 col-form-label-sm">Name</label>
                                 <div class="col-sm-10">
@@ -404,12 +406,12 @@
                             <div class="form-group row">
                                 <label for="phone-general-company" class="col-sm-2 col-form-label-sm">Phone Number</label>
                                 <div class="col-sm-10 phone">
-                                    <input type="tel" class="form-control form-control-sm phone_flag <?php if (isset($validation)) echo $validation->hasError('phone-general-company[main]') ? 'is-invalid' : ''; ?>" name="phone-general-company[main]" value="<?= set_value('phone-general-company[main]'); ?>">
+                                    <input type="tel" class="form-control form-control-sm phone_flag <?php if (isset($validation)) echo $validation->hasError('phone-general-company.full') ? 'is-invalid' : ''; ?>" name="phone-general-company[main]" value="<?= set_value('phone-general-company[main]'); ?>">
                                     <span class="valid-msg hide">✓ Valid</span>
                                     <span class="error-msg hide"></span>
                                     <?php if (isset($validation)) : ?>
                                         <div class="error-msg pt-1" style="font-size: 80%;">
-                                            <?= $validation->getError('phone-general-company.main'); ?>
+                                            <?= $validation->getError('phone-general-company.full'); ?>
                                         </div>
                                     <?php endif; ?>
                                 </div>
@@ -435,7 +437,7 @@
 
                         <!-- Tab Pane Technical Specification -->
                         <div class="tab-pane fade" id="techSpecification" name="techSpecification">
-                            <h5 class="text-dark text-center font-weight-light">Technical Specification</h5><br>
+                            <h5 class="text-dark text-center">Technical Specification</h5><br>
                             <div class="form-group row">
                                 <label for="captive-power" class="col-sm-2 col-form-label-sm">Captive Power</label>
                                 <div class="col-sm-4">
@@ -508,8 +510,7 @@
         var year = today.getFullYear;
 
         $('#datetimepicker-establishment').datetimepicker({
-            format: 'L',
-            locale: 'id',
+            format: 'YYYY-MM-DD',
             todayHighlight: true,
             icons: {
                 time: "fas fa-clock",
@@ -517,25 +518,12 @@
                 up: "fas fa-arrow-up",
                 down: "fas fa-arrow-down",
                 today: "fas fa-calendar-check",
-                clear: "fas fa-trash-alt"
+                // clear: "fas fa-trash-alt"
             },
             buttons: {
                 showToday: true,
-                showClear: true,
-            },
-            minDate: today,
-        });
-
-        $('#datetimepicker-nextmeeting').datetimepicker({
-            format: 'LLL',
-            icons: {
-                time: "fas fa-clock",
-                date: "fas fa-calendar-alt",
-                up: "fas fa-arrow-up",
-                down: "fas fa-arrow-down"
             },
         });
-
     });
 </script>
 

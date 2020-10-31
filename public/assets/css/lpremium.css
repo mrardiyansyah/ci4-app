@@ -99,10 +99,14 @@ input[type=tel].error-msg {
 	background-size: calc(.75em + .375rem) calc(.75em + .375rem);
 }
 
-.valid-msg {
+span.valid-msg {
 	color: #28A745;
 }
 
-.error-msg {
+span.error-msg {
+	color: #e74a3b;
+}
+
+div.error-msg {
 	color: #e74a3b;
 }
