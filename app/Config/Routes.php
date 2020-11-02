@@ -101,12 +101,12 @@ $routes->group('account-executive', ['filter' => 'auth'], function ($routes) {
 	$routes->get('/', 'AccountExecutive\DataPotential::index');
 
 	// Peremajaan Data Pelanggan
-	$routes->match(['get', 'post'], 'rejuvenate/(:num)', 'AccountExecutive\RejuvenationData::index/$1');
-	$routes->put('rejuvenate/(:num)', 'AccountExecutive\RejuvenationData::add/$1');
+	$routes->get('rejuvenate/(:num)', 'AccountExecutive\RejuvenationData::index/$1');
+	$routes->post('rejuvenate/(:num)', 'AccountExecutive\RejuvenationData::add/$1');
 
 	// Probing (Kunjungan)
 	$routes->get('probing/(:num)', 'AccountExecutive\Probing::index/$1');
-	$routes->post('save-probing/(:num)', 'AccountExecutive\Probing::save/$1');
+	$routes->post('save-probing/(:num)', 'AccountExecutive\Probing::index/$1');
 });
 
 // Planning

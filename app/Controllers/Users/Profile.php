@@ -43,7 +43,7 @@ class Profile extends BaseController
                 'name' => 'required|alpha_space',
                 'image' => [
                     'label' => 'Image',
-                    'rules' => 'max_size[image,2048]|mime_in[image,image/gif,image/jpeg,image/png]',
+                    'rules' => 'max_size[image,2048]|is_image[image]|mime_in[image,image/gif,image/jpeg,image/png]',
                     'errors' => [
                         'max_size' => 'Allowed maximum size is 2MB',
                         'mime_in' => 'The Image type is not allowed. Allowed types : gif, jpeg, png'

@@ -49,7 +49,6 @@
 
                 <form action="<?= base_url('account-executive/rejuvenate/' . $customer['id_customer']); ?>" method="post" id="form-rejuvenate">
                     <?= csrf_field(); ?>
-                    <input type="hidden" name="_method" value="PUT">
                     <!-- Tab Panes -->
                     <div class="card-body tab-content col-lg-12">
                         <!-- Tab Pane Customer's Profile -->

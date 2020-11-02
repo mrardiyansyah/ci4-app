@@ -46,7 +46,7 @@
                                 <label for="start_time" class="col-sm col-form-label-sm">Start</label>
                                 <div class="col-sm">
                                     <div class="input-group date" id="datetimepicker-starttime" data-target-input="nearest">
-                                        <input type="text" class="form-control form-control-sm datepicker datetimepicker-input <?php if (isset($validation)) echo $validation->hasError('start_time') ? 'is-invalid' : ''; ?>" data-toggle="datetimepicker" data-target="#datetimepicker-starttime" name="start_time" id="start_time" value="<?= set_value('start_time'); ?>" placeholder="" />
+                                        <input type="text" class="form-control form-control-sm datepicker datetimepicker-input <?php if (isset($validation)) echo $validation->hasError('start_time') ? 'is-invalid' : ''; ?>" data-toggle="datetimepicker" data-target="#datetimepicker-starttime" name="start_time" id="start_time" value="<?= set_value('start_time'); ?>" placeholder="<?= date("H:i"); ?>" />
                                         <div class="input-group-append" data-target="#datetimepicker-starttime" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fas fa-clock"></i></div>
                                         </div>
@@ -62,7 +62,7 @@
                                 <label for="end_time" class="col-sm col-form-label-sm">End</label>
                                 <div class="col-sm">
                                     <div class="input-group date" id="datetimepicker-endtime" data-target-input="nearest">
-                                        <input type="text" class="form-control form-control-sm datepicker datetimepicker-input <?php if (isset($validation)) echo $validation->hasError('end_time') ? 'is-invalid' : ''; ?>" data-toggle="datetimepicker" data-target="#datetimepicker-endtime" name="end_time" id="end_time" value="<?= set_value('end_time'); ?>" placeholder="">
+                                        <input type="text" class="form-control form-control-sm datepicker datetimepicker-input <?php if (isset($validation)) echo $validation->hasError('end_time') ? 'is-invalid' : ''; ?>" data-toggle="datetimepicker" data-target="#datetimepicker-endtime" name="end_time" id="end_time" value="<?= set_value('end_time'); ?>" placeholder="<?= date("H:i"); ?>">
                                         <div class="input-group-append" data-target="#datetimepicker-endtime" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fas fa-clock"></i></div>
                                         </div>
@@ -78,7 +78,7 @@
                         <div class="form-group">
                             <label for="discussed" class="col-sm-2 col-form-label-sm">Discussed</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control form-control-sm <?php if (isset($validation)) echo $validation->hasError('discussed') ? 'is-invalid' : ''; ?>" name="discussed" id="discussed" cols="30" rows="4" value="<?= set_value('discussed'); ?>"><?= set_value('discussed'); ?></textarea>
+                                <textarea class="form-control form-control-sm <?php if (isset($validation)) echo $validation->hasError('discussed') ? 'is-invalid' : ''; ?>" name="discussed" id="discussed" cols="30" rows="4" value="<?= set_value('discussed'); ?>" placeholder="Type something here..."><?= set_value('discussed'); ?></textarea>
                                 <?php if (isset($validation)) : ?>
                                     <div class="invalid-feedback">
                                         <?= $validation->getError('discussed'); ?>
@@ -90,14 +90,19 @@
                             <label for="images" class="col-sm-2 col-form-label-sm">Image</label>
                             <div class="col-sm-10">
                                 <div class="custom-file">
-                                    <input type="file" class="form-control custom-file-input" id="images" name="images[]" multiple>
-                                    <label class="custom-file-label" for="images">Choose file</label>
+                                    <input type="file" class="form-control form-control-sm custom-file-input <?php if (isset($validation)) echo $validation->hasError('images') ? 'is-invalid' : ''; ?>" id="images" name="images[]" multiple>
+                                    <label class="custom-file-label <?php if (isset($validation)) echo $validation->hasError('images') ? 'selected alert-danger' : ''; ?>" for="images">Choose file</label>
+                                    <?php if (isset($validation)) : ?>
+                                        <div class="invalid-feedback">
+                                            <?= $validation->getError('images'); ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group justify-content-end">
                             <div class="col-sm-10">
-                                <button class="btn btn-primary" type="submit" name="save" id="save">
+                                <button class="btn btn-primary" type="submit">
                                     Save
                                     <i class="fas fa-save ml-1 text-white"></i>
                                 </button>
