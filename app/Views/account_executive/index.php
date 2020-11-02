@@ -41,12 +41,9 @@
                             <td class="text-center"><?= $c['status']; ?></td>
                             <td class="text-center"><?= $c['information']; ?></td>
                             <td class="text-center">
-                                <form action="#" class="form-cust-sales" method="post">
-
-                                    <button type="submit" class="btn btn-sm btn-primary btn-cust-sales" data-id="<?= $c['id_customer']; ?>" data-information="<?= $c['information']; ?>" data-url="<?= base_url('account-executive'); ?>">
-                                        <i class="far fa-fw fa-eye"></i>
-                                    </button>
-                                </form>
+                                <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
+                                    <a href="#" class="btn btn-sm btn-salesman btn-primary" data-id="<?= $c['id_customer']; ?>" data-information="<?= $c['information']; ?>" data-url="<?= base_url('account-executive'); ?>"><i class="far fa-fw fa-edit"></i></a>
+                                </div>
                             </td>
                         </tr>
                         <?php $i++; ?>
@@ -67,6 +64,7 @@
         $('.table-customer').dataTable({
             'destroy': true,
             'responsive': true,
+            'pageLength': -1,
             "lengthMenu": [
                 [5, 10, 25, 50, -1],
                 [5, 10, 25, 50, "All"]

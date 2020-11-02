@@ -52,10 +52,6 @@ class RejuvenationData extends BaseController
         return view('account_executive/rejuvenate_data', $data);
     }
 
-    public function asu($id_customer)
-    {
-        dd($_SESSION);
-    }
 
     public function add($id_customer)
     {
