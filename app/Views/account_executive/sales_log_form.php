@@ -10,8 +10,8 @@
 
     <div class="row">
         <div class="col-lg">
-            <a href="<?= base_url('accountexecutive/cancellationReport/' . $customer['id_customer']); ?>" class="btn btn-sm btn-danger mb-3 ml-1 float-right btn-confirm-rejected"><i class="fas fa-times text-white"></i> Rejected</a>
-            <a href="<?= base_url('accountexecutive/closing/' . $customer['id_customer']); ?>" class="btn btn-sm btn-warning mb-3 float-right btn-confirm-closing"><i class="far fa-handshake text-white"></i> Closing</a>
+            <a href="<?= base_url('account-executive/cancellationReport/' . $customer['id_customer']); ?>" class="btn btn-sm btn-danger mb-3 ml-1 float-right btn-confirm-cancellation"><i class="fas fa-times text-white"></i> Rejected</a>
+            <a href="<?= base_url('account-executive/closing/' . $customer['id_customer']); ?>" class="btn btn-sm btn-warning mb-3 float-right btn-confirm-closing"><i class="far fa-handshake text-white"></i> Closing</a>
             <div class="col-lg-6 float-left">
                 <?= session()->get('message'); ?>
             </div>
@@ -20,7 +20,7 @@
                     <form action="<?= base_url('account-executive/save-probing/' . $customer['id_customer']); ?>" method="post" id="form-probing" enctype="multipart/form-data">
                         <?= csrf_field(); ?>
                         <div class="form-group">
-                            <label for="customer" class="col-sm-2 col-form-label-sm">Customer</label>
+                            <label for="customer" class="col-sm-3 col-form-label-sm">Customer</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control form-control-sm" id="customer" name="customer" value="<?= $customer['name_customer']; ?>" readonly>
                             </div>
@@ -76,7 +76,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="discussed" class="col-sm-2 col-form-label-sm">Discussed</label>
+                            <label for="discussed" class="col-sm-3 col-form-label-sm">Discussed</label>
                             <div class="col-sm-10">
                                 <textarea class="form-control form-control-sm <?php if (isset($validation)) echo $validation->hasError('discussed') ? 'is-invalid' : ''; ?>" name="discussed" id="discussed" cols="30" rows="4" value="<?= set_value('discussed'); ?>" placeholder="Type something here..."><?= set_value('discussed'); ?></textarea>
                                 <?php if (isset($validation)) : ?>

@@ -172,32 +172,98 @@ $(document).on('submit', '#form-rejuvenate', function (e) {
         }
     });
 });
-// $(document).on('click', '.btn-rejuvenation', function (e) {
-//     e.preventDefault();
-//     Swal.fire({
-//         title: false,
-//         html: `Are you sure want to save this changes? This action cannot be undo. Make sure you want to do this.`,
-//         icon: 'warning',
-//         padding: '1em',
-//         width: 400,
-//         showCancelButton: true,
-//         cancelButtonText: `Cancel`,
-//         confirmButtonText: 'Save',
-//         buttonsStyling: false,
-//         showClass: {
-//             popup: 'animate__animated animate__fadeInDown animate__fast',
-//             icon: 'animate__animated animate__fadeIn animate__delay-1s animate__repeat-3'
-//         },
-//         hideClass: {
-//             popup: 'animate__animated animate__fadeOutUp'
-//         },
-//         customClass: {
-//             confirmButton: 'btn btn-primary btn-sm font-small',
-//             cancelButton: 'btn btn-secondary btn-sm ml-3 font-small',
-//         }
-//     }).then((result) => {
-//         if (result.value) {
-//             $("#form-rejuvenate").submit();
-//         }
-//     });
-// });
+
+$(document).on('submit', '#form-cancellation', function (e) {
+    e.preventDefault();
+    Swal.fire({
+        title: false,
+        html: `Are you sure want to save this changes? This action cannot be undo. Make sure you want to do this.`,
+        icon: 'warning',
+        padding: '1em',
+        width: 400,
+        showCancelButton: true,
+        cancelButtonText: `No, I'm not sure`,
+        confirmButtonText: 'Yes, sure',
+        buttonsStyling: false,
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown animate__fast',
+            icon: 'animate__animated animate__fadeIn animate__delay-1s animate__repeat-3'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        },
+        customClass: {
+            confirmButton: 'btn btn-danger btn-sm font-small',
+            cancelButton: 'btn btn-secondary btn-sm ml-3 font-small',
+        }
+    }).then((result) => {
+        if (result.value) {
+            // console.log($(this));
+            $(this)[0].submit();
+        }
+    });
+});
+
+$(document).on('click', '.btn-confirm-closing', function (e) {
+    e.preventDefault();
+    const href = $(this).attr('href');
+
+    Swal.fire({
+        title: false,
+        html: `Are you sure want to save this changes? This action cannot be undo. Make sure you want to do this.`,
+        icon: 'warning',
+        padding: '1em',
+        width: 400,
+        showCancelButton: true,
+        cancelButtonText: `No, I'm not sure`,
+        confirmButtonText: 'Yes, go to Closing!',
+        buttonsStyling: false,
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown animate__fast',
+            icon: 'animate__animated animate__fadeIn animate__delay-1s animate__repeat-3'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        },
+        customClass: {
+            confirmButton: 'btn btn-warning btn-sm font-small',
+            cancelButton: 'btn btn-secondary btn-sm ml-3 font-small',
+        }
+    }).then((result) => {
+        if (result.value) {
+            document.location.href = href;
+        }
+    });
+});
+
+$(document).on('click', '.btn-confirm-cancellation', function (e) {
+    e.preventDefault();
+    const href = $(this).attr('href');
+
+    Swal.fire({
+        title: false,
+        html: `Are you sure want to save this changes? This action cannot be undo. Make sure you want to do this.`,
+        icon: 'warning',
+        padding: '1em',
+        width: 400,
+        showCancelButton: true,
+        cancelButtonText: `No, I'm not sure`,
+        confirmButtonText: 'Yes, Go to Cancellation!',
+        buttonsStyling: false,
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown animate__fast',
+            icon: 'animate__animated animate__fadeIn animate__delay-1s animate__repeat-3'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        },
+        customClass: {
+            confirmButton: 'btn btn-danger btn-sm font-small',
+            cancelButton: 'btn btn-secondary btn-sm ml-3 font-small',
+        }
+    }).then((result) => {
+        if (result.value) {
+            document.location.href = href;
+        }
+    });
+});

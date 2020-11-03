@@ -107,6 +107,13 @@ $routes->group('account-executive', ['filter' => 'auth'], function ($routes) {
 	// Probing (Kunjungan)
 	$routes->get('probing/(:num)', 'AccountExecutive\Probing::index/$1');
 	$routes->post('save-probing/(:num)', 'AccountExecutive\Probing::index/$1');
+
+	// Cancellation Report
+	$routes->get('cancellationReport/(:num)', 'AccountExecutive\Probing::confirmCancellation/$1');
+	$routes->post('cancellationReport/(:num)', 'AccountExecutive\Probing::confirmCancellation/$1');
+
+	// Confirm Closing (Upload Application Letter)
+	$routes->get('closing/(:num)', 'AccountExecutive\Closing::confirmClosing/$1');
 });
 
 // Planning
