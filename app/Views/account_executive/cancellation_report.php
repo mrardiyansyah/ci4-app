@@ -84,37 +84,6 @@
 </div>
 <!-- End of Main Content -->
 
-<!-- Central Modal Medium Info -->
-<div class="modal fade" id="modalCancellation" name="modalCancellation" tabindex="-1" role="dialog" aria-labelledby="modalCancellation" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <!--Content-->
-        <div class="modal-content">
-            <!--Header-->
-            <div class="modal-header bg-danger">
-                <h5 class="modal-title lead text-white" id="modalCancellationLabel" name="modalCancellationLabel">Add Cancellation Report</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <!--Body-->
-            <div class="modal-body">
-                <div class="text-center">
-                    <i class="fas fa-question fa-4x mb-3 animated tada infinite" style="color:#dc3545;"></i>
-                    <p class="font-weight-bold text-dark">Are you sure you want to add the following data? If this is correct, click the save button.
-                        If not, click the cancel button</p>
-                </div>
-            </div>
-
-            <!--Footer-->
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-danger animated fadeIn infinite" id="confirm-submit-cancel" name="confirm-submit-cancel">Save data <i class="fas fa-save ml-1 text-white"></i></button>
-            </div>
-        </div>
-        <!--/.Content-->
-    </div>
-</div>
 <script type="text/javascript">
     $(function() {
         var today = new Date();

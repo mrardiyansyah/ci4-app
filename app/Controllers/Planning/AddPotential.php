@@ -226,7 +226,9 @@ class AddPotential extends BaseController
                     'bep_value' => $bep_value ?? '',
                     'id_type_of_service' => $service['id_type_of_service'] ?? '',
                     'id_status' => 1,
-                    'id_information' => 1
+                    'id_information' => 1,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'updated_at' => date("Y-m-d H:i:s"),
                 ];
 
                 $data['id_salesman'] = $id_salesman[$temp];

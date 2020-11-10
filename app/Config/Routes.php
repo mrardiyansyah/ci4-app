@@ -113,7 +113,8 @@ $routes->group('account-executive', ['filter' => 'auth'], function ($routes) {
 	$routes->post('cancellationReport/(:num)', 'AccountExecutive\Probing::confirmCancellation/$1');
 
 	// Confirm Closing (Upload Application Letter)
-	$routes->get('closing/(:num)', 'AccountExecutive\Closing::confirmClosing/$1');
+	$routes->get('closing/(:num)', 'AccountExecutive\Closing::index/$1');
+	$routes->post('closing/(:num)', 'AccountExecutive\Closing::index/$1');
 });
 
 // Planning

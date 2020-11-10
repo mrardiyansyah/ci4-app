@@ -4,24 +4,22 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class M_UserClosing extends Model
+class M_Files extends Model
 {
-    protected $table      = 'user_closing';
-    protected $primaryKey = 'id_user_closing';
+    protected $table      = 'files';
+    protected $primaryKey = 'id_files';
 
     // protected $returnType     = 'array';
-    // protected $useSoftDeletes = true;
 
-    protected $allowedFields = ['id_salesman', 'id_customer', 'id_app_letter', 'id_reksis_sld', 'id_spjbtl',  'id_working_order'];
+    protected $allowedFields = ['id_dir', 'original_file_name', 'storage_file_name', 'size', 'file_path', 'description'];
 
+    protected $useSoftDeletes = true;
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
-    // protected $deletedField  = 'deleted_at';
+    protected $deletedField  = 'deleted_at';
 
     // protected $validationRules    = [];
     // protected $validationMessages = [];
     // protected $skipValidation     = false;
-
-
 }
