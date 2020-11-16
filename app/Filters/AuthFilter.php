@@ -27,7 +27,7 @@ class AuthFilter implements FilterInterface
             $db = db_connect();
             $model = new CustomModel($db);
             $access = $model->getAccessMenu($id_role, $menu);
-            // return print_r($access);
+            // return d($access);
             if (!$access) {
                 return redirect()->to('blocked');
             }
