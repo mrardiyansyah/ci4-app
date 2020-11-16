@@ -110,6 +110,7 @@ $(document).on('click', '.btn-delete-role', function (e) {
     });
 });
 
+// Button Delete Customer
 $(document).on('click', '#btn-delete-customer', function (e) {
     e.preventDefault();
     let name_customer = $(this).data('customer');
@@ -142,6 +143,7 @@ $(document).on('click', '#btn-delete-customer', function (e) {
     });
 });
 
+// Submit Form Rejuvenate
 $(document).on('submit', '#form-rejuvenate', function (e) {
     e.preventDefault();
     Swal.fire({
@@ -173,6 +175,7 @@ $(document).on('submit', '#form-rejuvenate', function (e) {
     });
 });
 
+// Submit Form Cancellation
 $(document).on('submit', '#form-cancellation', function (e) {
     e.preventDefault();
     Swal.fire({
@@ -204,6 +207,7 @@ $(document).on('submit', '#form-cancellation', function (e) {
     });
 });
 
+// Button Confirm CLosing
 $(document).on('click', '.btn-confirm-closing', function (e) {
     e.preventDefault();
     const href = $(this).attr('href');
@@ -236,7 +240,9 @@ $(document).on('click', '.btn-confirm-closing', function (e) {
     });
 });
 
+// Button Confirm Cancellation
 $(document).on('click', '.btn-confirm-cancellation', function (e) {
+
     e.preventDefault();
     const href = $(this).attr('href');
 
@@ -266,4 +272,71 @@ $(document).on('click', '.btn-confirm-cancellation', function (e) {
             document.location.href = href;
         }
     });
+});
+
+// Button Confirm Cancellation
+$(document).on('click', '.btn-submit-reksis', function (e) {
+
+    e.preventDefault();
+    const info = $(this).data('information');
+    if (info == "Menunggu Reksis") {
+        let url = $(this).data('url');
+        let id_customer = $(this).data('id');
+        const form_reksis = $(this).parent()
+
+        const href = url + '/process/' + id_customer;
+
+        Swal.fire({
+            title: false,
+            html: `Are you sure you want to continue processing system recommendations?`,
+            icon: 'question',
+            padding: '1em',
+            width: 400,
+            showCancelButton: true,
+            cancelButtonText: `Cancel`,
+            confirmButtonText: 'Yes, I\'m sure',
+            buttonsStyling: false,
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown animate__fast',
+                icon: 'animate__animated animate__fadeIn animate__delay-1s animate__repeat-3'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            },
+            customClass: {
+                confirmButton: 'btn btn-info btn-sm font-small',
+                cancelButton: 'btn btn-secondary btn-sm ml-3 font-small',
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // document.location.href = href;
+                $.ajax({
+                    type: "POST",
+                    url: href,
+                    dataType: "JSON",
+                    success: function (response) {
+                        var result = JSON.parse(JSON.stringify(response));
+                        if (result.success === "success") {
+                            Swal.fire({
+                                title: 'Information Updated!',
+                                icon: 'success',
+                                html: 'Reksis and SLD on Process. Please upload',
+                                showCloseButton: false,
+                                showCancelButton: false,
+                                timer: 2000,
+                            }).then((response) => {
+                                if (response.dismiss === Swal.DismissReason.timer) {
+                                    form_reksis.submit();
+                                }
+                            });
+                        } else {
+                            Swal.fire('Failed', result.error.message, 'error');
+                        }
+                    }
+                });
+            }
+        });
+    } else {
+        $(this).parent().submit();
+    }
 });

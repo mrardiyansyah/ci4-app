@@ -11,7 +11,7 @@ class M_Files extends Model
 
     // protected $returnType     = 'array';
 
-    protected $allowedFields = ['id_dir', 'original_file_name', 'storage_file_name', 'size', 'file_path', 'description'];
+    protected $allowedFields = ['id_dir', 'id_uploadedby', 'original_file_name', 'storage_file_name', 'size', 'file_path', 'description'];
 
     protected $useSoftDeletes = true;
     protected $useTimestamps = true;

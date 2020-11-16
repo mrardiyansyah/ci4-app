@@ -115,6 +115,14 @@ $routes->group('account-executive', ['filter' => 'auth'], function ($routes) {
 	// Confirm Closing (Upload Application Letter)
 	$routes->get('closing/(:num)', 'AccountExecutive\Closing::index/$1');
 	$routes->post('closing/(:num)', 'AccountExecutive\Closing::index/$1');
+
+	// Upload File SPJBTL
+	$routes->get('spjbtl/(:num)', 'AccountExecutive\Closing::addSPJBTL/$1');
+	$routes->post('spjbtl/(:num)', 'AccountExecutive\Closing::addSPJBTL/$1');
+
+	// Upload File Working Order
+	$routes->get('working-order/(:num)', 'AccountExecutive\Closing::addWorkingOrder/$1');
+	$routes->post('working-order/(:num)', 'AccountExecutive\Closing::addWorkingOrder/$1');
 });
 
 // Planning
@@ -145,6 +153,9 @@ $routes->group('planning', ['filter' => 'auth'], function ($routes) {
 	$routes->addRedirect('request-potential/(:any)', 'planning/request-potential');
 	$routes->post('request-potential/(:num)', 'Planning\IncomingRequest::uploadReksis/$1');
 	$routes->put('request-potential/(:num)', 'Planning\IncomingRequest::uploadReksis/$1');
+
+	// Route for update information (Proses Reksis)
+	$routes->post('process/(:num)', 'Planning\IncomingRequest::processReksis/$1');
 });
 /**
  * --------------------------------------------------------------------

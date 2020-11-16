@@ -23,5 +23,12 @@ class M_UserClosing extends Model
     // protected $validationMessages = [];
     // protected $skipValidation     = false;
 
-
+    public function getID($id_salesman, $id_customer)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('id_user_closing');
+        return $builder->where('id_salesman', $id_salesman)
+            ->where('id_customer', $id_customer)
+            ->countAllResults();
+    }
 }

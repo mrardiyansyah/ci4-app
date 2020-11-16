@@ -74,7 +74,7 @@ class Closing extends BaseController
                         // Update Status and Information (Closing and Menunggu Reksis)
                         $this->M_Customer->update($id_customer, $status);
                     } catch (\Exception $e) {
-                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">There something went wrong! ' . $this->M_Directories->errors() . '</div>');
+                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">There something went wrong! ' . $this->M_Customer->errors() . '</div>');
                         return redirect()->to(site_url("account-executive"));
                     }
 
@@ -88,6 +88,129 @@ class Closing extends BaseController
         }
 
         return view('account_executive/closing', $data);
+    }
+
+    public function addSpjbtl($id_customer)
+    {
+        $session = session();
+        $data['title'] = 'Upload File SPJBTL';
+        $data['user'] = $this->M_Auth->find($session->get('id_user'));
+        $data['role'] =  $this->M_Role->find($session->get('id_role'));
+        $data['notif'] = get_new_notif();
+
+        $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
+
+        if ($this->request->getMethod() == 'post') {
+            $rules = [
+                'spjbtl' => [
+                    'label' => 'SPJBTL',
+                    'rules' => 'uploaded[spjbtl.0]|max_size[spjbtl,10240]|mime_in[spjbtl,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document]',
+                    'errors' => [
+                        'uploaded' => '{field} field is required',
+                        'is_image' => 'Uploaded files are not Image files.',
+                        'max_size' => 'Allowed maximum size is 10MB',
+                        'mime_in' => 'The File type is not allowed. Allowed types : .pdf, .doc, .docx'
+                    ],
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $data['validation'] = $this->validator;
+            } else {
+                $cust_name = $data['customer']['name_customer']; //Customer Name
+                $description = "SPJBTL";
+
+                // Get Files Uploaded by Client
+                $files = $this->request->getFiles();
+
+                // Call Upload Files Function to store
+                $upload_files = $this->uploadFiles($files, $id_customer, $cust_name, $description);
+
+                if ($upload_files) {
+                    $status = [
+                        'id_information' => 6,
+                    ];
+
+                    try {
+                        // Update Status and Information (Closing and Menunggu Reksis)
+                        $this->M_Customer->update($id_customer, $status);
+                    } catch (\Exception $e) {
+                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">There something went wrong! ' . $this->M_Customer->errors() . '</div>');
+                        return redirect()->to(site_url("account-executive"));
+                    }
+
+                    $session->setFlashdata('message', '<div class="alert alert-success" role="alert">SPJBTL successfully uploaded!</div>');
+                    return redirect()->to(site_url("account-executive"));
+                } else {
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">SPJBTL failed to upload! Please try again</div>');
+                    return redirect()->to(site_url("account-executive"));
+                }
+            }
+        }
+
+        return view('account_executive/upload_spjbtl', $data);
+    }
+
+    public function addWorkingOrder($id_customer)
+    {
+        $session = session();
+        $data['title'] = 'Upload File Working Order';
+        $data['user'] = $this->M_Auth->find($session->get('id_user'));
+        $data['role'] =  $this->M_Role->find($session->get('id_role'));
+        $data['notif'] = get_new_notif();
+
+        $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
+
+        if ($this->request->getMethod() == 'post') {
+            $rules = [
+                'working_order' => [
+                    'label' => 'Working Order',
+                    'rules' => 'uploaded[working_order.0]|max_size[working_order,4096]|mime_in[working_order,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document]',
+                    'errors' => [
+                        'uploaded' => '{field} field is required',
+                        'is_image' => 'Uploaded files are not Image files.',
+                        'max_size' => 'Allowed maximum size is 4MB',
+                        'mime_in' => 'The File type is not allowed. Allowed types : .pdf, .doc, .docx'
+                    ],
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $data['validation'] = $this->validator;
+            } else {
+                $cust_name = $data['customer']['name_customer']; //Customer Name
+                $description = "Working Order";
+
+                // Get Files Uploaded by Client
+                $files = $this->request->getFiles();
+
+                // Call Upload Files Function to store
+                $upload_files = $this->uploadFiles($files, $id_customer, $cust_name, $description);
+
+                if ($upload_files) {
+                    $status = [
+                        'id_status' => 4,
+                        'id_information' => 7,
+                    ];
+
+                    try {
+                        // Update Status and Information (Closing and Menunggu Reksis)
+                        $this->M_Customer->update($id_customer, $status);
+                    } catch (\Exception $e) {
+                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">There something went wrong! ' . $this->M_Customer->errors() . '</div>');
+                        return redirect()->to(site_url("account-executive"));
+                    }
+
+                    $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Working Order successfully uploaded!</div>');
+                    return redirect()->to(site_url("account-executive"));
+                } else {
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Working Order failed to upload! Please try again</div>');
+                    return redirect()->to(site_url("account-executive"));
+                }
+            }
+        }
+
+        return view('account_executive/upload_wo', $data);
     }
 
     protected function uploadFiles($files, $id_customer, $cust_name, string $description)
@@ -117,9 +240,9 @@ class Closing extends BaseController
         }
 
         /* 
-        Menghapus karakter "." (dots) diakhir string karena terdapat beberapa Nama Customer / Perusahan yang dibelakangnya ada titik 
+        Menghapus special karakter pada string karena terdapat beberapa Nama Customer / Perusahan
         */
-        $cust_name = rtrim($cust_name, ".");
+        $cust_name = preg_replace("/[^a-zA-Z0-9_ -]/", '', $cust_name);
 
         // Membuat Folder "berkas" didalam folder assets jika belum ada
         if (!is_dir($structure)) {
@@ -136,7 +259,7 @@ class Closing extends BaseController
             mkdir($structure . $cust_name . '/' . $FolderPath, 0755);
 
             $directories_data = [
-                'dir_name' => basename(dirname($structure . $cust_name . '/' . $FolderPath)),
+                'dir_name' =>  $cust_name . '/' . $FolderPath,
                 'full_path' => $structure . $cust_name . '/' . $FolderPath
             ];
 
@@ -151,17 +274,14 @@ class Closing extends BaseController
         // Direktori Folder Salesman Log Report
         $reportDirectoryName = $structure . $cust_name . '/' . $FolderPath;
 
-        $count = 1;
-
         foreach ($file_uploaded as $file) {
             //Original File Name
             $originalFileName = $file->getClientName();
 
             // Nama file yang akan disimpan
             $ext = $file->getExtension();
-            $string = random_string('alnum', 12) . "_" . preg_replace('/\s/', '_', $cust_name) . "_";
+            $string = random_string('alnum', 12) . "_" . preg_replace('/\s/', '_', strtolower($cust_name)) . "_";
             $file_name = "$string$localFileName.$ext";
-            $count = $count + 1;
 
             // Size file
             $size_file = $file->getSize();
@@ -184,6 +304,7 @@ class Closing extends BaseController
 
             $data = [
                 'id_dir' => $id_dir,
+                'id_uploadedby' => $session->get('id_user'),
                 'original_file_name' => $originalFileName,
                 'storage_file_name' => $file_name,
                 'size' => $size_file,
@@ -202,11 +323,19 @@ class Closing extends BaseController
             return false;
         }
 
+        $id_salesman = $session->get('id_user');
+
         $data_closing = [
-            'id_salesman' => $session->get('id_user'),
+            'id_salesman' => $id_salesman,
             'id_customer' => $id_customer,
             "$id_closing" => $id_dir,
         ];
+
+        if ($description != 'Application Letter') {
+            $id_user_closing = $this->M_UserClosing->getID($id_salesman, $id_customer);
+
+            $data_closing['id_user_closing'] = $id_user_closing;
+        }
 
         $insertUserClosing = $this->M_UserClosing->save($data_closing);
 

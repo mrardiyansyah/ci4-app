@@ -39,9 +39,10 @@
 
     <!-- Mdbootstrap style -->
     <link rel="stylesheet" href="<?= base_url('assets/vendor/animate.css/animate.css'); ?>">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
     <script src="<?= base_url('assets/js/jquery-3.5.1.min.js'); ?>"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 
     <!-- Sweet Alert 2 -->
     <script src="<?= base_url('assets/vendor/sweetalert2/dist/sweetalert2.all.min.js'); ?>"></script>
@@ -66,7 +67,7 @@
 
 </head>
 
-<body id=" page-top">
+<body id="page-top">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -127,6 +128,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
     <!-- Custom scripts for all pages-->
+    <script src="<?= base_url('assets/vendor/jquery-easing/jquery.easing.min.js'); ?>"></script>
     <script src="<?= base_url('assets/js/sb-admin-2.min.js'); ?>"></script>
     <script src="<?= base_url('assets/js/classie.js'); ?>"></script>
 

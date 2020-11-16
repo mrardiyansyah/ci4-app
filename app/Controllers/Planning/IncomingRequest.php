@@ -7,17 +7,21 @@ use App\Models\M_Auth;
 use App\Models\CustomerModel;
 use App\Models\M_Role;
 use App\Models\M_UserClosing;
+use App\Models\M_Directories;
+use App\Models\M_Files;
 use App\Models\M_Customer;
 use Exception;
 
 class IncomingRequest extends BaseController
 {
-    protected $M_Auth, $M_Role, $M_Customer, $M_UserClosing, $CustomerModel;
+    protected $M_Auth, $M_Role, $M_Customer, $M_Directories, $M_Files, $M_UserClosing, $CustomerModel;
 
     public function __construct()
     {
         $this->M_Auth = new M_Auth();
         $this->M_Role = new M_Role();
+        $this->M_Directories = new M_Directories();
+        $this->M_Files = new M_Files();
         $this->M_UserClosing = new M_UserClosing();
         $this->M_Customer = new M_Customer();
         $db = db_connect();
@@ -51,6 +55,29 @@ class IncomingRequest extends BaseController
         return view('planning/request_reksis', $data);
     }
 
+    public function processReksis($id_customer)
+    {
+        $session = session();
+        if ($this->request->isAJAX()) {
+            try {
+                $update_information = $this->M_Customer->update($id_customer, ['id_information' => 4]);
+
+                if ($update_information) {
+                    echo json_encode(['success' => 'success']);
+                } else {
+                    throw new Exception("Error Processing Request", 1);
+                }
+            } catch (\Exception $e) {
+                echo json_encode([
+                    'error' => [
+                        'message' => $e->getMessage(),
+                        'code' => $e->getCode(),
+                    ],
+                ]);
+            }
+        }
+    }
+
     public function uploadReksis($id_customer)
     {
         $session = session();
@@ -78,21 +105,27 @@ class IncomingRequest extends BaseController
                 // Validation
                 $data['validation'] = $this->validator;
             } else {
-                $id_salesman = $data['customer']['id_salesman'];
                 $cust_name = $data['customer']['name_customer'];
+
                 $file = $this->request->getFiles();
-                $import = $this->importFile($file, $id_salesman, $cust_name);
+                $description = 'Reksis dan SLD';
+                $import = $this->uploadFiles($file, $id_customer, $cust_name, $description);
 
                 if ($import) {
-                    // Timestamp Reksis + SLD Filed for update to database
-                    $reksis_sld_field = date("Y-m-d H:i:s");
+                    $status = [
+                        'id_information' => 5,
+                    ];
 
                     try {
-                        $this->M_UserClosing->update($id_customer, ['reksis_sld' => $reksis_sld_field]);
-                    } catch (Exception $e) {
-                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Failed to Upload Reksis! Please try again</div>');
+                        // Update Status and Information (Closing and Menunggu Reksis)
+                        $this->M_Customer->update($id_customer, $status);
+                    } catch (\Exception $e) {
+                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">There something went wrong! ' . $this->M_Customer->errors() . '</div>');
                         return redirect()->to(site_url("planning/request-potential"));
                     }
+
+                    $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Recommendation System and SLD successfully uploaded!</div>');
+                    return redirect()->to(site_url("planning/incoming-request"));
                 } else {
                     $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Failed to Upload Reksis! Please try again</div>');
                     return redirect()->to(site_url("planning/request-potential"));
@@ -102,15 +135,24 @@ class IncomingRequest extends BaseController
         return view('planning/upload_reksis', $data);
     }
 
-    protected function importFile($file, $id_salesman, $cust_name)
+    protected function uploadFiles($files, $id_customer, $cust_name, string $description)
     {
+        $session = session();
         $structure = ROOTPATH . "public/assets/berkas/"; //Nama Folder berkas didalam struktur assets
-        $reksisSLDFolder = 'Reksis+SLD/'; //Nama Folder REKSIS dan SLD
+
+        if ($description == 'Reksis dan SLD') {
+            $FolderPath = 'reksis_sld/'; //Nama Folder REKSIS dan SLD
+            $file_uploaded = $files['reksisSLD'];
+            $localFileName = 'reksis_sld'; //Nama Local File
+            $id_closing = 'id_reksis_sld';
+        } else {
+            return false;
+        }
 
         /* 
-        Menghapus karakter "." (dots) diakhir string karena terdapat beberapa Nama Customer / Perusahan yang dibelakangnya ada titik 
+        Menghapus special karakter pada string karena terdapat beberapa Nama Customer / Perusahan
         */
-        $cust_name = rtrim($cust_name, ".");
+        $cust_name = preg_replace("/[^a-zA-Z0-9_ -]/", '', $cust_name);
 
         // Membuat Folder "berkas" didalam folder assets jika belum ada
         if (!is_dir($structure)) {
@@ -123,35 +165,90 @@ class IncomingRequest extends BaseController
         }
 
         // // Membuat Folder REKSIS DAN SLD didalam folder dengan nama customer
-        if (!file_exists($structure . $cust_name . '/' . $reksisSLDFolder)) {
-            mkdir($structure . $cust_name . '/' . $reksisSLDFolder, 0755);
+        if (!file_exists($structure . $cust_name . '/' . $FolderPath)) {
+            mkdir($structure . $cust_name . '/' . $FolderPath, 0755);
+
+            $directories_data = [
+                'dir_name' =>  $cust_name . '/' . $FolderPath,
+                'full_path' => $structure . $cust_name . '/' . $FolderPath
+            ];
+
+            try {
+                $this->M_Directories->save($directories_data);
+            } catch (\Exception $e) {
+                $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">There something went wrong! ' . $this->M_Directories->errors() . '</div>');
+                return redirect()->to(site_url("account-executive"));
+            }
         }
 
         // Direktori Folder Reksis SLD
-        $reportDirectoryName = $structure . $cust_name . '/' . $reksisSLDFolder;
+        $reportDirectoryName = $structure . $cust_name . '/' . $FolderPath;
 
-        $count = 1;
-        foreach ($file['reksisSLD'] as $upload) {
-            // Regex untuk menggantikan character menjadi '-' dan menjadikan huruf kecil
-            $customer = preg_replace('/[^a-zA-Z0-9\']/', '-', strtolower($cust_name));
 
-            // Get Extension
-            $ext = $upload->getExtension();
+        foreach ($file_uploaded as $file) {
+            //Original File Name
+            $originalFileName = $file->getClientName();
 
-            //Nama file yang akan disimpan
-            $fileName = "reksis-sld-$customer($count).$ext";
-            $count = $count + 1;
+            // Nama file yang akan disimpan
+            $ext = $file->getExtension();
+            $string = random_string('alnum', 12) . "_" . preg_replace('/\s/', '_', strtolower($cust_name)) . "_";
+            $file_name = "$string$localFileName.$ext";
+
+            // Size file
+            $size_file = $file->getSize();
+
+            // File Path
+            $file_path = "$reportDirectoryName/$file_name";
+
+            // ID Directories
+            $dir = $this->M_Directories->where('full_path', $reportDirectoryName)->first();
+            $id_dir = $dir['id_dir'];
 
             // Memindahkan file kedalam Direktori yang telah ditentukan
-            if ($upload->isValid() && !$upload->hasMoved()) {
-                $upload->move($reportDirectoryName, $fileName, TRUE);
+            if ($file->isValid() && !$file->hasMoved()) {
+                $file->move($reportDirectoryName, $file_name, TRUE);
             } else {
                 // Jika gagal memindahkan return FALSE
-                break;
                 return false;
+                break;
             }
+
+            $data = [
+                'id_dir' => $id_dir,
+                'id_uploadedby' => $session->get('id_user'),
+                'original_file_name' => $originalFileName,
+                'storage_file_name' => $file_name,
+                'size' => $size_file,
+                'file_path' => $file_path,
+                'description' => $description,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
+            ];
+
+            $input_data[] = $data;
         }
-        // Jika berhasil memindahkan semua file yang di upload return TRUE
+
+        $insertDataFiles = $this->M_Files->insertBatch($input_data);
+
+        if (!$insertDataFiles) {
+            return false;
+        }
+
+        $data_closing = [
+            'id_user_planning' => $session->get('id_user'),
+            "$id_closing" => $id_dir,
+        ];
+
+        $insertUserClosing = $this->M_UserClosing
+            ->set($data_closing)
+            ->where('id_customer', $id_customer)
+            ->update();
+
+        if (!$insertUserClosing) {
+            return false;
+        }
+
+        // Jika berhasil memindahkan semua file yang di upload, return TRUE
         return true;
     }
 }

@@ -13,7 +13,7 @@
                 <?= session()->get('message'); ?>
             </div>
             <table class="table table-hover table-reksis" style="width: 100%;">
-                <thead>
+                <thead class="thead-dark">
                     <tr class="text-center">
                         <th scope="col">#</th>
                         <th scope="col">Nama Pelanggan</th>
@@ -28,7 +28,7 @@
                 <tbody>
                     <?php $i = 1; ?>
                     <?php foreach ($request_reksis as $c) : ?>
-                        <tr>
+                        <tr class="table-light">
                             <th scope="row" class="text-center"><?= $i; ?></th>
                             <td><?= $c['name_customer']; ?></td>
                             <td class="text-center"><?= $c['id_pelanggan'] ?? "Not Defined"; ?></td>
@@ -43,7 +43,7 @@
                             <td class="text-center">
                                 <form action="<?= base_url('planning/request-potential/' . $c['id_customer']); ?>" method="post">
                                     <?= csrf_field(); ?>
-                                    <button type="submit" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="bottom" title="Upload Reksis for <?= $c['name_customer']; ?>"><i class="far fa-fw fa-eye"></i></button>
+                                    <button type="submit" class="btn btn-sm btn-primary btn-submit-reksis" data-toggle="tooltip" data-placement="bottom" data-id="<?= $c['id_customer']; ?>" data-url="<?= base_url('planning/'); ?>" data-information="<?= $c['information']; ?>" title="Upload Reksis for <?= $c['name_customer']; ?>"><i class="fas fa-fw fa-file-upload"></i></button>
                                 </form>
                             </td>
                         </tr>

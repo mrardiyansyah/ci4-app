@@ -28,15 +28,18 @@ $(document).ready(function () {
                 break;
 
             case 'Proses SPJBTL':
-                $(this).parent().attr("data-original-title", "");
+                $(this).parent().attr("data-original-title", "Upload File SPJBTL");
                 break;
 
             case 'WO to Construction':
-                $(this).parent().attr("data-original-title", "");
+                $(this).parent().attr("data-original-title", "Upload Working Order");
                 break;
 
             case 'Working Order Terbit':
-                $(this).parent().attr("data-original-title", "");
+                $(this).addClass("disabled");
+                $(this).prop("aria-disabled", true);
+                $(this).parent().addClass("disabled");
+                $(this).parent().attr("data-original-title", "Waiting for Confirmation Construction");
                 break;
 
             case 'On Construction':
@@ -112,13 +115,13 @@ $(document).ready(function () {
                 //     $(this).attr("action", url + '/rejuvenation/' + id_customer);
                 //     return $(this)[0].submit();
 
-                // case 'Proses SPJBTL':
-                //     $(this).attr("action", url + '/rejuvenation/' + id_customer);
-                //     return $(this)[0].submit();
+            case 'Proses SPJBTL':
+                $(this).attr("href", url + '/spjbtl/' + id_customer);
+                return window.location = $(this).attr('href');
 
-                // case 'WO to Construction':
-                //     $(this).attr("action", url + '/rejuvenation/' + id_customer);
-                //     return $(this)[0].submit();
+            case 'WO to Construction':
+                $(this).attr("href", url + '/working-order/' + id_customer);
+                return window.location = $(this).attr('href');
 
                 // case 'Working Order Terbit':
                 //     $(this).attr("action", url + '/rejuvenation/' + id_customer);

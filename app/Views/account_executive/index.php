@@ -12,8 +12,8 @@
             <div class="col-lg-9">
                 <?= session()->get('message'); ?>
             </div>
-            <table class="table table-hover table-customer" style="width: 100%;">
-                <thead>
+            <table class="table table-bordered table-hover table-striped table-customer" style="width: 100%;">
+                <thead class="thead-dark">
                     <tr class="text-center">
                         <th scope="col">#</th>
                         <th scope="col">Nama Pelanggan</th>
@@ -42,6 +42,9 @@
                             <td class="text-center"><?= $c['information']; ?></td>
                             <td class="text-center">
                                 <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
+                                    <a href="#" class="btn btn-sm btn-information btn-info" data-id="<?= $c['id_customer']; ?>" data-information="<?= $c['information']; ?>" data-url="<?= base_url('account-executive'); ?>"><i class="fas fa-fw fa-info"></i></a>
+                                </div>
+                                <div class="tooltip-wrapper pt-1" data-toggle="tooltip" data-placement="left" data-original-title="#">
                                     <a href="#" class="btn btn-sm btn-salesman btn-primary" data-id="<?= $c['id_customer']; ?>" data-information="<?= $c['information']; ?>" data-url="<?= base_url('account-executive'); ?>"><i class="far fa-fw fa-edit"></i></a>
                                 </div>
                             </td>
@@ -61,7 +64,7 @@
 
 <script>
     $(document).ready(function() {
-        $('.table-customer').dataTable({
+        $('.table-customer').DataTable({
             'destroy': true,
             'responsive': true,
             'pageLength': -1,
@@ -81,8 +84,8 @@
                 'searchable': false,
                 'orderable': false
             }, {
-                'targets': 3,
-                'width': '83px'
+                'targets': [2, 3],
+                'width': '85px'
             }, {
                 'targets': 6,
                 'width': "161px"
