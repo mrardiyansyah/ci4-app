@@ -17,16 +17,45 @@ class AuthFilter implements FilterInterface
             return redirect()->to(site_url('login'));
         } else {
             $session = session();
+
+            $db = db_connect();
+            $model = new CustomModel($db);
+
             $id_role = $session->get('id_role');
 
             $uri = service('uri');
-            $menu = $uri->getSegment(1);
-            if ($menu == 'accountexecutive') {
-                $menu = 'Account Executive';
+
+            $totalSegment = $uri->getTotalSegments();
+
+            if ($totalSegment > 1) {
+                $first_segment = $uri->getSegment(1);
+                $condition = ['profile', 'planning', 'manager', 'construction'];
+                if ($first_segment == 'account-executive') {
+                    $menu = 'Account Executive';
+                    $type = 'menu';
+                } else if ($first_segment == 'admin') {
+                    $menu = 'Administrator';
+                    $type = 'menu';
+                } else if (in_array($first_segment, $condition)) {
+                    $menu = $first_segment;
+                    $type = 'menu';
+                } else {
+                    $second_segment = $uri->getSegment(2);
+                    $menu = "$first_segment/$second_segment";
+                    $type = 'submenu';
+                }
+            } else {
+                $menu = $uri->getSegment(1);
+                if ($menu == 'account-executive') {
+                    $menu = 'Account Executive';
+                    $type = 'menu';
+                } else if ($menu == 'profile') {
+                    $type = 'menu';
+                } else {
+                    $type = 'submenu';
+                }
             }
-            $db = db_connect();
-            $model = new CustomModel($db);
-            $access = $model->getAccessMenu($id_role, $menu);
+            $access = $model->getAccessMenu($id_role, $menu, $type);
             // return d($access);
             if (!$access) {
                 return redirect()->to('blocked');

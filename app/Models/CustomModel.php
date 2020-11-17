@@ -14,22 +14,31 @@ class CustomModel
         $this->db = &$db;
     }
 
-    public function getIdMenu($menu)
+    public function getIdMenu(string $menu, $type)
     {
-        $builder = $this->db->table('user_menu');
-        $id_menu = $builder->getWhere(['menu' => $menu])->getRowArray();
-        return $id_menu;
+        if ($type == 'menu') {
+            $builder = $this->db->table('user_menu');
+            $builder->select('id_user_menu');
+            $id_menu = $builder->getWhere(['menu' => $menu])->getRowArray();
+            return $id_menu;
+        } else if ($type == 'submenu') {
+            $builder = $this->db->table('user_sub_menu');
+            $builder->select('id_user_menu');
+            $id_menu = $builder->getWhere(['url' => $menu])->getRowArray();
+            return $id_menu;
+        }
     }
 
-    public function getAccessMenu($id_role, $menu)
+    public function getAccessMenu($id_role, string $menu, $type = 'menu')
     {
-        $queryMenu = $this->getIdMenu($menu);
 
+        $queryMenu = $this->getIdMenu($menu, $type);
         $id_menu = isset($queryMenu['id_user_menu']) ? $queryMenu['id_user_menu'] : 0;
 
+
         $builder = $this->db->table('user_access_menu');
-        $userAccess = $builder->getWhere(['id_role' => $id_role, 'id_user_menu' => $id_menu])
-            ->getRowArray();
+        $userAccess = $builder->getWhere(['id_role' => $id_role, 'id_user_menu' => $id_menu])->getRowArray();
+
         // return $userAccess;
         if (is_null($userAccess)) {
             return false;
