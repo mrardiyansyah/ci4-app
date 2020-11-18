@@ -323,7 +323,7 @@ $(document).on('click', '.btn-submit-reksis', function (e) {
                                 html: 'Reksis and SLD on Process. Please upload',
                                 showCloseButton: false,
                                 showCancelButton: false,
-                                timer: 2000,
+                                timer: 1000,
                             }).then((response) => {
                                 if (response.dismiss === Swal.DismissReason.timer) {
                                     form_reksis.submit();
@@ -340,3 +340,5 @@ $(document).on('click', '.btn-submit-reksis', function (e) {
         $(this).parent().submit();
     }
 });
+
+// Button See Detail Work Order(Manager Konstruksi)

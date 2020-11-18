@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\CustomModel;
+use CodeIgniter\I18n\Time;
 
 function check_access($id_role, $id_menu)
 {
@@ -59,6 +60,32 @@ function open_folder_cancellation($name_customer)
     // $map = directory_map($folder);
 
     return $folder;
+}
+
+function humanizeTime($timestamp)
+{
+    $time = Time::parse($timestamp);
+    return $time->humanize();
+}
+
+function localizedTimeString($timestamp)
+{
+    $time = Time::parse($timestamp, 'Asia/Jakarta');
+    return $time->toLocalizedString('d MMMM YYYY');
+}
+
+function renameFile($nama_file)
+{
+    $nama = preg_replace('/^(.*?)_/', '', $nama_file);
+    $nama = str_replace('_', ' ', $nama);
+    return ucwords($nama);
+}
+
+function bytesToHuman($bytes)
+{
+    $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+    for ($i = 0; $bytes > 1024; $i++) $bytes /= 1024;
+    return round($bytes, 2) . ' ' . $units[$i];
 }
 
 function get_new_notif()

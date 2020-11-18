@@ -138,7 +138,7 @@ class IncomingRequest extends BaseController
     protected function uploadFiles($files, $id_customer, $cust_name, string $description)
     {
         $session = session();
-        $structure = ROOTPATH . "public/assets/berkas/"; //Nama Folder berkas didalam struktur assets
+        $structure = "assets/berkas/"; //Nama Folder berkas didalam struktur assets
 
         if ($description == 'Reksis dan SLD') {
             $FolderPath = 'reksis_sld/'; //Nama Folder REKSIS dan SLD
@@ -198,7 +198,7 @@ class IncomingRequest extends BaseController
             $size_file = $file->getSize();
 
             // File Path
-            $file_path = "$reportDirectoryName/$file_name";
+            $file_path = "$reportDirectoryName$file_name";
 
             // ID Directories
             $dir = $this->M_Directories->where('full_path', $reportDirectoryName)->first();

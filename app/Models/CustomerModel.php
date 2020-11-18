@@ -45,6 +45,28 @@ class CustomerModel
             ->getRowArray();
     }
 
+    public function getAllInformationCustomerById($id_customer)
+    {
+        $builder = $this->db->table('customer');
+        $builder->select('*');
+        return $builder
+            ->where('id_customer', $id_customer)
+            ->where('is_deleted !=', 1)
+            ->join('service', 'customer.id_type_of_service = service.id_type_of_service')
+            ->join('status', 'customer.id_status = status.id_status')
+            ->join('tariff', 'customer.id_tariff = tariff.id_tariff')
+            ->join('substation', 'customer.id_substation = substation.id_substation')
+            ->join('feeder_substation', 'customer.id_feeder_substation = feeder_substation.id_feeder_substation')
+            ->join('information', 'customer.id_information = information.id_information')
+            ->join('company_profile', 'customer.id_company_profile = company_profile.id_company_profile')
+            ->join('company_leader', 'customer.id_company_leader = company_leader.id_company_leader')
+            ->join('company_finance', 'customer.id_company_finance = company_finance.id_company_finance')
+            ->join('company_engineering', 'customer.id_company_engineering = company_engineering.id_company_engineering')
+            ->join('company_general', 'customer.id_company_general = company_general.id_company_general')
+            ->get()
+            ->getRowArray();
+    }
+
     public function getCustomerBySales($id_salesman)
     {
         $builder = $this->db->table('customer');
@@ -127,6 +149,25 @@ class CustomerModel
             ->where('deleted_at', null) //WHERE CUSTOMER IS NOT DELETED
             ->where('customer.id_information', 3) // WHERE ID INFORMATION = 3 == INFORMATION = Menunggu Reksis
             ->orWhere('customer.id_information', 4) // WHERE ID INFORMATION = r == INFORMATION = Proses Reksis
+            ->join('service', 'customer.id_type_of_service = service.id_type_of_service')
+            ->join('status', 'customer.id_status = status.id_status')
+            ->join('tariff', 'customer.id_tariff = tariff.id_tariff')
+            ->join('substation', 'customer.id_substation = substation.id_substation')
+            ->join('feeder_substation', 'customer.id_feeder_substation = feeder_substation.id_feeder_substation')
+            ->join('information', 'customer.id_information = information.id_information')
+            ->orderBy('id_customer', 'ASC')
+            ->get()
+            ->getResultArray();
+    }
+
+    public function getInformationForWorkingOrder()
+    {
+        $builder = $this->db->table('customer');
+        $builder->select('*');
+        return $builder
+            ->where('deleted_at', null) //WHERE CUSTOMER IS NOT DELETED
+            ->where('customer.id_information', 4) // WHERE ID INFORMATION = 3 == INFORMATION = Menunggu Reksis
+            ->orWhere('customer.id_information', 7) // WHERE ID INFORMATION = r == INFORMATION = Proses Reksis
             ->join('service', 'customer.id_type_of_service = service.id_type_of_service')
             ->join('status', 'customer.id_status = status.id_status')
             ->join('tariff', 'customer.id_tariff = tariff.id_tariff')

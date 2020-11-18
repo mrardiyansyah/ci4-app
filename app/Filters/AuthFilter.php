@@ -29,12 +29,15 @@ class AuthFilter implements FilterInterface
 
             if ($totalSegment > 1) {
                 $first_segment = $uri->getSegment(1);
-                $condition = ['profile', 'planning', 'manager', 'construction'];
+                $condition = ['profile', 'planning', 'submenu', 'menu', 'manager', 'construction'];
                 if ($first_segment == 'account-executive') {
                     $menu = 'Account Executive';
                     $type = 'menu';
                 } else if ($first_segment == 'admin') {
                     $menu = 'Administrator';
+                    $type = 'menu';
+                } else if ($first_segment == 'submenu') {
+                    $menu = 'menu';
                     $type = 'menu';
                 } else if (in_array($first_segment, $condition)) {
                     $menu = $first_segment;

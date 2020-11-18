@@ -157,6 +157,16 @@ $routes->group('planning', ['filter' => 'auth'], function ($routes) {
 	// Route for update information (Proses Reksis)
 	$routes->post('process/(:num)', 'Planning\IncomingRequest::processReksis/$1');
 });
+
+// Managers
+$routes->group('manager', ['filter' => 'auth'], function ($routes) {
+	// Konstruksi
+	$routes->group('konstruksi', ['filter' => 'auth'], function ($routes) {
+		$routes->get('/', 'Managers\Konstruksi\WorkOrder::index');
+		$routes->add('detail/(:num)', 'Managers\Konstruksi\WorkOrder::detail/$1');
+		$routes->post('choose-pengawas/(:num)', 'Managers\Konstruksi\WorkOrder::pilihPengawas/$1');
+	});
+});
 /**
  * --------------------------------------------------------------------
  * Additional Routing

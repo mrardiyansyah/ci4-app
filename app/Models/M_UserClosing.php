@@ -31,4 +31,14 @@ class M_UserClosing extends Model
             ->where('id_customer', $id_customer)
             ->countAllResults();
     }
+
+    public function getDirFileForConstruction($id_customer)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('id_reksis_sld, id_working_order');
+        return $builder
+            ->where('id_customer', $id_customer)
+            ->get()
+            ->getRowArray();
+    }
 }

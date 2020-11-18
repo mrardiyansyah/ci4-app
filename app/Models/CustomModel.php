@@ -24,7 +24,8 @@ class CustomModel
         } else if ($type == 'submenu') {
             $builder = $this->db->table('user_sub_menu');
             $builder->select('id_user_menu');
-            $id_menu = $builder->getWhere(['url' => $menu])->getRowArray();
+            $id_menu = $builder->like('url', $menu)->get()->getRowArray();
+            // $id_menu = $builder->getWhere(['url' => $menu])->getRowArray();
             return $id_menu;
         }
     }

@@ -22,4 +22,15 @@ class M_Files extends Model
     // protected $validationRules    = [];
     // protected $validationMessages = [];
     // protected $skipValidation     = false;
+
+    public function getInfoFileForConstruction($id_reksis_sld, $id_working_order)
+    {
+        $builder = $this->db->table($this->table);
+        return $builder->select("$this->table.*,user.name")
+            ->where('id_dir', $id_reksis_sld)
+            ->orWhere('id_dir', $id_working_order)
+            ->join('user', "$this->table.id_uploadedby = user.id_user")
+            ->get()
+            ->getResultArray();
+    }
 }

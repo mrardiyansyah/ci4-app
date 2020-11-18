@@ -132,3 +132,13 @@ div.error-msg {
 	/* OPTIONAL pointer-events setting above blocks cursor setting, so set it here */
 	cursor: not-allowed;
 }
+
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+	color: darkblue;
+	border-top: 0;
+	border-left: 0;
+	border-right: 0;
+	border-bottom: 2px solid darkblue;
+	/* transition: .3s ease all; */
+}

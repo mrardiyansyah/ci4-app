@@ -218,7 +218,7 @@ class Closing extends BaseController
         $session = session();
 
         //Nama Folder berkas didalam struktur assets
-        $structure = ROOTPATH . "public/assets/berkas/";
+        $structure = "assets/berkas/";
 
         if ($description == 'Application Letter') {
             $FolderPath = 'app_letter/'; //Nama Folder Salesman Log Report
@@ -287,7 +287,7 @@ class Closing extends BaseController
             $size_file = $file->getSize();
 
             // File Path
-            $file_path = "$reportDirectoryName/$file_name";
+            $file_path = "$reportDirectoryName$file_name";
 
             // ID Directories
             $dir = $this->M_Directories->where('full_path', $reportDirectoryName)->first();

@@ -104,3 +104,15 @@ $('.btn-delete-role').on('click', function (e) {
 		}
 	});
 });
+
+$('.btn-pdf-viewer').on('click', function (e) {
+	e.preventDefault();
+	const url = $(this).data('url');
+	$('#pdf-viewer').attr('src', url);
+	$('#modalPDF').modal('show');
+});
+
+$('btn-pilih-pengawas').on('click', function (e) {
+	e.preventDefault
+	// $('#pilihPengawas').modal('show');
+});
