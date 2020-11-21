@@ -178,4 +178,22 @@ class CustomerModel
             ->get()
             ->getResultArray();
     }
+
+    public function getWorkOrderForConstruction($id_pengawas)
+    {
+        $builder = $this->db->table('customer');
+        $builder->select('*');
+        return $builder
+            ->where('deleted_at', null) //WHERE CUSTOMER IS NOT DELETED
+            ->where('customer.id_pengawas', $id_pengawas)
+            ->join('service', 'customer.id_type_of_service = service.id_type_of_service')
+            ->join('status', 'customer.id_status = status.id_status')
+            ->join('tariff', 'customer.id_tariff = tariff.id_tariff')
+            ->join('substation', 'customer.id_substation = substation.id_substation')
+            ->join('feeder_substation', 'customer.id_feeder_substation = feeder_substation.id_feeder_substation')
+            ->join('information', 'customer.id_information = information.id_information')
+            ->orderBy('id_customer', 'ASC')
+            ->get()
+            ->getResultArray();
+    }
 }

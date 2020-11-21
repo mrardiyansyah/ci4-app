@@ -341,4 +341,69 @@ $(document).on('click', '.btn-submit-reksis', function (e) {
     }
 });
 
+// Button Confirm Cancellation
+$(document).on('click', '.btn-submit-construct', function (e) {
+
+    e.preventDefault();
+    const form_reksis = $(this).closest("form");
+    let id_customer = $(this).data('id');
+
+    const href = form_reksis.attr("action") + "/start/" + id_customer;
+
+    // console.log(form_reksis);
+    // alert(href);
+    // alert(id_customer);
+    // alert(href);
+    Swal.fire({
+        title: false,
+        html: `Are you sure you want to <b>Start Construct</b>? This action will update the status and cannot be undo.`,
+        icon: 'question',
+        padding: '1em',
+        width: 400,
+        showCancelButton: true,
+        cancelButtonText: `Cancel`,
+        confirmButtonText: 'Yes, I\'m sure',
+        buttonsStyling: false,
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown animate__fast',
+            icon: 'animate__animated animate__fadeIn animate__delay-1s animate__repeat-3'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        },
+        customClass: {
+            confirmButton: 'btn btn-info btn-sm font-small',
+            cancelButton: 'btn btn-secondary btn-sm ml-3 font-small',
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // document.location.href = href;
+            $.ajax({
+                type: "POST",
+                url: href,
+                dataType: "JSON",
+                success: function (response) {
+                    var result = JSON.parse(JSON.stringify(response));
+                    if (result.success === "success") {
+                        Swal.fire({
+                            title: 'Information Updated!',
+                            icon: 'success',
+                            html: 'Reksis and SLD on Process. Please upload',
+                            showCloseButton: false,
+                            showCancelButton: false,
+                            timer: 1000,
+                        }).then((response) => {
+                            if (response.dismiss === Swal.DismissReason.timer || response.value === true) {
+                                location.reload();
+                            }
+                        });
+                    } else {
+                        Swal.fire('Failed', result.error.message, 'error');
+                    }
+                }
+            });
+        }
+    });
+});
+
 // Button See Detail Work Order(Manager Konstruksi)

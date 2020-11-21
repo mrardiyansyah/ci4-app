@@ -1,3 +1,7 @@
+<?= $this->extend('layout/main'); ?>
+
+<?= $this->section('content'); ?>
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -6,11 +10,11 @@
     <div class="row">
         <div class="col-lg">
             <div class="col-lg-6">
-                <?= $this->session->flashdata('message'); ?>
+                <?= session()->get('message'); ?>
             </div>
-            <table id="cust-potencial" class="table table-hover" style="width: 100%;">
-                <thead>
-                    <tr>
+            <table class="table table-hover table-workorder" style="width: 100%;">
+                <thead class="thead-dark">
+                    <tr class="text-center">
                         <th scope="col">#</th>
                         <th scope="col">Nama Pelanggan</th>
                         <th scope="col">ID</th>
@@ -22,7 +26,29 @@
                     </tr>
                 </thead>
                 <tbody>
-
+                    <?php $i = 1; ?>
+                    <?php foreach ($information as $c) : ?>
+                        <tr class="table-light">
+                            <th scope="row" class="text-center"><?= $i; ?></th>
+                            <td><?= $c['name_customer']; ?></td>
+                            <td class="text-center"><?= $c['id_pelanggan'] ?? "Not Defined"; ?></td>
+                            <td class="text-center"><?= $c['tariff']; ?> / <?= $c['power']; ?></td>
+                            <td class="text-center">
+                                <span class="badge <?= $c['badge']; ?>">
+                                    <?= $c['type_of_service']; ?>
+                                </span>
+                            </td>
+                            <td class="text-center"><?= $c['status']; ?></td>
+                            <td class="text-center"><?= $c['information']; ?></td>
+                            <td class="text-center">
+                                <form action="<?= base_url('construction/detail/' . $c['id_customer']); ?>" method="post">
+                                    <?= csrf_field(); ?>
+                                    <button type="submit" class="btn btn-sm btn-primary btn-work-order" data-toggle="tooltip" data-placement="bottom" data-id="<?= $c['id_customer']; ?>" data-url="<?= base_url('manager//'); ?>" data-information="<?= $c['information']; ?>" title="See Detail Info <?= $c['name_customer']; ?>"><i class="fas fa-fw fa-edit"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        <?php $i++; ?>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
@@ -35,45 +61,35 @@
 <!-- End of Main Content -->
 
 <script>
-    var ling = "<?= base_url() ?>";
     $(document).ready(function() {
-        $('#cust-potencial').DataTable({
+        $('.table-workorder').dataTable({
             'destroy': true,
-            "pageLength": 10,
-            "scrollX": true,
-            "ajax": {
-                url: ling + 'construction/getMonitoringList',
-                type: 'GET'
-            },
-            'columns': [{
-                    'data': 'no'
-                },
-                {
-                    'data': 'name_customer'
-                },
-                {
-                    'data': 'id_customer'
-                },
-                {
-                    'data': 'tariff/daya'
-                },
-                {
-                    'data': 'type_of_service'
-                },
-                {
-                    'data': 'status'
-                },
-                {
-                    'data': 'information'
-                },
-                {
-                    'data': 'btn1/btn2'
-                }
-
+            'responsive': true,
+            "pageLength": -1,
+            "lengthMenu": [
+                [5, 10, 25, 50, -1],
+                [5, 10, 25, 50, "All"]
             ],
-
+            'scrollY': '240px',
+            'scrollX': true,
+            'scrollCollapse': true,
+            'fixedColumns': true,
+            'order': [
+                [2, "asc"]
+            ],
+            'columnDefs': [{
+                'targets': [0],
+                'searchable': false,
+                'orderable': false
+            }, {
+                'targets': 3,
+                'width': '120px'
+            }, {
+                'targets': 6,
+                'width': "161px"
+            }],
         });
-
-
     });
 </script>
+
+<?= $this->endSection(); ?>

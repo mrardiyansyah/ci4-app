@@ -9,6 +9,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('ico/apple-touch-icon.png'); ?>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('ico/favicon-32x32.png'); ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('ico/favicon-16x16.png'); ?>">
+    <link rel="manifest" href="<?= base_url('ico/site.webmanifest'); ?>">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
     <title>Access Blocked</title>
 
     <!-- Custom fonts for this template-->
@@ -68,25 +75,6 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Bootstrap core JavaScript-->
     <script src="<?= base_url('assets/vendor/jquery/jquery.min.js'); ?>"></script>

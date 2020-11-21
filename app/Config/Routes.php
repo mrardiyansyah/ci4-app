@@ -158,6 +158,27 @@ $routes->group('planning', ['filter' => 'auth'], function ($routes) {
 	$routes->post('process/(:num)', 'Planning\IncomingRequest::processReksis/$1');
 });
 
+// Construction (Pengawas)
+$routes->group('construction', ['filter' => 'auth'], function ($routes) {
+	// List Work Order
+	$routes->get('/', 'Construction\WorkOrder::index');
+
+	// Detail Customer
+	$routes->add('detail/(:num)', 'Construction\WorkOrder::detailCustomer/$1');
+
+	// Update Status to "On Construct"
+	$routes->post('start/(:num)', 'Construction\WorkOrder::startConstruct/$1');
+
+	// Construction Log Form
+	$routes->add('log-form/(:num)', 'Construction\ReportLog::index/$1');
+
+	// Edit Log Form
+	$routes->add('edit-log-form/(:num)', 'Construction\ReportLog::editLog/$1');
+
+	// Delete Log
+	$routes->delete('delete-log/(:num)', 'Construction\ReportLog::deleteLog/$1');
+});
+
 // Managers
 $routes->group('manager', ['filter' => 'auth'], function ($routes) {
 	// Konstruksi

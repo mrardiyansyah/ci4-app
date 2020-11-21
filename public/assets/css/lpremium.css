@@ -142,3 +142,11 @@ div.error-msg {
 	border-bottom: 2px solid darkblue;
 	/* transition: .3s ease all; */
 }
+
+.card-header .fas {
+	transition: .3s transform ease-in-out;
+}
+
+.card-header .collapsed .fas {
+	transform: rotate(90deg);
+}

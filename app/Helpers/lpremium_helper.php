@@ -68,10 +68,16 @@ function humanizeTime($timestamp)
     return $time->humanize();
 }
 
+function localizedDateString($timestamp)
+{
+    $time = Time::parse($timestamp, 'Asia/Jakarta');
+    return $time->toLocalizedString('MMM d, yyyy');
+}
+
 function localizedTimeString($timestamp)
 {
     $time = Time::parse($timestamp, 'Asia/Jakarta');
-    return $time->toLocalizedString('d MMMM YYYY');
+    return $time->toLocalizedString('HH:mm');
 }
 
 function renameFile($nama_file)
