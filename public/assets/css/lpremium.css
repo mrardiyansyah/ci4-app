@@ -128,6 +128,11 @@ div.error-msg {
 	pointer-events: none;
 }
 
+.tooltip-wrapper form button.btn.disabled {
+	/* don't let button block mouse events from reaching wrapper */
+	pointer-events: none;
+}
+
 .tooltip-wrapper.disabled {
 	/* OPTIONAL pointer-events setting above blocks cursor setting, so set it here */
 	cursor: not-allowed;

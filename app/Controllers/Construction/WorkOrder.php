@@ -11,10 +11,11 @@ use App\Models\M_UserClosing;
 use App\Models\M_Directories;
 use App\Models\M_Files;
 use App\Models\M_UserReport;
+use App\Models\M_CancellationReport;
 
 class WorkOrder extends BaseController
 {
-    protected $M_Auth, $M_Role, $M_Customer, $M_UserClosing, $M_Directories, $M_Files, $M_UserReport, $CustomerModel;
+    protected $M_Auth, $M_Role, $M_Customer, $M_UserClosing, $M_Directories, $M_Files, $M_UserReport, $M_CancellationReport, $CustomerModel;
 
 
     public function __construct()
@@ -26,6 +27,7 @@ class WorkOrder extends BaseController
         $this->M_Directories = new M_Directories();
         $this->M_Files = new M_Files();
         $this->M_UserReport = new M_UserReport();
+        $this->M_CancellationReport = new M_CancellationReport();
         $db = db_connect();
         $this->CustomerModel = new CustomerModel($db);
     }
@@ -65,6 +67,9 @@ class WorkOrder extends BaseController
 
             // Data Report Log
             $data['report_log'] = $this->M_UserReport->getReportLog($session->get('id_user'), $id_customer);
+
+            // Data Cancellation Report
+            $data['cancellation_report'] = $this->M_CancellationReport->getCancellationReport($session->get('id_user'), $id_customer);
 
             // d($data['customer']);
             return view('construction/detailCustomer', $data);

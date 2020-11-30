@@ -11,10 +11,11 @@ use App\Models\M_UserClosing;
 use App\Models\M_Directories;
 use App\Models\M_Files;
 use App\Models\M_UserReport;
+use App\Models\M_CancellationReport;
 
 class ReportLog extends BaseController
 {
-    protected $M_Auth, $M_Role, $M_Customer, $M_UserClosing, $M_Directories, $M_Files, $M_UserReport, $CustomerModel;
+    protected $M_Auth, $M_Role, $M_Customer, $M_UserClosing, $M_Directories, $M_Files, $M_UserReport, $M_CancellationReport, $CustomerModel;
 
 
     public function __construct()
@@ -26,6 +27,7 @@ class ReportLog extends BaseController
         $this->M_Directories = new M_Directories();
         $this->M_Files = new M_Files();
         $this->M_UserReport = new M_UserReport();
+        $this->M_CancellationReport = new M_CancellationReport();
         $db = db_connect();
         $this->CustomerModel = new CustomerModel($db);
     }
@@ -239,10 +241,10 @@ class ReportLog extends BaseController
         return $id_dir;
     }
 
-    public function confirmCancellation($id_customer)
+    public function problemReport($id_customer)
     {
         $session = session();
-        $data['title'] = 'Cancellation Form';
+        $data['title'] = 'Problem Report Form';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
         $data['notif'] = get_new_notif();
@@ -258,17 +260,39 @@ class ReportLog extends BaseController
                         'required' => '{field} field is required'
                     ]
                 ],
-                'cancellation-reason' => [
-                    'label' => 'Reason for Cancellation',
+                'start_time' => [
+                    'label' => 'Start Time',
                     'rules' => 'required',
                     'errors' => [
                         'required' => '{field} field is required'
                     ]
                 ],
+                'end_time' => [
+                    'label' => 'End Time',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'description' => [
+                    'label' => 'Problem Description',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'solution' => [
+                    'label' => 'Problem Solution',
+                    'rules' => 'permit_empty',
+                    // 'errors' => [
+                    //     'required' => '{field} field is required'
+                    // ]
+                ],
                 'images' => [
                     'label' => 'Images',
-                    'rules' => 'max_size[images,4096]|is_image[images]|mime_in[images,image/gif,image/jpeg,image/png]',
+                    'rules' => 'uploaded[images.0]|max_size[images,4096]|is_image[images]|mime_in[images,image/gif,image/jpeg,image/png]',
                     'errors' => [
+                        'uploaded' => '{field} field is required',
                         'max_size' => 'Allowed maximum size is 4MB',
                         'is_image' => 'Uploaded files are not Image files',
                         'mime_in' => 'The Image type is not allowed. Allowed types : gif, jpeg, png'
@@ -279,65 +303,166 @@ class ReportLog extends BaseController
             if (!$this->validate($rules)) {
                 $data['validation'] = $this->validator;
             } else {
+
                 $cust_name = $data['customer']['name_customer'];
 
-                $ReportData = [
-                    'id_salesman' => $session->get('id_user'),
-                    'id_customer' => $id_customer,
-                    'date_report' => $this->request->getPost('date_report'),
-                    'cancellation_reason' => $this->request->getPost('cancellation-reason'),
-                ];
+                // Get Uploaded Files
+                $file = $this->request->getFiles();
 
-                try {
-                    // Insert Data Cancellation Report
-                    $insertData = $this->M_CancellationReport->save($ReportData);
-                } catch (\Exception $e) {
-                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Cancellation Report failed to add! Please try again ' . $this->M_CancellationReport->errors() . '</div>');
-                    return redirect()->to(site_url("account-executive"));
-                }
+                // Type of Report
+                $description = 'Cancellation';
 
-                if ($insertData) {
-                    // Get Insert ID
-                    $id_user_cancellation = $this->M_CancellationReport->getInsertID();
+                // Call Upload Images Function
+                $id_directories = $this->uploadImages($file, $cust_name, $description);
 
-                    // Get Files Uploaded
-                    $file = $this->request->getFiles();
-                    foreach ($file['images'] as $image) {
-                        if (!$image->isValid()) {
-                            $status = false;
-                            break;
-                        }
-                        $status = true;
+                if ($id_directories) {
+                    // dd($id_directories);
+                    $solutions = $this->request->getPost('solution');
+                    $ReportData = [
+                        'id_user' => $session->get('id_user'),
+                        'id_customer' => (int) $id_customer,
+                        'id_directories' => $id_directories,
+                        'date_report' => $this->request->getPost('date_report'),
+                        'start_time' => $this->request->getPost('start_time'),
+                        'end_time' => $this->request->getPost('end_time'),
+                        'description' => $this->request->getPost('description'),
+                        'suggestion_solution' => (!empty($solutions)) ? $solutions : NULL,
+                    ];
+
+                    try {
+                        $this->M_CancellationReport->save($ReportData);
+                        $this->M_Customer->update($id_customer, ['id_information' => 12]);
+                    } catch (\Exception $e) {
+                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to add! Please try again ' . $this->M_CancellationReport->errors() . '</div>');
+                        return redirect()->to(site_url("construction"));
                     }
 
-                    if ($status) {
-                        $type_report = 'cancellation';
-                        // Call Upload Image function
-                        $uploadImages = $this->uploadImages($file, $cust_name, $id_user_cancellation, $type_report);
-
-                        // If failed to upload
-                        if (!$uploadImages) {
-                            // Delete Last Inserted Data
-                            $this->M_CancellationReport->delete($id_user_cancellation);
-
-                            $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Cancellation Report failed to add! Please try again</div>');
-                            return redirect()->to(site_url("account-executive"));
-                        }
-                    }
-
-                    // Update status information customer
-                    $this->M_Customer->update($id_customer, ['id_information' => 12]);
-
-                    $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Cancellation Report added Successfully! Please wait for confirmation</div>');
-                    return redirect()->to(site_url("account-executive"));
+                    $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Problem Report added Successfully! Please wait for confirmation</div>');
+                    return redirect()->to(site_url("construction"));
                 } else {
-                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Cancellation Report failed to add! Please try again</div>');
-                    return redirect()->to(site_url("account-executive"));
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to add! Please try again</div>');
+                    return redirect()->to(site_url("construction"));
                 }
             }
         }
 
-        return view('account_executive/cancellation_report', $data);
+        return view('construction/problem_report_form', $data);
+    }
+
+    public function editProblemLog($id_user_cancellation)
+    {
+        $session = session();
+        $data['title'] = 'Edit Construction Log Form';
+        $data['user'] = $this->M_Auth->find($session->get('id_user'));
+        $data['role'] =  $this->M_Role->find($session->get('id_role'));
+        $data['notif'] = get_new_notif();
+
+        $data['cancellation_log'] = $this->M_CancellationReport->getReportLogById($id_user_cancellation);
+
+        if ($this->request->getMethod() == 'post') {
+            $rules = [
+                'date_report' => [
+                    'label' => 'Date',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'start_time' => [
+                    'label' => 'Start Time',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'end_time' => [
+                    'label' => 'End Time',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'description' => [
+                    'label' => 'Description',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'images' => [
+                    'label' => 'Images',
+                    'rules' => 'max_size[images,4096]|is_image[images]|mime_in[images,image/gif,image/jpeg,image/png]',
+                    'errors' => [
+                        // 'uploaded' => '{field} field is required',
+                        'is_image' => 'Uploaded files are not Image files.',
+                        'max_size' => 'Allowed maximum size is 4MB',
+                        'mime_in' => 'The Image type is not allowed. Allowed types : gif, jpeg, png'
+                    ],
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $data['validation'] = $this->validator;
+            } else {
+
+                // Get Uploaded Files
+                $file = $this->request->getFiles();
+
+                // Check If There's File Uploaded
+                if ($file['images'][0]->isValid() === true) {
+                    $cust_name = $this->request->getPost('customer');
+
+                    // Description of Report
+                    $description = 'Cancellation';
+
+                    // Call Upload Images Function
+                    $id_directories = $this->uploadImages($file, $cust_name, $description);
+
+                    if ($id_directories) {
+                        // dd($id_directories);
+                        $solutions = $this->request->getPost('solution');
+                        $ReportData = [
+                            'id_user_cancellation' => $id_user_cancellation,
+                            'id_user' => $session->get('id_user'),
+                            'id_customer' => (int) $data['cancellation_log']['id_customer'],
+                            'id_directories' => $id_directories,
+                            'date_report' => $this->request->getPost('date_report'),
+                            'start_time' => $this->request->getPost('start_time'),
+                            'end_time' => $this->request->getPost('end_time'),
+                            'description' => $this->request->getPost('description'),
+                            'suggestion_solution' => (!empty($solutions)) ? $solutions : NULL,
+                        ];
+                    } else {
+                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to add! Please try again</div>');
+                        return redirect()->to(site_url("construction"));
+                    }
+                } else {
+                    $ReportData = [
+                        'id_user_cancellation' => $id_user_cancellation,
+                        'id_user' => $session->get('id_user'),
+                        'id_customer' => (int) $data['cancellation_log']['id_customer'],
+                        'date_report' => $this->request->getPost('date_report'),
+                        'start_time' => $this->request->getPost('start_time'),
+                        'end_time' => $this->request->getPost('end_time'),
+                        'description' => $this->request->getPost('description'),
+                        'suggestion_solution' => (!empty($solutions)) ? $solutions : NULL,
+                    ];
+                }
+
+                try {
+                    $this->M_CancellationReport->save($ReportData);
+                } catch (\Exception $e) {
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to add! Please try again ' . $this->M_CancellationReport->errors() . '</div>');
+                    return redirect()->to(site_url("construction"));
+                }
+
+                $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Problem Report has been edited!</div>');
+                return redirect()->to(site_url("construction"));
+            }
+        }
+
+        // d($data['construction_log']);
+        return view('construction/edit_problem_log', $data);
     }
 
     public function editLog($id_user_report)
@@ -451,6 +576,29 @@ class ReportLog extends BaseController
 
         // d($data['construction_log']);
         return view('construction/edit_log_form', $data);
+    }
+
+    public function deleteProblemLog($id_user_cancellation)
+    {
+        $session = session();
+        $uri = service('uri');
+        $uri_id_customer = $uri->getSegment(3);
+        if (filter_var($uri_id_customer, FILTER_VALIDATE_INT)) {
+            $check = $this->M_CancellationReport->find($id_user_cancellation);
+            if ($check) {
+                try {
+                    $this->M_CancellationReport->delete($id_user_cancellation);
+                    $this->M_Customer->update($check['id_customer'], ['id_information' => 8]);
+                } catch (\Exception $e) {
+                    return redirect()->to(site_url('construction'))->with('message', '<div class="alert alert-danger" role="alert">There Something Went Wrong! Please Contact Admin</div>');
+                }
+                return redirect()->to(site_url('construction'))->with('message', '<div class="alert alert-success" role="alert">Log has been Deleted!</div>');
+            } else {
+                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Data is not found. Please check again!');
+            }
+        } else {
+            return redirect()->to(site_url('construction'))->with('message', '<div class="alert alert-danger" role="alert">Please check again!</div>');
+        }
     }
 
     public function deleteLog($id_user_report)

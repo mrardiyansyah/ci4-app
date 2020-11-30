@@ -230,6 +230,7 @@
                 </div>
             </div>
         </div>
+        <!-- Card Footer -->
         <div class="card-footer bg-white px-0 ">
             <div class="row">
                 <span class="col-auto  d-lg-inline font-weight-bold text-primary">Pengawas :</span>
@@ -263,58 +264,77 @@
             <div class="card shadow text-center mt-3 border-0">
                 <div class="card-header bg-transparent border-0">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <?php if ($customer['id_information'] == 8 || $customer['id_information'] == 12) : ?>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="reportLog-tab" data-toggle="tab" href="#reportLog" role="tab" aria-controls="reportLog" aria-selected="true">Report Log</a>
+                            </li>
+                        <?php endif; ?>
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link active" id="reportLog-tab" data-toggle="tab" href="#reportLog" role="tab" aria-controls="reportLog" aria-selected="true">Report Log</a>
+                            <a class="nav-link <?= ($customer['id_information'] != 8 && $customer['id_information'] != 12) ? 'active' : '' ?>" id="file-tab" data-toggle="tab" href="#file" role="tab" aria-controls="file" aria-selected="true">File</a>
                         </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="file-tab" data-toggle="tab" href="#file" role="tab" aria-controls="file" aria-selected="true">File</a>
-                        </li>
+                        <?php if (!empty($cancellation_report)) :  ?>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="problemLog-tab" data-toggle="tab" href="#problemLog" role="tab" aria-controls="problemLog" aria-selected="true">Problem Report Log</a>
+                            </li>
+                        <?php endif; ?>
                     </ul>
                 </div>
                 <div class="card-body">
                     <div class="tab-content" id="myTabContent">
                         <!-- Report Log Tab Pane -->
-                        <div class="tab-pane fade show active" id="reportLog" role="tabpanel" aria-labelledby="reportLog-tab">
-                            <!-- Button Create Report -->
-                            <div class="pb-3 d-sm-flex">
-                                <a href="<?= base_url('construction/log-form/' . $customer['id_customer']); ?>" class="btn btn-primary "><i class="fas fa-fw fa-file-alt"></i> Create Report</a>
-                            </div>
-                            <div>
-                                <table class="table table-bordered table-hover table-striped table-reportLog" style="width: 100%;">
-                                    <thead class="thead-dark">
-                                        <tr class="text-center">
-                                            <th scope="col">Date and Time</th>
-                                            <th scope="col">Description</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($report_log as $log) : ?>
-                                            <tr>
-                                                <td><i class="fas fa-fw fa-calendar-alt"></i><?= localizedDateString($log['date_report']); ?><br><?= localizedTimeString($log['start_time']); ?> - <?= localizedTimeString($log['end_time']); ?></td>
-                                                <td><?= excerpt($log['description'], NULL, 80); ?></td>
-                                                <td><span class="badge <?= $log['badge']; ?>"><?= $log['approval_status']; ?></span></td>
-                                                <td>
-                                                    <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
-                                                        <a href="#" class="btn btn-sm btn-info btn-edit-log" data-url="<?= base_url('construction'); ?>" data-id="<?= $log['id_user_report']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-edit"></i></a>
-                                                    </div>
-                                                    <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
-                                                        <form action="#" method="post">
-                                                            <?= csrf_field(); ?>
-                                                            <input type="hidden" name="_method" value="DELETE">
-                                                            <button class="btn btn-sm btn-danger btn-delete-log" data-url="<?= base_url('construction'); ?>" data-id="<?= $log['id_user_report']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-trash-alt" type="button"></i></button>
-                                                        </form>
-                                                    </div>
-                                                </td>
+                        <?php if ($customer['id_information'] == 8 || $customer['id_information'] == 12) : ?>
+                            <div class="tab-pane fade show active" id="reportLog" role="tabpanel" aria-labelledby="reportLog-tab">
+                                <!-- Button Create Report -->
+                                <div class="dropdown pb-3 d-sm-flex">
+                                    <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownReportLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        Create Report
+                                    </a>
+                                    <div class="dropdown-menu animate__animated animate__zoomIn animate__faster" aria-labelledby="dropdownReportLink">
+                                        <a class="dropdown-item text-primary" href="<?= base_url('construction/log-form/' . $customer['id_customer']); ?>"><i class="fas fa-fw fa-file-alt"></i> Construction Report</a>
+                                        <a class="dropdown-item text-success" href="<?= base_url('construction/energize/' . $customer['id_customer']); ?>"><i class="fas fa-fw fa-bolt"></i> Energizing</a>
+                                        <?php if (empty($cancellation_report)) : ?>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item text-danger" href="<?= base_url('construction/problem-form/' . $customer['id_customer']); ?>"><i class="fas fa-fw fa-exclamation-triangle"></i> Problem Report</a>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <div>
+                                    <table class="table table-bordered table-hover table-striped table-reportLog" style="width: 100%;">
+                                        <thead class="thead-dark">
+                                            <tr class="text-center">
+                                                <th scope="col">Date and Time</th>
+                                                <th scope="col">Description</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Action</th>
                                             </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($report_log as $log) : ?>
+                                                <tr>
+                                                    <td><i class="fas fa-fw fa-calendar-alt"></i><?= localizedDateString($log['date_report']); ?><br><?= localizedTimeString($log['start_time']); ?> - <?= localizedTimeString($log['end_time']); ?></td>
+                                                    <td><?= excerpt($log['description'], NULL, 80); ?></td>
+                                                    <td><span class="badge <?= $log['badge']; ?>"><?= $log['approval_status']; ?></span></td>
+                                                    <td>
+                                                        <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
+                                                            <a href="#" id="editReportLog" class="btn btn-sm btn-info btn-edit-log" data-url="<?= base_url('construction'); ?>" data-id="<?= $log['id_user_report']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-edit"></i></a>
+                                                        </div>
+                                                        <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
+                                                            <form action="#" method="post">
+                                                                <?= csrf_field(); ?>
+                                                                <input type="hidden" name="_method" value="DELETE">
+                                                                <button id="deleteReportLog" class="btn btn-sm btn-danger btn-delete-log" data-url="<?= base_url('construction'); ?>" data-id="<?= $log['id_user_report']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-trash-alt" type="button"></i></button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
+                        <?php endif; ?>
                         <!-- File Tab Pane -->
-                        <div class="tab-pane fade active" id="file" role="tabpanel" aria-labelledby="file-tab">
+                        <div class="tab-pane fade <?= ($customer['id_information'] != 8 && $customer['id_information'] != 12) ? 'show active' : '' ?>" id="file" role="tabpanel" aria-labelledby="file-tab">
                             <table class="table table-bordered table-hover table-striped table-file" style="width: 100%;">
                                 <thead class="thead-dark">
                                     <tr class="text-center">
@@ -359,7 +379,48 @@
                                 </tbody>
                             </table>
                         </div>
-
+                        <!-- Problem Report Log Tab Pane -->
+                        <?php if (!empty($cancellation_report)) : ?>
+                            <div class="tab-pane fade" id="problemLog" role="tabpanel" aria-labelledby="problemLog-tab">
+                                <div>
+                                    <table class="table table-bordered table-hover table-striped table-problemLog" style="width: 100%;">
+                                        <thead class="thead-dark">
+                                            <tr class="text-center">
+                                                <th scope="col">Date and Time</th>
+                                                <th scope="col">Description</th>
+                                                <th scope="col">Suggestion Solution</th>
+                                                <th scope="col">Solution</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($cancellation_report as $log) : ?>
+                                                <tr>
+                                                    <td><i class="fas fa-fw fa-calendar-alt"></i><?= localizedDateString($log['date_report']); ?><br><?= localizedTimeString($log['start_time']); ?> - <?= localizedTimeString($log['end_time']); ?></td>
+                                                    <td><?= excerpt($log['description'], NULL, 80); ?></td>
+                                                    <td><?= (!is_null($log['suggestion_solution'])) ? excerpt($log['suggestion_solution'], NULL, 80) : '-'; ?></td>
+                                                    <td><?= (!is_null($log['solutions'])) ? excerpt($log['solutions'], NULL, 80) : '-'; ?></td>
+                                                    <td><span class="badge <?= $log['badge']; ?>"><?= $log['approval_status']; ?></span></td>
+                                                    <td>
+                                                        <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
+                                                            <a href="#" id="editProblemLog" class="btn btn-sm btn-info btn-edit-log" data-url="<?= base_url('construction'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-edit"></i></a>
+                                                        </div>
+                                                        <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
+                                                            <form action="#" method="post">
+                                                                <?= csrf_field(); ?>
+                                                                <input type="hidden" name="_method" value="DELETE">
+                                                                <button id="deleteProblemLog" class="btn btn-sm btn-danger btn-delete-log" data-url="<?= base_url('construction'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-trash-alt" type="button"></i></button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -396,6 +457,13 @@
 </div>
 <!-- <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Est, vel a. Ipsa nulla soluta enim ducimus excepturi consectetur labore ut fuga, repellat exercitationem explicabo voluptas eveniet quia, sequi ab tempora.</p> -->
 <script>
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+        $($.fn.dataTable.tables(true)).DataTable()
+            .columns.adjust();
+        // .responsive.recalc();
+    });
+
+    // Table File
     $(document).ready(function() {
         $('.table-file').DataTable({
             'destroy': true,
@@ -421,6 +489,7 @@
         });
     });
 
+    // Table Report Log
     $(document).ready(function() {
         $('.table-reportLog').DataTable({
             'destroy': true,
@@ -449,6 +518,43 @@
             }, {
                 'targets': 1,
                 'orderable': false
+            }, {
+                'targets': 0,
+                'width': '120px'
+            }]
+        });
+    });
+
+    // Table Problem Log
+    $(document).ready(function() {
+        $('.table-problemLog').DataTable({
+            'destroy': true,
+            'dom': '<"float-sm-left"l>ftrip',
+            'responsive': true,
+            'pageLength': -1,
+            "lengthMenu": [
+                [5, 10, 25, 50, -1],
+                [5, 10, 25, 50, "All"]
+            ],
+            'scrollY': '350px',
+            'scrollX': true,
+            'scrollCollapse': true,
+            'fixedColumns': true,
+            'order': [
+                [0, "asc"]
+            ],
+            'columnDefs': [{
+                'targets': 5,
+                'searchable': false,
+                'orderable': false,
+                'width': '100px'
+            }, {
+                'targets': 4,
+                'width': '110px'
+            }, {
+                'targets': [1, 2, 3],
+                'orderable': false,
+                'width': '190px'
             }, {
                 'targets': 0,
                 'width': '120px'

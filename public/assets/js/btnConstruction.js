@@ -28,12 +28,21 @@ $(document).ready(function () {
         }
     });
 
-    $('a.btn-edit-log').on('click', function (e) {
+    $('a.btn-edit-log#editReportLog').on('click', function (e) {
         e.preventDefault();
         const url = $(this).data('url');
         const id_user_report = $(this).data('id');
 
         let href = url + '/edit-log-form/' + id_user_report;
+        window.location.href = href
+    });
+
+    $('a.btn-edit-log#editProblemLog').on('click', function (e) {
+        e.preventDefault();
+        const url = $(this).data('url');
+        const id_user_report = $(this).data('id');
+
+        let href = url + '/edit-problem-log/' + id_user_report;
         window.location.href = href
     });
 
@@ -68,7 +77,7 @@ $(document).ready(function () {
         }
     });
 
-    $('.btn-delete-log').on('click', function (e) {
+    $('.btn-delete-log#deleteReportLog').on('click', function (e) {
         e.preventDefault();
         const url = $(this).data('url');
         const id_user_report = $(this).data('id');
@@ -113,6 +122,58 @@ $(document).ready(function () {
         }
 
         // console.log(form_delete);
+
+    });
+
+    $('.btn-delete-log#deleteProblemLog').on('click', function (e) {
+        e.preventDefault();
+        const url = $(this).data('url');
+        const id_user_report = $(this).data('id');
+        const information = $(this).data('information');
+        let form_delete = $(this).closest("form")
+        // console.log(form_delete);
+        // console.log(url);
+        // console.log(id_user_report);
+        // console.log(information);
+
+        switch (information) {
+            case 'Waiting for Approval':
+                let href = url + '/delete-problem-log/' + id_user_report;
+                form_delete.attr('action', href);
+                Swal.fire({
+                    title: false,
+                    html: `Are you sure want to delete this log? This action cannot be undo.`,
+                    icon: 'warning',
+                    padding: '1em',
+                    width: 400,
+                    showCancelButton: true,
+                    cancelButtonText: `Cancel`,
+                    confirmButtonText: 'Delete',
+                    buttonsStyling: false,
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown animate__fast',
+                        icon: 'animate__animated animate__fadeIn animate__delay-1s animate__repeat-3'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutUp'
+                    },
+                    customClass: {
+                        confirmButton: 'btn btn-danger btn-sm font-small',
+                        cancelButton: 'btn btn-secondary btn-sm ml-3 font-small',
+                    }
+                }).then((result) => {
+                    if (result.value) {
+                        form_delete.submit();
+                    }
+                });
+                break;
+
+            default:
+                form_delete.attr('action', '#');
+                break;
+        }
+
+
 
     });
 });

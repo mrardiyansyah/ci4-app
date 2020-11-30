@@ -20,272 +20,319 @@
                     <hr>
                 </div>
             </div>
+            <!-- Customer and Company Profile -->
             <div class="row">
                 <div class="col">
-                    <a href="#customerProfile" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="customerProfile">
-                        <h5 class="font-weight-bold">Customer Profile</h5>
-                    </a>
-                    <div class="col">
-                        <div class="collapse show multi-collapse overflow-auto" id="customerProfile">
-                            <table class="table table-responsive-sm table-sm table-borderless">
-                                <tbody>
-                                    <tr>
-                                        <td>ID Pelanggan</td>
-                                        <td>:</td>
-                                        <td id="id_pelanggan"><?= $customer['id_pelanggan']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Alamat</td>
-                                        <td>:</td>
-                                        <td id="address_customer"><?= $customer['address_customer']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tarif</td>
-                                        <td>:</td>
-                                        <td id="tariff"><?= $customer['tariff']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Daya</td>
-                                        <td>:</td>
-                                        <td id="power"><?= $customer['power']; ?> VA</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Subsistem</td>
-                                        <td>:</td>
-                                        <td id="subsistem"><?= $customer['subsistem']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Substation</td>
-                                        <td>:</td>
-                                        <td id="substation"><?= $customer['name_substation']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="min-width: 140px;">Feeder Substation</td>
-                                        <td>:</td>
-                                        <td id="feeder_substation"><?= $customer['name_feeder_substation']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="min-width: 140px;">BEP Value</td>
-                                        <td>:</td>
-                                        <td id="bep-value"><?= $customer['bep_value']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Layanan</td>
-                                        <td>:</td>
-                                        <td><span class="badge <?= $customer['badge']; ?>"><?= $customer['type_of_service']; ?></span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Status</td>
-                                        <td>:</td>
-                                        <td><span class="badge <?= $customer['badge_status']; ?>"><?= $customer['status']; ?></span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Information</td>
-                                        <td>:</td>
-                                        <td><?= $customer['information']; ?></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div class="card shadow">
+                        <h6 class="card-header bg-gradient-info">
+                            <a data-toggle="collapse" href="#customerProfile" aria-expanded="true" aria-controls="customerProfile" id="heading-example" class="d-block text-decoration-none text-white">
+                                <i class="fas fa-chevron-down fa-pull-right "></i>
+                                <span class="">
+                                    Customer Profile
+                                </span>
+                            </a>
+                        </h6>
+                        <div id="customerProfile" class="collapse show multi-collapse overflow-auto" aria-labelledby="customerProfile-content">
+                            <div class="card-body">
+                                <table class="table table-responsive-sm table-sm table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td>ID Pelanggan</td>
+                                            <td>:</td>
+                                            <td id="id_pelanggan"><?= $customer['id_pelanggan']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Alamat</td>
+                                            <td>:</td>
+                                            <td id="address_customer"><?= $customer['address_customer']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tarif</td>
+                                            <td>:</td>
+                                            <td id="tariff"><?= $customer['tariff']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Daya</td>
+                                            <td>:</td>
+                                            <td id="power"><?= $customer['power']; ?> VA</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Subsistem</td>
+                                            <td>:</td>
+                                            <td id="subsistem"><?= $customer['subsistem']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Substation</td>
+                                            <td>:</td>
+                                            <td id="substation"><?= $customer['name_substation']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="min-width: 140px;">Feeder Substation</td>
+                                            <td>:</td>
+                                            <td id="feeder_substation"><?= $customer['name_feeder_substation']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="min-width: 140px;">BEP Value</td>
+                                            <td>:</td>
+                                            <td id="bep-value"><?= $customer['bep_value']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Layanan</td>
+                                            <td>:</td>
+                                            <td><span class="badge <?= $customer['badge']; ?>"><?= $customer['type_of_service']; ?></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Status</td>
+                                            <td>:</td>
+                                            <td><span class="badge <?= $customer['badge_status']; ?>"><?= $customer['status']; ?></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Information</td>
+                                            <td>:</td>
+                                            <td><?= $customer['information']; ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col">
-                    <a href="#companyProfile" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="companyProfile">
-                        <h5 class="font-weight-bold">Company Profile</h5>
-                    </a>
-                    <div class="col">
-                        <div class="collapse show multi-collapse overflow-auto" id="companyProfile">
-                            <table class="table table-sm table-borderless">
-                                <tbody>
-                                    <tr>
-                                        <td>Name</td>
-                                        <td>:</td>
-                                        <td id="name_company"><?= $customer['name_company']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Address</td>
-                                        <td>:</td>
-                                        <td id="address_company"><?= $customer['address_company']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Phone</td>
-                                        <td>:</td>
-                                        <td id="phone_company"><?= $customer['phone_company']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Facsimile</td>
-                                        <td>:</td>
-                                        <td id="facsimile"><?= $customer['facsimile']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Email</td>
-                                        <td>:</td>
-                                        <td id="email_company"><?= $customer['email_company']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Establishment</td>
-                                        <td>:</td>
-                                        <td id="date_of_establishment"><?= localizedTimeString($customer['date_of_establishment']); ?></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div class="card shadow">
+                        <h6 class="card-header bg-gradient-info">
+                            <a data-toggle="collapse" href="#companyProfile" aria-expanded="true" aria-controls="companyProfile" id="heading-example" class="d-block text-decoration-none text-white">
+                                <i class="fas fa-chevron-down fa-pull-right"></i>
+                                Company Profile
+                            </a>
+                        </h6>
+                        <div id="companyProfile" class="collapse show multi-collapse overflow-auto" aria-labelledby="companyProfile-content">
+                            <div class="card-body">
+                                <table class="table table-sm table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>:</td>
+                                            <td id="name_company"><?= $customer['name_company']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Address</td>
+                                            <td>:</td>
+                                            <td id="address_company"><?= $customer['address_company']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Phone</td>
+                                            <td>:</td>
+                                            <td id="phone_company"><?= $customer['phone_company']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Facsimile</td>
+                                            <td>:</td>
+                                            <td id="facsimile"><?= $customer['facsimile']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td>
+                                            <td>:</td>
+                                            <td id="email_company"><?= $customer['email_company']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Establishment</td>
+                                            <td>:</td>
+                                            <td id="date_of_establishment"><?= localizedDateString($customer['date_of_establishment']); ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Divider -->
             <hr>
+
+            <!--  -->
             <div class="row">
+                <!-- Chief Company -->
                 <div class="col">
-                    <a href="#companyLeader" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="companyLeader">
-                        <h5 class="font-weight-bold">Chief / Leader</h5>
-                    </a>
-                    <div class="col">
-                        <div class="collapse show multi-collapse overflow-auto" id="companyLeader">
-                            <table class="table table-sm table-borderless">
-                                <tbody>
-                                    <tr>
-                                        <td>Name</td>
-                                        <td>:</td>
-                                        <td id="name_company_leader"><?= $customer['name_company_leader']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Position</td>
-                                        <td>:</td>
-                                        <td id="position_company_leader"><?= $customer['position_company_leader']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Phone</td>
-                                        <td>:</td>
-                                        <td id="phone_company_leader"><?= $customer['phone_company_leader']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Email</td>
-                                        <td>:</td>
-                                        <td id="email_company_leader"><?= $customer['email_company_leader']; ?></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div class="card shadow">
+                        <h6 class="card-header bg-gradient-info">
+                            <a data-toggle="collapse" href="#companyLeader" aria-expanded="true" aria-controls="companyLeader" id="heading-example" class="d-block text-decoration-none text-white collapsed">
+                                <i class="fas fa-chevron-down fa-pull-right"></i>
+                                Chief Company
+                            </a>
+                        </h6>
+                        <div id="companyLeader" class="collapse multi-collapse overflow-auto" aria-labelledby="companyLeader-content">
+                            <div class="card-body">
+                                <table class="table table-sm table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>:</td>
+                                            <td id="name_company_leader"><?= $customer['name_company_leader'] ?? '-'; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Position</td>
+                                            <td>:</td>
+                                            <td id="position_company_leader"><?= $customer['position_company_leader'] ?? '-'; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Phone</td>
+                                            <td>:</td>
+                                            <td id="phone_company_leader"><?= $customer['phone_company_leader'] ?? '-'; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td>
+                                            <td>:</td>
+                                            <td id="email_company_leader"><?= $customer['email_company_leader'] ?? '-'; ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- Finance Affairs -->
                 <div class="col">
-                    <a href="#companyFinance" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="companyFinance">
-                        <h5 class="font-weight-bold">Finance Affair</h5>
-                    </a>
-                    <div class="col">
-                        <div class="collapse show multi-collapse overflow-auto" id="companyFinance">
-                            <table class="table table-sm table-borderless">
-                                <tbody>
-                                    <tr>
-                                        <td>Name</td>
-                                        <td>:</td>
-                                        <td id="name_company_finance"><?= $customer['name_company_finance'] ?? '-'; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Position</td>
-                                        <td>:</td>
-                                        <td id="position_company_finance"><?= $customer['position_company_finance'] ?? '-'; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Phone</td>
-                                        <td>:</td>
-                                        <td id="phone_company_finance"><?= $customer['phone_company_finance'] ?? '-'; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Email</td>
-                                        <td>:</td>
-                                        <td id="email_company_finance"><?= $customer['email_company_finance'] ?? '-'; ?></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div class="card shadow">
+                        <h6 class="card-header bg-gradient-info">
+                            <a data-toggle="collapse" href="#companyFinance" aria-expanded="true" aria-controls="companyFinance" id="heading-example" class="d-block text-decoration-none text-white collapsed">
+                                <i class="fas fa-chevron-down fa-pull-right"></i>
+                                Finance Affairs
+                            </a>
+                        </h6>
+                        <div id="companyFinance" class="collapse multi-collapse overflow-auto" aria-labelledby="companyFinance-content">
+                            <div class="card-body">
+                                <table class="table table-sm table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>:</td>
+                                            <td id="name_company_finance"><?= $customer['name_company_finance'] ?? '-'; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Position</td>
+                                            <td>:</td>
+                                            <td id="position_company_finance"><?= $customer['position_company_finance'] ?? '-'; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Phone</td>
+                                            <td>:</td>
+                                            <td id="phone_company_finance"><?= $customer['phone_company_finance'] ?? '-'; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td>
+                                            <td>:</td>
+                                            <td id="email_company_finance"><?= $customer['email_company_finance'] ?? '-'; ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- Engineering Affairs -->
                 <div class="col">
-                    <a href="#companyEngineering" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="companyEngineering">
-                        <h5 class="font-weight-bold">Engineering Affair</h5>
-                    </a>
-                    <div class="col">
-                        <div class="collapse show multi-collapse overflow-auto" id="companyEngineering">
-                            <table class="table table-sm table-borderless">
-                                <tbody>
-                                    <tr>
-                                        <td>Name</td>
-                                        <td>:</td>
-                                        <td id="name_company_engineering"><?= $customer['name_company_engineering'] ?? '-'; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Position</td>
-                                        <td>:</td>
-                                        <td id="position_company_engineering"><?= $customer['position_company_engineering'] ?? '-'; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Phone</td>
-                                        <td>:</td>
-                                        <td id="phone_company_engineering"><?= $customer['phone_company_engineering'] ?? '-'; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Email</td>
-                                        <td>:</td>
-                                        <td id="email_company_engineering"><?= $customer['email_company_engineering'] ?? '-'; ?></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div class="card shadow">
+                        <h6 class="card-header bg-gradient-info">
+                            <a data-toggle="collapse" href="#companyEngineering" aria-expanded="true" aria-controls="companyEngineering" id="heading-example" class="d-block text-decoration-none text-white collapsed">
+                                <i class="fas fa-chevron-down fa-pull-right"></i>
+                                Engineering Affairs
+                            </a>
+                        </h6>
+                        <div id="companyEngineering" class="collapse multi-collapse overflow-auto" aria-labelledby="companyEngineering-content">
+                            <div class="card-body">
+                                <table class="table table-sm table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>:</td>
+                                            <td id="name_company_engineering"><?= $customer['name_company_engineering'] ?? '-'; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Position</td>
+                                            <td>:</td>
+                                            <td id="position_company_engineering"><?= $customer['position_company_engineering'] ?? '-'; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Phone</td>
+                                            <td>:</td>
+                                            <td id="phone_company_engineering"><?= $customer['phone_company_engineering'] ?? '-'; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td>
+                                            <td>:</td>
+                                            <td id="email_company_engineering"><?= $customer['email_company_engineering'] ?? '-'; ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- General Affairs -->
                 <div class="col">
-                    <a href="#companyGeneral" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="companyGeneral">
-                        <h5 class="font-weight-bold">General Affair</h5>
-                    </a>
-                    <div class="col">
-                        <div class="collapse show multi-collapse overflow-auto" id="companyGeneral">
-                            <table class="table table-sm table-borderless">
-                                <tbody>
-                                    <tr>
-                                        <td>Name</td>
-                                        <td>:</td>
-                                        <td id="name_company_general"><?= $customer['name_company_general'] ?? '-'; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Position</td>
-                                        <td>:</td>
-                                        <td id="position_company_general"><?= $customer['position_company_general'] ?? '-'; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Phone</td>
-                                        <td>:</td>
-                                        <td id="phone_company_general"><?= $customer['phone_company_general'] ?? '-'; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Email</td>
-                                        <td>:</td>
-                                        <td id="email_company_general"><?= $customer['email_company_general'] ?? '-'; ?></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div class="card shadow">
+                        <h6 class="card-header bg-gradient-info">
+                            <a data-toggle="collapse" href="#companyGeneral" aria-expanded="true" aria-controls="companyGeneral" id="heading-example" class="d-block text-decoration-none text-white collapsed">
+                                <i class="fas fa-chevron-down fa-pull-right"></i>
+                                General Affairs
+                            </a>
+                        </h6>
+                        <div id="companyGeneral" class="collapse multi-collapse overflow-auto" aria-labelledby="companyGeneral-content">
+                            <div class="card-body">
+                                <table class="table table-sm table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>:</td>
+                                            <td id="name_company_general"><?= $customer['name_company_general'] ?? '-'; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Position</td>
+                                            <td>:</td>
+                                            <td id="position_company_general"><?= $customer['position_company_general'] ?? '-'; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Phone</td>
+                                            <td>:</td>
+                                            <td id="phone_company_general"><?= $customer['phone_company_general'] ?? '-'; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td>
+                                            <td>:</td>
+                                            <td id="email_company_general"><?= $customer['email_company_general'] ?? '-'; ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Card Footer -->
         <div class="card-footer bg-white px-0 ">
             <div class="row">
-                <?php if (is_null($customer['id_pengawas'])) { ?>
-                    <div class="col">
-                        <button data-toggle="modal" data-target="#pilihPengawas" id="btn-pilih-pengawas" class="btn btn-sm btn-primary btn-pengawas float-right animate__animated animate__pulse animate__slow animate__infinite"><i class="fas fa-fw fa-user-check"></i> Pilih Pengawas Konstruksi</button>
+                <div class="col-auto">
+                    <?php if (is_null($customer['id_pengawas'])) { ?>
+                        <div class="col">
+                            <button data-toggle="modal" data-target="#pilihPengawas" id="btn-pilih-pengawas" class="btn btn-sm btn-primary btn-pengawas float-right animate__animated animate__pulse animate__slow animate__infinite"><i class="fas fa-fw fa-user-check"></i> Pilih Pengawas Konstruksi</button>
+                        </div>
+                    <?php } else if ($pengawas['image'] == 'default.jpg') { ?>
+                        <span class="col-auto  d-lg-inline font-weight-bold text-primary">Pengawas :</span>
+                        <img class="d-lg-inline rounded-circle" src="<?= base_url('assets/img/profile/' . $pengawas['image']); ?>" width="35" height="35">
+                        <span class="ml-2 d-lg-inline text-gray-600 small"><?= $pengawas['name']; ?> </span>
+                    <?php } else { ?>
+                        <span class="col-auto  d-lg-inline font-weight-bold text-primary">Pengawas :</span>
+                        <img class="d-lg-inline rounded-circle" src="<?= base_url('assets/img/profile/' . $pengawas['id_user'] . '/' . $pengawas['image']); ?>" width="35" height="35">
+                        <span class="ml-2 d-lg-inline text-gray-600 small"><?= $pengawas['name']; ?> </span>
+                    <?php } ?>
+                </div>
+                <?php if ($customer['id_information'] == 8) { ?>
+                    <div class="ml-auto col-auto d-sm-inline d-none">
+                        <span class="text-warning small font-weight-bolder animate__animated animate__flash animate__infinite animate__slower">&#8226; On Construction</span>
                     </div>
-                <?php } else { ?>
-                    <span class="col-auto d-none d-lg-inline font-weight-bold text-primary">Pengawas :</span>
-                    <div class="col-auto">
-                        <?php if ($pengawas['image'] == 'default.jpg') { ?>
-                            <img class="d-lg-inline rounded-circle" src="<?= base_url('assets/img/profile/' . $pengawas['image']); ?>" width="35" height="35">
-                        <?php } else { ?>
-                            <img class="d-lg-inline rounded-circle" src="<?= base_url('assets/img/profile/' . $pengawas['id_user'] . '/' . $pengawas['image']); ?>" width="35" height="35">
-                        <?php } ?>
-                        <span class="ml-2 d-none d-lg-inline text-gray-600 small"><?= $pengawas['name']; ?> </span>
-                    </div>
-                <?php } ?>
+                <?php }  ?>
             </div>
         </div>
     </div>
@@ -296,20 +343,70 @@
             <div class="card shadow text-center mt-3 border-0">
                 <div class="card-header bg-transparent border-0">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <?php if ($customer['id_information'] == 8) : ?>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="reportLog-tab" data-toggle="tab" href="#reportLog" role="tab" aria-controls="reportLog" aria-selected="true">Report Log</a>
+                            </li>
+                        <?php endif; ?>
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link active" id="file-tab" data-toggle="tab" href="#file" role="tab" aria-controls="file" aria-selected="true">File</a>
+                            <a class="nav-link <?= ($customer['id_information'] != 8) ? 'active' : '' ?>" id="file-tab" data-toggle="tab" href="#file" role="tab" aria-controls="file" aria-selected="true">File</a>
                         </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Laporan</a>
-                        </li>
-                        <!-- <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
-                        </li> -->
                     </ul>
                 </div>
                 <div class="card-body">
                     <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="file" role="tabpanel" aria-labelledby="file-tab">
+                        <?php if ($customer['id_information'] == 8) : ?>
+                            <!-- Report Log Tab Pane -->
+                            <div class="tab-pane fade show active" id="reportLog" role="tabpanel" aria-labelledby="reportLog-tab">
+                                <!-- Button Create Report -->
+                                <div class="pb-3 d-sm-flex dropdown">
+                                    <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownReportLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Dropdown link
+                                    </a>
+
+                                    <div class="dropwdown-menu" aria-labelledby="dropdownReportLink">
+                                        <a href="<?= base_url('construction/log-form/' . $customer['id_customer']); ?>" class="dropdown-item"><i class="fas fa-fw fa-file-alt"></i> Create Report</a>
+
+                                    </div>
+                                </div>
+                                <div>
+                                    <table class="table table-bordered table-hover table-striped table-reportLog" style="width: 100%;">
+                                        <thead class="thead-dark">
+                                            <tr class="text-center">
+                                                <th scope="col">Date and Time</th>
+                                                <th scope="col">Description</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($report_log as $log) : ?>
+                                                <tr>
+                                                    <td><i class="fas fa-fw fa-calendar-alt"></i><?= localizedDateString($log['date_report']); ?><br><?= localizedTimeString($log['start_time']); ?> - <?= localizedTimeString($log['end_time']); ?></td>
+                                                    <td><?= excerpt($log['description'], NULL, 80); ?></td>
+                                                    <td><span class="badge <?= $log['badge']; ?>"><?= $log['approval_status']; ?></span></td>
+                                                    <td>
+                                                        <a href="#" class="btn btn-sm btn-info btn-view-report" title="See Report Log"><i class="fas fa-eye"></i></a>
+                                                        <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
+                                                            <a href="#" class="btn btn-sm btn-success btn-approve-log" data-url="<?= base_url('construction'); ?>" data-id="<?= $log['id_user_report']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-check"></i></a>
+                                                        </div>
+                                                        <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
+                                                            <form action="#" method="post">
+                                                                <?= csrf_field(); ?>
+                                                                <input type="hidden" name="_method" value="DELETE">
+                                                                <button class="btn btn-sm btn-danger btn-reject-log" data-url="<?= base_url('construction'); ?>" data-id="<?= $log['id_user_report']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-fw fa-times" type="button"></i></button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                        <!-- File Tab Pane -->
+                        <div class="tab-pane fade <?= ($customer['id_information'] != 8) ? 'show active' : '' ?>" id="file" role="tabpanel" aria-labelledby="file-tab">
                             <table class="table table-bordered table-hover table-striped table-file" style="width: 100%;">
                                 <thead class="thead-dark">
                                     <tr class="text-center">
@@ -354,8 +451,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quod rerum esse, illo quibusdam ipsum reprehenderit aperiam repudiandae accusantium beatae voluptatem dolores corrupti earum rem, odio provident assumenda. Quis, porro odio?</div>
-                        <!-- <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate excepturi molestias dolores consectetur iste quidem unde delectus id eveniet quos odio maiores tempora minima quod quaerat, nihil nesciunt aspernatur perspiciatis!</div> -->
+
                     </div>
                 </div>
             </div>
@@ -421,6 +517,12 @@
 </div>
 
 <script>
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+        $($.fn.dataTable.tables(true)).DataTable()
+            .columns.adjust();
+        // .responsive.recalc();
+    });
+
     $(document).ready(function() {
         $('.table-file').DataTable({
             'destroy': true,
@@ -443,12 +545,41 @@
                 'searchable': false,
                 'orderable': false
             }]
-            //     'targets': [2, 3],
-            //     'width': '85px'
-            // }, {
-            //     'targets': 6,
-            //     'width': "161px"
-            // }],
+        });
+    });
+
+    $(document).ready(function() {
+        $('.table-reportLog').DataTable({
+            'destroy': true,
+            'dom': '<"float-sm-left"l>ftrip',
+            'responsive': true,
+            'pageLength': -1,
+            "lengthMenu": [
+                [5, 10, 25, 50, -1],
+                [5, 10, 25, 50, "All"]
+            ],
+            'scrollY': '350px',
+            'scrollX': true,
+            'scrollCollapse': true,
+            'fixedColumns': true,
+            'order': [
+                [0, "asc"]
+            ],
+            'columnDefs': [{
+                'targets': 3,
+                'searchable': false,
+                'orderable': false,
+                'width': '120px'
+            }, {
+                'targets': 2,
+                'width': '110px'
+            }, {
+                'targets': 1,
+                'orderable': false
+            }, {
+                'targets': 0,
+                'width': '120px'
+            }]
         });
     });
 </script>

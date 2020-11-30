@@ -22,7 +22,7 @@
                                 <input type="text" class="form-control form-control-sm" id="customer" name="customer" value="<?= $customer['name_customer']; ?>" readonly>
                             </div>
                         </div>
-                        <div class="form-group ">
+                        <div class="form-group">
                             <label for="app_letter" class="col-sm col-form-label-sm">Application Letter Customer</label>
                             <div class="col-sm-6">
                                 <div class="custom-file">

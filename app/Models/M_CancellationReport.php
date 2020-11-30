@@ -12,14 +12,45 @@ class M_CancellationReport extends Model
     // protected $returnType     = 'array';
     // protected $useSoftDeletes = true;
 
-    protected $allowedFields = ['id_salesman', 'id_customer', 'cancellation_reason', 'date_report'];
+    protected $allowedFields = ['id_user', 'id_customer', 'id_directories', 'id_approval_status', 'description', 'date_report', 'start_time', 'end_time', 'suggestion_solution', 'solutions'];
 
     protected $useTimestamps = true;
+    protected $useSoftDeletes = true;
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
-    // protected $deletedField  = 'deleted_at';
+    protected $deletedField  = 'deleted_at';
 
     // protected $validationRules    = [];
     // protected $validationMessages = [];
     // protected $skipValidation     = false;
+
+    public function getCancellationReport($id_user, $id_customer)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('user_cancellation.*, user.name, approval_status.*');
+        return $builder
+            ->where('user_cancellation.id_user', $id_user)
+            ->where('id_customer', $id_customer)
+            ->where('deleted_at', NULL)
+            ->join('user', 'user_cancellation.id_user = user.id_user')
+            ->join(
+                'approval_status',
+                'user_cancellation.id_approval_status = approval_status.id_approval_status'
+            )
+            ->get()
+            ->getResultArray();
+    }
+
+    public function getReportLogById($id_user_cancellation)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('user_cancellation.*, user.name, customer.name_customer, approval_status.*');
+        return $builder
+            ->where('id_user_cancellation', $id_user_cancellation)
+            ->join('user', 'user_cancellation.id_user = user.id_user')
+            ->join('customer', 'user_cancellation.id_customer = customer.id_customer')
+            ->join('approval_status', 'user_cancellation.id_approval_status = approval_status.id_approval_status')
+            ->get()
+            ->getRowArray();
+    }
 }

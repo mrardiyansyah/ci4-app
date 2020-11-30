@@ -10,16 +10,18 @@ use App\Models\M_Role;
 use App\Models\M_UserClosing;
 use App\Models\M_Directories;
 use App\Models\M_Files;
+use App\Models\M_UserReport;
 
 class WorkOrder extends BaseController
 {
-    protected $M_Auth, $M_Role, $M_Customer, $M_UserClosing, $M_Directories, $M_Files, $CustomerModel;
+    protected $M_Auth, $M_Role, $M_Customer, $M_UserReport, $M_UserClosing, $M_Directories, $M_Files, $CustomerModel;
 
 
     public function __construct()
     {
         $this->M_Auth = new M_Auth();
         $this->M_Role = new M_Role();
+        $this->M_UserReport = new M_UserReport();
         $this->M_Customer = new M_Customer();
         $this->M_UserClosing = new M_UserClosing();
         $this->M_Directories = new M_Directories();
@@ -56,9 +58,12 @@ class WorkOrder extends BaseController
         $data['file_construction'] =
             $this->M_Files->getInfoFileForConstruction($id_dir_file['id_reksis_sld'], $id_dir_file['id_working_order']);
 
+
         // Jika sudah ditentukan pengawasnya
         if (!is_null($data['customer']['id_pengawas'])) {
             $data['pengawas'] = $this->M_Auth->find($data['customer']['id_pengawas']);
+            // Data Report Log
+            $data['report_log'] = $this->M_UserReport->getReportLog($session->get('id_user'), $id_customer);
         }
 
         $data['user_construction'] = $this->M_Auth->where('id_role', 5)->find();

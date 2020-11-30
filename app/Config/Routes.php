@@ -172,11 +172,20 @@ $routes->group('construction', ['filter' => 'auth'], function ($routes) {
 	// Construction Log Form
 	$routes->add('log-form/(:num)', 'Construction\ReportLog::index/$1');
 
+	// Problem Report Form
+	$routes->add('problem-form/(:num)', 'Construction\ReportLog::problemReport/$1');
+
 	// Edit Log Form
 	$routes->add('edit-log-form/(:num)', 'Construction\ReportLog::editLog/$1');
+	$routes->add('edit-problem-log/(:num)', 'Construction\ReportLog::editProblemLog/$1');
 
 	// Delete Log
 	$routes->delete('delete-log/(:num)', 'Construction\ReportLog::deleteLog/$1');
+	$routes->delete('delete-problem-log/(:num)', 'Construction\ReportLog::deleteProblemLog/$1');
+
+	// Energizing
+	$routes->get('energize/(:num)', 'Construction\Energize::index/$1');
+	$routes->post('energize/(:num)', 'Construction\Energize::addEnergize/$1');
 });
 
 // Managers

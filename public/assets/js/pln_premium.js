@@ -112,7 +112,16 @@ $('.btn-pdf-viewer').on('click', function (e) {
 	$('#modalPDF').modal('show');
 });
 
-$('btn-pilih-pengawas').on('click', function (e) {
-	e.preventDefault
-	// $('#pilihPengawas').modal('show');
+$('.custom-file-input').on('change', function (e) {
+	let fileName = $(this).val().split('\\').pop();
+	let numFiles = e.target.files.length;
+
+	if (numFiles > 1) {
+		$(this).next('.custom-file-label').addClass("selected alert-info").removeClass("alert-danger").html(numFiles + " Files selected");
+	} else if (numFiles == 1) {
+		$(this).next('.custom-file-label').addClass("selected alert-info").removeClass("alert-danger").html(fileName);
+	} else {
+		$(this).next('.custom-file-label').addClass("selected alert-danger").html('No File Selected');
+	}
+
 });
