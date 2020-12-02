@@ -105,13 +105,6 @@ $('.btn-delete-role').on('click', function (e) {
 	});
 });
 
-$('.btn-pdf-viewer').on('click', function (e) {
-	e.preventDefault();
-	const url = $(this).data('url');
-	$('#pdf-viewer').attr('src', url);
-	$('#modalPDF').modal('show');
-});
-
 $('.custom-file-input').on('change', function (e) {
 	let fileName = $(this).val().split('\\').pop();
 	let numFiles = e.target.files.length;
@@ -124,4 +117,52 @@ $('.custom-file-input').on('change', function (e) {
 		$(this).next('.custom-file-label').addClass("selected alert-danger").html('No File Selected');
 	}
 
+});
+
+function localizedDate(date) {
+	return moment(date).locale('id').format('DD MMMM YYYY');
+}
+
+$('.btn-view-report').on('click', function (e) {
+	e.preventDefault();
+	let id_report = $(this).data('id');
+	const url = $(this).data('url');
+	const base_url = $(this).data('baseurl');
+	$.ajax({
+		type: "POST",
+		url: `${url}/${id_report}`,
+		// data: "data",
+		dataType: "JSON",
+		success: function (data) {
+			$("td#data-date").text(localizedDate(data.data.date_report));
+			$("td#data-time").text((data.data.start_time) + " - " + (data.data.end_time));
+			$("td#data-user").text(data.data.name_customer);
+			$("td#data-status").html(
+				`<span class='badge ` + data.data.badge + `'>` + data.data.approval_status + `</span>`
+			);
+			$("td#data-description").html(
+				`<p>` + data.data.description + `</p>`
+			);
+
+			$.each(data.images, function (k, v) {
+				// console.log(v);
+				let active_item = (k == 0) ? 'active' : '';
+				let source = `${base_url}/${v.file_path}`;
+				$('#carousel-item-image').append(
+					`<div class="carousel-item ${active_item}"><img src="${source}" style="width: 100%; height: auto; aspect-ratio: 16/9;}" alt="item${k+1}">
+                        </div>`
+				);
+				$('ol.carousel-indicators').append(
+					`<li class="${active_item}" data-slide-to="${k}" data-target="#projectAsel">
+                            <img alt="" src="${source}">
+                        </li>`
+				);
+			});
+		}
+	});
+});
+
+$("#modalReport").on("hidden.bs.modal", function () {
+	$("#carousel-item-image").html("");
+	$("ol.carousel-indicators").html("");
 });
