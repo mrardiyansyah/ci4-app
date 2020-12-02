@@ -32,6 +32,7 @@
     <!-- Custom Data Tables for this template -->
     <link href="<?= base_url('assets/css/set2.css'); ?>" rel="stylesheet">
     <link href="<?= base_url('assets/css/lpremium.css'); ?>" rel="stylesheet">
+    <link href="<?= base_url('assets/css/modalReport.css'); ?>" rel="stylesheet">
 
     <!-- Dropzone JS -->
     <link href="<?= base_url('assets/css/dropzone.css'); ?>" rel="stylesheet">

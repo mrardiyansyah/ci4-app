@@ -9,12 +9,11 @@ use App\Models\CustomerModel;
 use App\Models\M_Role;
 use App\Models\M_Directories;
 use App\Models\M_Files;
-use App\Models\M_UserReport;
-use App\Models\M_CancellationReport;
+use App\Models\M_UserEnergize;
 
 class Energize extends BaseController
 {
-    protected $M_Auth, $M_Role, $M_Customer, $M_Directories, $M_Files, $M_UserReport, $M_CancellationReport, $CustomerModel;
+    protected $M_Auth, $M_Role, $M_Customer, $M_Directories, $M_Files, $M_UserEnergize, $CustomerModel;
 
     public function __construct()
     {
@@ -23,8 +22,8 @@ class Energize extends BaseController
         $this->M_Customer = new M_Customer();
         $this->M_Directories = new M_Directories();
         $this->M_Files = new M_Files();
-        $this->M_UserReport = new M_UserReport();
-        $this->M_CancellationReport = new M_CancellationReport();
+        $this->M_UserEnergize = new M_UserEnergize();
+
         $db = db_connect();
         $this->CustomerModel = new CustomerModel($db);
     }
@@ -38,99 +37,115 @@ class Energize extends BaseController
         $data['notif'] = get_new_notif();
 
         $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
-        $data['validation'] = \Config\Services::validation();
 
-        return view('construction/energize', $data);
-    }
-
-    public function addEnergize($id_customer)
-    {
-        $session = session();
-
-        $rules = [
-            'ba_aco' => [
-                'label' => 'Record of ACO Installation',
-                'rules' => 'uploaded[ba_aco.0]|max_size[ba_aco,10240]|mime_in[ba_aco,application/pdf]',
-                'errors' => [
-                    'uploaded' => '{field} field is required',
-                    'is_image' => 'Uploaded files are not Image files.',
-                    'max_size' => 'Allowed maximum size is 10MB',
-                    'mime_in' => 'The File type is not allowed. Allowed types : .pdf'
+        if ($this->request->getMethod() == 'post') {
+            $rules = [
+                'ba_aco' => [
+                    'label' => 'Record of ACO Installation',
+                    'rules' => 'uploaded[ba_aco]|max_size[ba_aco,10240]|mime_in[ba_aco,application/pdf]',
+                    'errors' => [
+                        'uploaded' => '{field} field is required',
+                        'max_size' => 'Allowed maximum size is 10MB',
+                        'mime_in' => 'The File type is not allowed. Allowed types : .pdf'
+                    ],
                 ],
-            ],
-            'wo_energize' => [
-                'label' => 'Work Order',
-                'rules' => 'uploaded[wo_energize.0]|max_size[wo_energize,4096]|mime_in[wo_energize,application/pdf',
-                'errors' => [
-                    'uploaded' => '{field} field is required',
-                    'is_image' => 'Uploaded files are not Image files.',
-                    'max_size' => 'Allowed maximum size is 4MB',
-                    'mime_in' => 'The File type is not allowed. Allowed types : .pdf'
+                'working_order' => [
+                    'label' => 'Work Order',
+                    'rules' => 'uploaded[working_order]|max_size[working_order,10240]|mime_in[working_order,application/pdf]',
+                    'errors' => [
+                        'uploaded' => '{field} field is required',
+                        'max_size' => 'Allowed maximum size is 10MB',
+                        'mime_in' => 'The File type is not allowed. Allowed types : .pdf'
+                    ],
                 ],
-            ],
-            'images' => [
-                'label' => 'Images',
-                'rules' => 'uploaded[images]|max_size[images,4096]|is_image[images]|mime_in[images,image/gif,image/jpeg,image/png]',
-                'errors' => [
-                    'uploaded' => '{field} field is required',
-                    'is_image' => 'Uploaded files are not Image files.',
-                    'max_size' => 'Allowed maximum size is 4MB',
-                    'mime_in' => 'The Image type is not allowed. Allowed types : gif, jpeg, png'
+                'images' => [
+                    'label' => 'Images',
+                    'rules' => 'uploaded[images]|max_size[images,4096]|is_image[images]|mime_in[images,image/gif,image/jpeg,image/png]',
+                    'errors' => [
+                        'uploaded' => '{field} field is required',
+                        'is_image' => 'Uploaded files are not Image files.',
+                        'max_size' => 'Allowed maximum size is 4MB',
+                        'mime_in' => 'The Image type is not allowed. Allowed types : gif, jpeg, png'
+                    ],
                 ],
-            ],
-            'notes' => [
-                'label' => 'Notes',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} field is required'
-                ]
-            ],
-        ];
+                'notes' => [
+                    'label' => 'Notes',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+            ];
 
-        if (!$this->validate($rules)) {
-            // Validator with rules
-            $validation = \Config\Services::validation();
-            return redirect()->back()->withInput()->with('validation', $validation);
-            // dd($validation);
-        } else {
-            $cust_name = $this->request->getPost('customer');
+            if (!$this->validate($rules)) {
+                // Validator with rules
+                $data['validation'] = $this->validator;
+            } else {
+                $cust_name = $this->request->getPost('customer');
 
-            // Get Uploaded Files
-            $file = $this->request->getFiles();
+                // Get Uploaded Files
+                $file = $this->request->getFiles();
 
-            // Type of Report
-            $description = 'Construction Log';
+                $file_ba_aco = $file['ba_aco'];
+                $file_wo = $file['working_order'];
+                $file_documentation = $file['images'];
 
-            // Call Upload Files Function
-            $id_directories = $this->uploadFiles($file, $cust_name, $description);
+                if ($file_ba_aco[0]->isValid()) {
+                    $description_ba_aco = 'Record of ACO Installation';
+                    $id_directories_ba_aco = $this->uploadFiles($file_ba_aco, $cust_name, $description_ba_aco);
+                }
 
-            if ($id_directories) {
-
-                // dd($id_directories);
-                $ReportData = [
-                    'id_user' => $session->get('id_user'),
-                    'id_customer' => (int) $id_customer,
-                    'id_directories' => $id_directories,
-                    'date_report' => $this->request->getPost('date_report'),
-                    'start_time' => $this->request->getPost('start_time'),
-                    'end_time' => $this->request->getPost('end_time'),
-                    'description' => $this->request->getPost('description'),
-                ];
-
-                try {
-                    $this->M_UserReport->save($ReportData);
-                } catch (\Exception $e) {
-                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Report Log failed to add! Please try again ' . $this->M_UserReport->errors() . '</div>');
+                if ($id_directories_ba_aco != false && $file_wo[0]->isValid()) {
+                    $description_wo = 'Work Order Energize';
+                    $id_directories_wo = $this->uploadFiles($file_wo, $cust_name, $description_wo);
+                } else {
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">There something went wrong! Please call the Administrator</div>');
                     return redirect()->to(site_url("construction"));
                 }
 
-                $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Report Log added Successfully!</div>');
-                return redirect()->to(site_url("construction"));
-            } else {
-                $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Report Log failed to add! Please try again</div>');
-                return redirect()->to(site_url("construction"));
+                if ($id_directories_wo != false && $file_documentation[0]->isValid()) {
+                    $description_documentation = 'Documentation of Energizing';
+                    $id_directories_documentation = $this->uploadFiles($file_documentation, $cust_name, $description_documentation);
+                } else {
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">There something went wrong! Please call the Administrator</div>');
+                    return redirect()->to(site_url("construction"));
+                }
+
+                if ($id_directories_documentation) {
+
+                    // dd($id_directories);
+                    $ReportData = [
+                        'id_user' => $session->get('id_user'),
+                        'id_customer' => (int) $id_customer,
+                        'id_ba_aco' => $id_directories_ba_aco,
+                        'id_work_order' => $id_directories_wo,
+                        'id_documentation' => $id_directories_documentation,
+                        'notes' => $this->request->getPost('notes'),
+                    ];
+
+                    try {
+                        $this->M_UserEnergize->save($ReportData);
+
+                        $status = [
+                            'id_status' => 5,
+                            'id_information' => 9
+                        ];
+                        $this->M_Customer->update($id_customer, $status);
+                    } catch (\Exception $e) {
+                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Energize ' . $this->M_UserEnergize->errors() . '</div>');
+                        return redirect()->to(site_url("construction"));
+                    }
+
+                    $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Energize Report successfully uploaded! Please wait for confirmation to energize</div>');
+                    return redirect()->to(site_url("construction"));
+                } else {
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Energize Report failed to add! Please try again</div>');
+                    return redirect()->to(site_url("construction"));
+                }
             }
         }
+
+        return view('construction/energize', $data);
     }
 
     protected function uploadFiles($files, $cust_name, string $description)
@@ -138,20 +153,16 @@ class Energize extends BaseController
         $session = session();
 
         //Nama Folder berkas didalam struktur assets
-        $structure = "assets/berkas/energize";
+        $structure = "assets/berkas/";
 
         if ($description == 'Record of ACO Installation') {
             $FolderPath = 'ba_aco/'; //Nama Folder Salesman Log Report
-            $files = $files['ba_aco'];
         } else if ($description == 'Record of Installation') {
             $FolderPath = 'ba_penyambungan/'; //Nama Folder Cancellation Report
-            $files = $files['ba_penyambungan'];
-        } else if ($description == 'Work Order') {
+        } else if ($description == 'Work Order Energize') {
             $FolderPath = 'wo_energize/'; //Nama Folder Surat Perintah Kerja
-            $files = $files['work_order'];
         } else if ($description == 'Documentation of Energizing') {
             $FolderPath = 'documentation/'; //Nama Folder Surat Perintah Kerja
-            $files = $files['images'];
         } else {
             return false;
         }
@@ -171,14 +182,19 @@ class Energize extends BaseController
             mkdir($structure . $cust_name, 0755);
         }
 
+        // Membuat Folder dengan Nama Customer didalam folder berkas jika belum ada
+        if (!is_dir($structure . $cust_name . '/Energize')) {
+            mkdir($structure . $cust_name . '/Energize', 0755);
+        }
 
         // Membuat Folder sesuai dengan Folder Path diatas
-        if (!file_exists($structure . $cust_name . '/' . $FolderPath)) {
-            mkdir($structure . $cust_name . '/' . $FolderPath, 0755);
+        if (!file_exists($structure . $cust_name . '/Energize' . '/' . $FolderPath)) {
+            d($structure . $cust_name . '/Energize' . '/' . $FolderPath);
+            mkdir($structure . $cust_name . '/Energize' . '/' . $FolderPath, 0755);
 
             $directories_data = [
-                'dir_name' =>  $cust_name . '/' . $FolderPath,
-                'full_path' => $structure . $cust_name . '/' . $FolderPath
+                'dir_name' =>  $cust_name . '/Energize' . '/' . $FolderPath,
+                'full_path' => $structure . $cust_name . '/Energize' . '/' . $FolderPath
             ];
 
             try {
@@ -190,7 +206,7 @@ class Energize extends BaseController
         }
 
         // Direktori Folder Salesman Log Report
-        $reportDirectoryName = $structure . $cust_name . '/' . $FolderPath;
+        $reportDirectoryName = $structure . $cust_name . '/Energize' . '/' . $FolderPath;
 
         foreach ($files as $file) {
             //Original File Name

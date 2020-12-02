@@ -200,7 +200,7 @@ class ReportLog extends BaseController
             $mime_type = $images->getMimeType();
 
             // File Path
-            $file_path = "$reportDirectoryName$fileName";
+            $file_path = "$reportDirectoryName/$fileName";
 
             // ID Directories
             $dir = $this->M_Directories->where('full_path', $reportDirectoryName)->first();

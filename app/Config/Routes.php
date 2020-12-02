@@ -59,6 +59,9 @@ $routes->get('change-password', 'Users\profile::changePassword', ['filter' => 'a
 $routes->PUT('change-password', 'Users\profile::changePassword', ['filter' => 'auth']);
 
 
+// PDF Viewer / File viewer
+$routes->add('viewer/(:num)', 'Users\Viewer::index/$1');
+
 
 // Administrator
 $routes->group('admin', ['filter' => 'auth'], function ($routes) {
@@ -169,6 +172,9 @@ $routes->group('construction', ['filter' => 'auth'], function ($routes) {
 	// Update Status to "On Construct"
 	$routes->post('start/(:num)', 'Construction\WorkOrder::startConstruct/$1');
 
+	// Data Report (View Modal)
+	$routes->post('report/(:num)', 'Construction\WorkOrder::dataReport/$1');
+
 	// Construction Log Form
 	$routes->add('log-form/(:num)', 'Construction\ReportLog::index/$1');
 
@@ -184,8 +190,7 @@ $routes->group('construction', ['filter' => 'auth'], function ($routes) {
 	$routes->delete('delete-problem-log/(:num)', 'Construction\ReportLog::deleteProblemLog/$1');
 
 	// Energizing
-	$routes->get('energize/(:num)', 'Construction\Energize::index/$1');
-	$routes->post('energize/(:num)', 'Construction\Energize::addEnergize/$1');
+	$routes->match(['get', 'post'], 'energize/(:num)', 'Construction\Energize::index/$1');
 });
 
 // Managers

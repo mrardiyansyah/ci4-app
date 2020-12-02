@@ -80,6 +80,12 @@ function localizedTimeString($timestamp)
     return $time->toLocalizedString('HH:mm');
 }
 
+function localizedTimestamp($timestamp)
+{
+    $time = Time::parse($timestamp, 'Asia/Jakarta');
+    return $time->toLocalizedString('d MMM yyyy HH:mm:ss');
+}
+
 function renameFile($nama_file)
 {
     $nama = preg_replace('/^(.*?)_/', '', $nama_file);

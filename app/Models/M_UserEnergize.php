@@ -23,19 +23,11 @@ class M_UserEnergize extends Model
     // protected $validationMessages = [];
     // protected $skipValidation     = false;
 
-    public function getID($id_user, $id_customer)
-    {
-        $builder = $this->db->table($this->table);
-        $builder->select('id_user_energize');
-        return $builder->where('id_user', $id_user)
-            ->where('id_customer', $id_customer)
-            ->countAllResults();
-    }
 
-    public function getDirFileForConstruction($id_customer)
+    public function getFileEnergize($id_customer)
     {
         $builder = $this->db->table($this->table);
-        $builder->select('id_reksis_sld, id_working_order');
+        $builder->select('id_ba_aco, id_work_order, id_documentation');
         return $builder
             ->where('id_customer', $id_customer)
             ->get()

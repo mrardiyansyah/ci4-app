@@ -11,11 +11,12 @@ use App\Models\M_UserClosing;
 use App\Models\M_Directories;
 use App\Models\M_Files;
 use App\Models\M_UserReport;
+use App\Models\M_UserEnergize;
 use App\Models\M_CancellationReport;
 
 class WorkOrder extends BaseController
 {
-    protected $M_Auth, $M_Role, $M_Customer, $M_UserClosing, $M_Directories, $M_Files, $M_UserReport, $M_CancellationReport, $CustomerModel;
+    protected $M_Auth, $M_Role, $M_Customer, $M_UserClosing, $M_Directories, $M_Files, $M_UserEnergize, $M_UserReport, $M_CancellationReport, $CustomerModel;
 
 
     public function __construct()
@@ -27,6 +28,7 @@ class WorkOrder extends BaseController
         $this->M_Directories = new M_Directories();
         $this->M_Files = new M_Files();
         $this->M_UserReport = new M_UserReport();
+        $this->M_UserEnergize = new M_UserEnergize();
         $this->M_CancellationReport = new M_CancellationReport();
         $db = db_connect();
         $this->CustomerModel = new CustomerModel($db);
@@ -71,7 +73,14 @@ class WorkOrder extends BaseController
             // Data Cancellation Report
             $data['cancellation_report'] = $this->M_CancellationReport->getCancellationReport($session->get('id_user'), $id_customer);
 
-            // d($data['customer']);
+            // Data Energize Report
+            $id_dir_file_energize = $this->M_UserEnergize->getFileEnergize($id_customer);
+            $data['file_energize'] =
+                $this->M_Files->getFileEnergize($id_dir_file_energize['id_ba_aco'], $id_dir_file_energize['id_work_order'], $id_dir_file_energize['id_documentation']);
+
+            // d($data['file_energize']);
+            // d($data['file_construction']);
+
             return view('construction/detailCustomer', $data);
         } else {
             return redirect()->route('blocked');
@@ -121,6 +130,37 @@ class WorkOrder extends BaseController
 
                 if ($update_information) {
                     echo json_encode(['success' => 'success']);
+                } else {
+                    throw new \Exception("Error Processing Request", 1);
+                }
+            } catch (\Exception $e) {
+                echo json_encode([
+                    'error' => [
+                        'message' => $e->getMessage(),
+                        'code' => $e->getCode(),
+                    ],
+                ]);
+            }
+        }
+    }
+
+    public function dataReport($id_report)
+    {
+        $session = session();
+        if ($this->request->isAJAX()) {
+            try {
+                $report = $this->M_UserReport->getReportLogById($id_report);
+
+                $dir = $this->M_Directories->find($report['id_directories']);
+
+                $images = $this->M_Files->getAllInfoFileFromDirectories($dir['id_dir']);
+
+                if (!empty($report) && !empty($images)) {
+                    echo json_encode([
+                        'success' => 'success',
+                        'data' => $report,
+                        'images' => $images
+                    ]);
                 } else {
                     throw new \Exception("Error Processing Request", 1);
                 }

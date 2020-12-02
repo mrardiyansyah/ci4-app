@@ -107,7 +107,6 @@ class Closing extends BaseController
                     'rules' => 'uploaded[spjbtl.0]|max_size[spjbtl,10240]|mime_in[spjbtl,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document]',
                     'errors' => [
                         'uploaded' => '{field} field is required',
-                        'is_image' => 'Uploaded files are not Image files.',
                         'max_size' => 'Allowed maximum size is 10MB',
                         'mime_in' => 'The File type is not allowed. Allowed types : .pdf, .doc, .docx'
                     ],

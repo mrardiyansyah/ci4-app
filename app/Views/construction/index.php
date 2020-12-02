@@ -9,7 +9,7 @@
     <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
     <div class="row">
         <div class="col-lg">
-            <div class="col-lg-6">
+            <div class="col-lg">
                 <?= session()->get('message'); ?>
             </div>
             <table class="table table-hover table-workorder" style="width: 100%;">

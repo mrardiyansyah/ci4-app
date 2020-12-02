@@ -38,14 +38,14 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="wo_energize" class="col-sm col-form-label-sm">Work Order</label>
+                            <label for="working_order" class="col-sm-12 col-form-label-sm">Work Order</label>
                             <div class="col-sm-10">
                                 <div class="custom-file">
-                                    <input type="file" class="form-control form-control-sm custom-file-input <?php if (isset($validation)) echo $validation->hasError('wo_energize') ? 'is-invalid' : ''; ?>" id="wo_energize" name="wo_energize[]" multiple>
-                                    <label class="custom-file-label <?php if (isset($validation)) echo $validation->hasError('wo_energize') ? 'selected alert-danger' : ''; ?>" for="wo_energize">Choose file</label>
+                                    <input type="file" class="form-control form-control-sm custom-file-input <?php if (isset($validation)) echo $validation->hasError('working_order') ? 'is-invalid' : ''; ?>" id="working_order" name="working_order[]" multiple>
+                                    <label class="custom-file-label <?php if (isset($validation)) echo $validation->hasError('working_order') ? 'selected alert-danger' : ''; ?>" for="working_order">Choose file</label>
                                     <?php if (isset($validation)) : ?>
                                         <div class="invalid-feedback">
-                                            <?= $validation->getError('wo_energize'); ?>
+                                            <?= $validation->getError('working_order'); ?>
                                         </div>
                                     <?php endif; ?>
                                 </div>
