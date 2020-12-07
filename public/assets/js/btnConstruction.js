@@ -22,6 +22,20 @@ $(document).ready(function () {
                 $(this).parent().attr("data-original-title", "Can't Edit Not Approved Log");
                 break;
 
+            case 'Forwarding to the Marketing':
+                $(this).addClass("disabled");
+                $(this).prop("aria-disabled", true);
+                $(this).parent().addClass("disabled");
+                $(this).parent().attr("data-original-title", "Can't Edit Not Approved Log");
+                break;
+
+            case 'Problem Solved':
+                $(this).addClass("disabled");
+                $(this).prop("aria-disabled", true);
+                $(this).parent().addClass("disabled");
+                $(this).parent().attr("data-original-title", "Can't Edit Not Approved Log");
+                break;
+
             default:
                 $(this).parent().attr("data-original-title", "");
                 break;
@@ -69,6 +83,22 @@ $(document).ready(function () {
                 tooltip_wrapper.addClass("disabled");
                 tooltip_wrapper.attr("data-original-title", "Can't Delete Not Approved Log");
                 break;
+
+            case 'Forwarding to the Marketing':
+                $(this).addClass("disabled");
+                $(this).prop("aria-disabled", true);
+                tooltip_wrapper.addClass("disabled");
+                tooltip_wrapper.attr("data-original-title", "Can't Delete Not Approved Log");
+                break;
+
+            case 'Problem Solved':
+                $(this).addClass("disabled");
+                $(this).prop("aria-disabled", true);
+                tooltip_wrapper.addClass("disabled");
+                tooltip_wrapper.attr("data-original-title", "Can't Delete Not Approved Log");
+                break;
+
+
 
             default:
                 tooltip_wrapper.attr("data-original-title", "Delete Log");

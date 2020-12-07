@@ -15,7 +15,7 @@
             </div>
             <div class="card col-lg shadow">
                 <div class="card-body col-lg-9">
-                    <table class="table table-sm table-borderless table-responsive">
+                    <table class="table table-sm table table-borderless table-responsive">
                         <tbody>
                             <tr>
                                 <th>Customer</th>
@@ -49,13 +49,15 @@
                             </tr>
                         </tbody>
                     </table>
-                    <form action="<?= base_url('construction/problem-solved/' . $problem_report['id_user_cancellation']); ?>" method="post" id="form-problem-report" enctype="multipart/form-data">
+                    <hr>
+                    <form action="<?= base_url('manager/konstruksi/problem-solve/' . $problem_report['id_user_cancellation']); ?>" method="post" id="form-problem-report">
                         <?= csrf_field(); ?>
+                        <input type="hidden" name="_method" value="PUT">
                         <div class="form-group">
                             <label for="status" class="col-sm-3 col-form-label-sm font-weight-bold">Choose Status</label>
                             <div class="col-sm-10">
-                                <select id="approval_status" name="approval_status" class="form-control custom-select-sm">
-                                    <option value="" disabled selected hidden>Please Choose...</option>
+                                <select id="approval_status" name="approval_status" class="form-control custom-select-sm <?php if (isset($validation)) echo $validation->hasError('approval_status') ? 'is-invalid' : ''; ?>">
+                                    <option value="" selected hidden>Please Choose...</option>
                                     <?php foreach ($list_status as $uc) : ?>
                                         <?php if ($uc['id_approval_status'] == 3 || $uc['id_approval_status'] == 5) : ?>
                                             <option value="<?= $uc['id_approval_status'] ?>" <?= set_select('approval_status', $uc['id_approval_status']); ?>><?= $uc['approval_status'] ?></option>
@@ -64,20 +66,29 @@
                                 </select>
                                 <?php if (isset($validation)) : ?>
                                     <div class="invalid-feedback">
-                                        <?= $validation->getError('status'); ?>
+                                        <?= $validation->getError('approval_status'); ?>
                                     </div>
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <div class="form-group hide" id="problem-solution">
-                            <label for="description" class="col-sm-3 col-form-label-sm font-weight-bold">Solution</label>
+                        <div class="form-group" id="problem-solution">
+                            <label for="solutions" class="col-sm-3 col-form-label-sm font-weight-bold">Solution</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control form-control-sm <?php if (isset($validation)) echo $validation->hasError('description') ? 'is-invalid' : ''; ?>" name="description" id="description" cols="30" rows="4" value="<?= set_value('description'); ?>" placeholder="Type something here..."><?= set_value('description'); ?></textarea>
+                                <textarea class="form-control form-control-sm <?php if (isset($validation)) echo $validation->hasError('solutions') ? 'is-invalid' : ''; ?>" name="solutions" id="solutions" cols="30" rows="4" value="<?= set_value('solutions'); ?>" placeholder="Type something here..."><?= set_value('solutions'); ?></textarea>
                                 <?php if (isset($validation)) : ?>
                                     <div class="invalid-feedback">
-                                        <?= $validation->getError('description'); ?>
+                                        <?= $validation->getError('solutions'); ?>
                                     </div>
                                 <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="form-group justify-content-end">
+                            <div class="col-sm-10">
+                                <button class="btn btn-sm btn-primary mb-1" type="submit">
+                                    Submit
+                                    <i class="fas fa-save ml-1 text-white"></i>
+                                </button>
+                                <a href="<?= base_url('manager/konstruksi'); ?>" class="btn btn-sm btn-secondary">Cancel</a>
                             </div>
                         </div>
                     </form>
@@ -94,14 +105,20 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $("select#approval_status").change(function() {
-            let selectedStatus = $(this).children("option:selected").val();
-            if (selectedStatus == 3) {
-                alert("You have selected the country -  asu" + selectedStatus);
-                $("#problem-solution").addClass('hide');
+        approval_status = $("select#approval_status")
+        let selectedStatus = approval_status.children("option:selected").val();
+        if (!selectedStatus || selectedStatus == 3) {
+            $("#problem-solution").hide();
+        }
+
+        approval_status.change(function() {
+            let selectedStatus = approval_status.children("option:selected").val();
+            if (selectedStatus == 5) {
+                // alert("You have selected the country -  asu" + selectedStatus);
+                $("#problem-solution").show(500);
             } else {
-                $("#problem-solution").removeClass('hide');
-                alert("You have selected the country -  asu" + selectedStatus);
+                $("#problem-solution").hide(500);
+                // alert("You have selected the country -  asu" + selectedStatus);
             }
         });
     });

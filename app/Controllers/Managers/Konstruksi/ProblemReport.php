@@ -91,7 +91,7 @@ class ProblemReport extends BaseController
                 $status = [
                     'id_approval_status' => 4
                 ];
-                $report = $this->M_UserReport->update($id_user_report, $status);
+                $report = $this->M_CancellationReport->update($id_user_report, $status);
 
                 if ($report) {
                     echo json_encode([
@@ -124,8 +124,55 @@ class ProblemReport extends BaseController
 
         // All Problem Report
         $data['problem_report'] = $this->M_CancellationReport->getReportLogById($id_report);
+        // d($data['problem_report']);
 
-        d($data['problem_report']);
+        if ($this->request->getMethod() == 'put') {
+            $id_approval_status = $this->request->getPost('approval_status');
+            if ($id_approval_status == 5) {
+                $rules = [
+                    'solutions' => [
+                        'label' => 'Solution',
+                        'rules' => 'required',
+                        'errors' => [
+                            'required' => '{field} field is required'
+                        ]
+                    ],
+                ];
+            } else {
+                $rules = [
+                    'approval_status' => [
+                        'label' => 'Status',
+                        'rules' => 'required',
+                        'errors' => [
+                            'required' => '{field} field is required'
+                        ]
+                    ]
+                ];
+            }
+
+            if (!$this->validate($rules)) {
+                $data['validation'] = $this->validator;
+            } else {
+                $solutions = $this->request->getPost('solutions');
+                $id_customer = $data['problem_report']['id_customer'];
+
+                $update_status = [
+                    'id_approval_status' => (int) $id_approval_status,
+                    'solutions' => (!empty($solutions)) ? $solutions : NULL
+                ];
+
+                try {
+                    $update = $this->M_CancellationReport->update($id_report, $update_status);
+                    $this->M_Customer->update($id_customer, ['id_information' => 8]);
+                } catch (\Exception $e) {
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to update! Please try again ' . $this->M_CancellationReport->errors() . '</div>');
+                    return redirect()->to(site_url("manager/konstruksi"));
+                }
+                $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Problem Report rejected!</div>');
+                return redirect()->to(site_url("manager/konstruksi"));
+            }
+        }
+
 
         return view('managers/problemSolution', $data);
     }

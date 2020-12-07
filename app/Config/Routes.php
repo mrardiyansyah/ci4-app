@@ -215,10 +215,11 @@ $routes->group('manager', ['filter' => 'auth'], function ($routes) {
 		$routes->post('problem-report/(:num)', 'Managers\Konstruksi\ProblemReport::dataProblemReport/$1');
 
 		// Approve Problem Report
-		$routes->post('problem-solve/(:num)', 'Managers\Konstruksi\ProblemReport::approve');
+		$routes->post('problem-solve', 'Managers\Konstruksi\ProblemReport::approve');
 
 		// Reject / Problem Solve
 		$routes->get('problem-solve/(:num)', 'Managers\Konstruksi\ProblemReport::reject/$1');
+		$routes->put('problem-solve/(:num)', 'Managers\Konstruksi\ProblemReport::reject/$1');
 	});
 });
 /**

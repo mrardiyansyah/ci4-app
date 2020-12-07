@@ -548,9 +548,8 @@ $(document).on('click', '.btn-approve-log#approveProblemReport', function (e) {
     e.preventDefault();
     let url = $(this).data('url');
     let id_user_report = $(this).data('id');
-    const form_reksis = $(this).parent()
 
-    const href = url + '/approve';
+    const href = url + '/problem-solve';
 
     Swal.fire({
         title: false,
@@ -585,7 +584,7 @@ $(document).on('click', '.btn-approve-log#approveProblemReport', function (e) {
                 },
                 success: function (response) {
                     var result = JSON.parse(JSON.stringify(response));
-                    console.log(response);
+                    // console.log(response);
                     if (result.success === "success") {
                         Swal.fire({
                             title: 'Success',
@@ -596,12 +595,11 @@ $(document).on('click', '.btn-approve-log#approveProblemReport', function (e) {
                             timer: 800,
                         }).then((response) => {
                             if (response.dismiss === Swal.DismissReason.timer) {
-                                form_reksis.submit();
                                 window.location.reload();
                             }
                         });
                     } else {
-                        console.log(response);
+                        // console.log(response);
                         Swal.fire('Failed', result.error.message, 'error');
                     }
                 }
@@ -610,6 +608,37 @@ $(document).on('click', '.btn-approve-log#approveProblemReport', function (e) {
     });
 });
 
+$("#form-problem-report").on('submit', function (e) {
+    e.preventDefault();
+    Swal.fire({
+        title: false,
+        html: `Are you sure you want to submit this form? This action can't be undo`,
+        icon: 'warning',
+        padding: '1em',
+        width: 400,
+        showCancelButton: true,
+        cancelButtonText: `Cancel`,
+        confirmButtonText: 'Yes, I\'m sure',
+        buttonsStyling: false,
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown animate__fast',
+            icon: 'animate__animated animate__fadeIn animate__delay-1s animate__repeat-3'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        },
+        customClass: {
+            confirmButton: 'btn btn-warning btn-sm font-small',
+            cancelButton: 'btn btn-secondary btn-sm ml-3 font-small',
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $(this)[0].submit();
+        }
+    });
+});
+
+// Button Reject Problem Report Log
 $(document).on('click', '.btn-reject-log#rejectProblemReport', function (e) {
 
     e.preventDefault();

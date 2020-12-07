@@ -26,11 +26,11 @@
                 <tbody>
                     <?php foreach ($problem_report as $log) : ?>
                         <tr>
-                            <td><i class="fas fa-fw fa-calendar-alt"></i><?= localizedDateString($log['date_report']); ?><br><?= localizedTimeString($log['start_time']); ?> - <?= localizedTimeString($log['end_time']); ?></td>
-                            <td><?= excerpt($log['description'], NULL, 80); ?></td>
-                            <td><?= (!is_null($log['suggestion_solution'])) ? excerpt($log['suggestion_solution'], NULL, 80) : '-'; ?></td>
-                            <td><?= (!is_null($log['solutions'])) ? excerpt($log['solutions'], NULL, 80) : '-'; ?></td>
-                            <td><span class="badge <?= $log['badge']; ?>"><?= $log['approval_status']; ?></span></td>
+                            <td class="text-center"><i class="fas fa-fw fa-calendar-alt"></i><?= localizedDateString($log['date_report']); ?><br><?= localizedTimeString($log['start_time']); ?> - <?= localizedTimeString($log['end_time']); ?></td>
+                            <td class="text-center"><?= excerpt($log['description'], NULL, 80); ?></td>
+                            <td class="text-center"><?= (!is_null($log['suggestion_solution'])) ? excerpt($log['suggestion_solution'], NULL, 80) : '-'; ?></td>
+                            <td class="text-center"><?= (!is_null($log['solutions'])) ? excerpt($log['solutions'], NULL, 80) : '-'; ?></td>
+                            <td class="text-center"><span class="badge <?= $log['badge']; ?>"><?= $log['approval_status']; ?></span></td>
                             <td class="text-center">
                                 <!-- Button View Report -->
                                 <div class="tooltip-wrapper mb-1" data-toggle="tooltip" data-placement="left" data-original-title="View Report">
@@ -38,7 +38,7 @@
                                 </div>
                                 <!-- Button Approve Report Log -->
                                 <div class="tooltip-wrapper mb-1" data-toggle="tooltip" data-placement="left" data-original-title="#">
-                                    <a href="#" id="approveProblemReport" class="btn btn-sm btn-success btn-approve-log" data-url="<?= base_url('manager'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-fw fa-check"></i></a>
+                                    <a href="#" id="approveProblemReport" class="btn btn-sm btn-success btn-approve-log" data-url="<?= base_url('manager/konstruksi'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-fw fa-check"></i></a>
                                 </div>
                                 <!-- Button Reject Report Log -->
                                 <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
