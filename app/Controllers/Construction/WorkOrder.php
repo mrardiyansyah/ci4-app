@@ -75,8 +75,10 @@ class WorkOrder extends BaseController
 
             // Data Energize Report
             $id_dir_file_energize = $this->M_UserEnergize->getFileEnergize($id_customer);
-            $data['file_energize'] =
-                $this->M_Files->getFileEnergize($id_dir_file_energize['id_ba_aco'], $id_dir_file_energize['id_work_order'], $id_dir_file_energize['id_documentation']);
+            if ($id_dir_file_energize) {
+                $data['file_energize'] =
+                    $this->M_Files->getFileEnergize($id_dir_file_energize['id_ba_aco'], $id_dir_file_energize['id_work_order'], $id_dir_file_energize['id_documentation']);
+            }
 
             // d($data['file_energize']);
             // d($data['file_construction']);

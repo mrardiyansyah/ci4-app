@@ -195,11 +195,30 @@ $routes->group('construction', ['filter' => 'auth'], function ($routes) {
 
 // Managers
 $routes->group('manager', ['filter' => 'auth'], function ($routes) {
+	// Approve Report Log
+	$routes->post('approve', 'Managers\ReportApproval::approve');
+
+	// Approve Report Log
+	$routes->post('reject', 'Managers\ReportApproval::reject');
+
 	// Konstruksi
 	$routes->group('konstruksi', ['filter' => 'auth'], function ($routes) {
-		$routes->get('/', 'Managers\Konstruksi\WorkOrder::index');
+		$routes->get('workorder', 'Managers\Konstruksi\WorkOrder::index');
 		$routes->add('detail/(:num)', 'Managers\Konstruksi\WorkOrder::detail/$1');
 		$routes->post('choose-pengawas/(:num)', 'Managers\Konstruksi\WorkOrder::pilihPengawas/$1');
+
+		// Dashboard
+		$routes->get('/', 'Managers\Konstruksi\Dashboard::index');
+
+		// List Problem Log
+		$routes->get('problem-report', 'Managers\Konstruksi\ProblemReport::index');
+		$routes->post('problem-report/(:num)', 'Managers\Konstruksi\ProblemReport::dataProblemReport/$1');
+
+		// Approve Problem Report
+		$routes->post('problem-solve/(:num)', 'Managers\Konstruksi\ProblemReport::approve');
+
+		// Reject / Problem Solve
+		$routes->get('problem-solve/(:num)', 'Managers\Konstruksi\ProblemReport::reject/$1');
 	});
 });
 /**

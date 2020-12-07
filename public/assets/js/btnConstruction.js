@@ -46,7 +46,6 @@ $(document).ready(function () {
         window.location.href = href
     });
 
-
     // Button Delete Log
     $('button.btn-delete-log').each(function (index, element) {
         let information = $(this).data('information');
@@ -172,8 +171,5 @@ $(document).ready(function () {
                 form_delete.attr('action', '#');
                 break;
         }
-
-
-
     });
 });

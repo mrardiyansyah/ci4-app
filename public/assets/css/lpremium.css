@@ -155,3 +155,73 @@ div.error-msg {
 .card-header .collapsed .fas {
 	transform: rotate(90deg);
 }
+
+.border-left-purple {
+	border-left: 0.25rem solid #9829fa !important;
+}
+
+.text-purple {
+	color: #9829fa !important;
+}
+
+a.text-purple:hover,
+a.text-purple:focus {
+	color: #7910d4 !important;
+}
+
+.border-left-orange {
+	border-left: 0.25rem solid #f77a28 !important;
+}
+
+.text-orange {
+	color: #f77a28 !important;
+}
+
+a.text-orange:hover,
+a.text-orange:focus {
+	color: #e96913 !important;
+}
+
+.border-left-chocolate {
+	border-left: 0.25rem solid chocolate !important;
+}
+
+.text-chocolate {
+	color: chocolate !important;
+}
+
+a.text-chocolate:hover,
+a.text-chocolate:focus {
+	color: rgb(187, 83, 8) !important;
+}
+
+.border-left-cadetblue {
+	border-left: 0.25rem solid cadetblue !important;
+}
+
+.text-cadetblue {
+	color: cadetblue !important;
+}
+
+a.text-cadetblue:hover,
+a.text-cadetblue:focus {
+	color: rgb(69, 148, 151) !important;
+}
+
+*::-webkit-scrollbar,
+*::-webkit-scrollbar-thumb {
+	width: 26px;
+	border-radius: 13px;
+	background-clip: padding-box;
+	border: 10px solid transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+	box-shadow: inset 0 0 0 10px;
+}
+
+.sidebar,
+.sidebar.toggled {
+	transition: all 0.5s;
+	-webkit-transition: all 0.3s;
+}

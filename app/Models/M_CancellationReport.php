@@ -41,6 +41,24 @@ class M_CancellationReport extends Model
             ->getResultArray();
     }
 
+    public function getCancellationReportByRole(string $role)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('user_cancellation.*, user.name, approval_status.*, user_role.*');
+        return $builder
+            ->where('user_role.role_type', $role)
+            ->where('user_cancellation.id_approval_status', 1)
+            ->where('deleted_at', NULL)
+            ->join('user', 'user_cancellation.id_user = user.id_user')
+            ->join('user_role', "user.id_role = user_role.id_role")
+            ->join(
+                'approval_status',
+                'user_cancellation.id_approval_status = approval_status.id_approval_status'
+            )
+            ->get()
+            ->getResultArray();
+    }
+
     public function getReportLogById($id_user_cancellation)
     {
         $builder = $this->db->table($this->table);

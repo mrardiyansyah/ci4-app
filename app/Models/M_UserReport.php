@@ -12,7 +12,7 @@ class M_UserReport extends Model
     // protected $returnType     = 'array';
     // protected $useSoftDeletes = true;
 
-    protected $allowedFields = ['id_user', 'id_customer', 'id_directories', 'description', 'date_report', 'start_time',  'end_time', 'approval_status'];
+    protected $allowedFields = ['id_user', 'id_customer', 'id_directories', 'description', 'date_report', 'start_time',  'end_time', 'id_approval_status'];
 
     protected $useSoftDeletes = true;
     protected $useTimestamps = true;
@@ -33,6 +33,22 @@ class M_UserReport extends Model
             ->where('deleted_at', NULL)
             ->join('user', 'user_report.id_user = user.id_user')
             ->join('approval_status', 'user_report.id_approval_status = approval_status.id_approval_status')
+            ->get()
+            ->getResultArray();
+    }
+
+    public function getReportByRole(string $role)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('user_report.*, user.name, user_role.*, approval_status.*, customer.name_customer');
+        return $builder
+            ->where('user_role.role_type', $role)
+            ->where('user_report.id_approval_status', 1)
+            ->where('user_report.deleted_at', NULL)
+            ->join('user', 'user_report.id_user = user.id_user')
+            ->join('user_role', "user.id_role = user_role.id_role")
+            ->join('approval_status', 'user_report.id_approval_status = approval_status.id_approval_status')
+            ->join('customer', 'user_report.id_customer = customer.id_customer', 'left')
             ->get()
             ->getResultArray();
     }

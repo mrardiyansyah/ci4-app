@@ -22,7 +22,7 @@ class Viewer extends BaseController
     public function index($id_file)
     {
         $session = session();
-        $data['title'] = '';
+        $data['title'] = 'PDF Viewer';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
         $data['notif'] = get_new_notif();

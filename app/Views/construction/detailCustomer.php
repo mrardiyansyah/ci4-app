@@ -258,7 +258,7 @@
         </div>
     </div>
 
-    <!-- File and Laporan -->
+    <!-- Report, File, File Energize and Problem Report -->
     <div class="row">
         <div class="col-lg">
             <div class="card shadow text-center mt-3 border-0">
@@ -297,8 +297,10 @@
                                     </a>
                                     <div class="dropdown-menu animate__animated animate__zoomIn animate__faster" aria-labelledby="dropdownReportLink">
                                         <a class="dropdown-item text-primary" href="<?= base_url('construction/log-form/' . $customer['id_customer']); ?>"><i class="fas fa-fw fa-file-alt"></i> Construction Report</a>
-                                        <a class="dropdown-item text-success" href="<?= base_url('construction/energize/' . $customer['id_customer']); ?>"><i class="fas fa-fw fa-bolt"></i> Energizing</a>
-                                        <?php if (empty($cancellation_report)) : ?>
+                                        <?php if ($customer['id_status'] < 5) : ?>
+                                            <a class="dropdown-item text-success" href="<?= base_url('construction/energize/' . $customer['id_customer']); ?>"><i class="fas fa-fw fa-bolt"></i> Energizing</a>
+                                        <?php endif; ?>
+                                        <?php if (empty($cancellation_report) && $customer['id_status'] != 5) : ?>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item text-danger" href="<?= base_url('construction/problem-form/' . $customer['id_customer']); ?>"><i class="fas fa-fw fa-exclamation-triangle"></i> Problem Report</a>
                                         <?php endif; ?>

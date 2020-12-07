@@ -1,7 +1,6 @@
 <?= $this->extend('layout/main'); ?>
 
 <?= $this->section('content'); ?>
-<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.6.347/build/pdf.min.js" integrity="sha256-LcN79UmfecVJ8WEjAgndjZ29b+d2nf4t+FJd6pKrlG0=" crossorigin="anonymous"></script>
 
 <!-- Begin Page Content -->
 <div class="container-fluid">

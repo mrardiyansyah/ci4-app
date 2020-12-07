@@ -52,4 +52,18 @@ class M_Auth extends Model
         $builder->select('id_user, name');
         return $builder->where('id_role', 3)->get()->getResultArray();
     }
+
+    public function getAllSupervisor()
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('user.id_user, user.name, user.image, user_role.*, customer.name_customer, customer.id_pengawas');
+        return $builder
+            ->where('user.id_role', 5)
+            ->where('is_active', 1)
+            ->join('user_role', "user.id_role = user_role.id_role")
+            ->join('customer', "user.id_user = customer.id_pengawas", 'left')
+            ->orderBy('name_customer', 'ASC')
+            ->get()
+            ->getResultArray();
+    }
 }

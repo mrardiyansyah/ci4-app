@@ -179,6 +179,25 @@ class CustomerModel
             ->getResultArray();
     }
 
+    public function getAllCustomerForConstruction()
+    {
+        $builder = $this->db->table('customer');
+        $builder->select('customer.*, service.*, status.*, tariff.*, substation.*, feeder_substation.*, information.*, user.name');
+        return $builder
+            ->where('deleted_at', null) //WHERE CUSTOMER IS NOT DELETED
+            ->where('customer.id_status >=', 4) // WHERE ID INFORMATION = 3 == INFORMATION = Menunggu Reksis
+            ->join('service', 'customer.id_type_of_service = service.id_type_of_service')
+            ->join('status', 'customer.id_status = status.id_status')
+            ->join('tariff', 'customer.id_tariff = tariff.id_tariff')
+            ->join('substation', 'customer.id_substation = substation.id_substation')
+            ->join('feeder_substation', 'customer.id_feeder_substation = feeder_substation.id_feeder_substation')
+            ->join('information', 'customer.id_information = information.id_information')
+            ->join('user', 'customer.id_pengawas = user.id_user', 'left')
+            ->orderBy('id_customer', 'ASC')
+            ->get()
+            ->getResultArray();
+    }
+
     public function getWorkOrderForConstruction($id_pengawas)
     {
         $builder = $this->db->table('customer');
@@ -195,5 +214,13 @@ class CustomerModel
             ->orderBy('id_customer', 'ASC')
             ->get()
             ->getResultArray();
+    }
+
+    public function getApprovalStatus()
+    {
+        $builder = $this->db->table('approval_status');
+        $builder->select('*');
+        $query = $builder->get()->getResultArray();
+        return $query;
     }
 }
