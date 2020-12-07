@@ -11,7 +11,7 @@ class M_Files extends Model
 
     // protected $returnType     = 'array';
 
-    protected $allowedFields = ['id_dir', 'id_uploadedby', 'original_file_name', 'storage_file_name', 'size', 'file_path', 'description'];
+    protected $allowedFields = ['id_dir', 'id_uploadedby', 'original_file_name', 'storage_file_name', 'size', 'mime_type', 'file_path', 'description'];
 
     protected $useSoftDeletes = true;
     protected $useTimestamps = true;
@@ -57,10 +57,10 @@ class M_Files extends Model
     public function getFileEnergize($id_ba_aco, $id_working_order_energize, $id_documentation)
     {
         $builder = $this->db->table($this->table);
+        $id = [$id_ba_aco, $id_working_order_energize, $id_documentation];
         return $builder->select("$this->table.*,user.name")
-            ->where('id_dir', $id_ba_aco)
-            ->orWhere('id_dir', $id_working_order_energize)
-            ->orWhere('id_dir', $id_documentation)
+            ->whereIn('id_dir', $id)
+            ->where('mime_type', 'application/pdf')
             ->join('user', "$this->table.id_uploadedby = user.id_user")
             ->get()
             ->getResultArray();

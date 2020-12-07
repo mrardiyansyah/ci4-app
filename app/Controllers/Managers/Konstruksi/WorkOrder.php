@@ -77,6 +77,7 @@ class WorkOrder extends BaseController
         if ($id_dir_file_energize) {
             $data['file_energize'] =
                 $this->M_Files->getFileEnergize($id_dir_file_energize['id_ba_aco'], $id_dir_file_energize['id_work_order'], $id_dir_file_energize['id_documentation']);
+            d($data['file_energize']);
         }
 
         // Jika sudah ditentukan pengawasnya
