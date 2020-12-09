@@ -24,19 +24,6 @@ class M_UserReport extends Model
     // protected $validationMessages = [];
     // protected $skipValidation     = false;
 
-    public function getReportLog($id_user, $id_customer)
-    {
-        $builder = $this->db->table($this->table);
-        $builder->select('user_report.*, user.name, approval_status.*');
-        return $builder
-            ->where('id_customer', $id_customer)
-            ->where('deleted_at', NULL)
-            ->join('user', 'user_report.id_user = user.id_user')
-            ->join('approval_status', 'user_report.id_approval_status = approval_status.id_approval_status')
-            ->get()
-            ->getResultArray();
-    }
-
     public function getReportByRole(string $role)
     {
         $builder = $this->db->table($this->table);
@@ -53,14 +40,44 @@ class M_UserReport extends Model
             ->getResultArray();
     }
 
+    public function getReportByRolePerCustomer(string $role, $id_customer)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('user_report.*, user.name, approval_status.*, user_role.*');
+        return $builder
+            ->where('user_role.role_type', $role)
+            ->where('id_customer', $id_customer)
+            ->where('deleted_at', NULL)
+            ->join('user', 'user_report.id_user = user.id_user')
+            ->join('user_role', "user.id_role = user_role.id_role")
+            ->join('approval_status', 'user_report.id_approval_status = approval_status.id_approval_status')
+            ->get()
+            ->getResultArray();
+    }
+
+    public function getReportPerCustomer($id_customer)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('user_report.*, user.name, approval_status.*, user_role.*');
+        return $builder
+            ->where('id_customer', $id_customer)
+            ->where('deleted_at', NULL)
+            ->join('user', 'user_report.id_user = user.id_user')
+            ->join('user_role', "user.id_role = user_role.id_role")
+            ->join('approval_status', 'user_report.id_approval_status = approval_status.id_approval_status')
+            ->get()
+            ->getResultArray();
+    }
+
     public function getReportLogById($id_user_report)
     {
         $builder = $this->db->table($this->table);
-        $builder->select('user_report.*, user.name, customer.name_customer, approval_status.*');
+        $builder->select('user_report.*, user.name, customer.name_customer, approval_status.*, user_role.*');
         return $builder
             ->where('id_user_report', $id_user_report)
             ->join('user', 'user_report.id_user = user.id_user')
             ->join('customer', 'user_report.id_customer = customer.id_customer')
+            ->join('user_role', "user.id_role = user_role.id_role")
             ->join('approval_status', 'user_report.id_approval_status = approval_status.id_approval_status')
             ->get()
             ->getRowArray();

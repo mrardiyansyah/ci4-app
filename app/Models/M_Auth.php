@@ -66,4 +66,19 @@ class M_Auth extends Model
             ->get()
             ->getResultArray();
     }
+
+    public function getAllAccountExecutive()
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('user.id_user, user.name, user.image, user_role.*, count(customer.id_salesman) as total');
+        return $builder
+            ->where('user.id_role', 3)
+            ->where('is_active', 1)
+            ->join('user_role', "user.id_role = user_role.id_role")
+            ->join('customer', "user.id_user = customer.id_salesman", 'left')
+            ->groupBy('user.id_user')
+            ->orderBy('total', 'ASC')
+            ->get()
+            ->getResultArray();
+    }
 }

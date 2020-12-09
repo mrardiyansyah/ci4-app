@@ -11,7 +11,7 @@ class M_CompanyEngineering extends Model
 
     // protected $returnType     = 'array';
 
-    protected $allowedFields = ['name_company_engineering', 'position', 'phone', 'email'];
+    protected $allowedFields = ['name_company_engineering', 'position_company_engineering', 'phone_company_engineering', 'email_company_engineering'];
 
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;

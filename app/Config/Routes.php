@@ -64,7 +64,7 @@ $routes->add('viewer/(:num)', 'Users\Viewer::index/$1');
 
 
 // Administrator
-$routes->group('admin', ['filter' => 'auth'], function ($routes) {
+$routes->group('admin', ['filter' => 'auth:1'], function ($routes) {
 	$routes->get('/', 'Users\profile::index');
 	$routes->post('add-role', 'Admin\RoleManagement::add');
 	$routes->get('role-management', 'Admin\RoleManagement::index');
@@ -80,7 +80,7 @@ $routes->group('admin', ['filter' => 'auth'], function ($routes) {
 });
 
 // Menu Manajemen
-$routes->group('menu', ['filter' => 'auth'], function ($routes) {
+$routes->group('menu', ['filter' => 'auth:1'], function ($routes) {
 	$routes->match(['get', 'post'], '/', 'Admin\Menu::index');
 	$routes->post('add-menu', 'Admin\Menu::add');
 	$routes->post('edit-menu', 'Admin\Menu::edit');
@@ -89,7 +89,7 @@ $routes->group('menu', ['filter' => 'auth'], function ($routes) {
 });
 
 // Sub Menu Manajemen
-$routes->group('submenu', ['filter' => 'auth'], function ($routes) {
+$routes->group('submenu', ['filter' => 'auth:1'], function ($routes) {
 	$routes->match(['get', 'post'], '/', 'Admin\SubMenu::index');
 	$routes->post('add-submenu', 'Admin\SubMenu::add');
 	$routes->add('editSubMenu', 'Admin\SubMenu::editSubMenuModal');
@@ -99,7 +99,7 @@ $routes->group('submenu', ['filter' => 'auth'], function ($routes) {
 });
 
 // Account Executive
-$routes->group('account-executive', ['filter' => 'auth'], function ($routes) {
+$routes->group('account-executive', ['filter' => 'auth:3,20'], function ($routes) {
 	// Data Potential
 	$routes->get('/', 'AccountExecutive\DataPotential::index');
 
@@ -129,7 +129,7 @@ $routes->group('account-executive', ['filter' => 'auth'], function ($routes) {
 });
 
 // Planning
-$routes->group('planning', ['filter' => 'auth'], function ($routes) {
+$routes->group('planning', ['filter' => 'auth:4'], function ($routes) {
 	// Master Data Pelanggan
 	$routes->get('/', 'Planning\DataPotential::index');
 
@@ -162,7 +162,7 @@ $routes->group('planning', ['filter' => 'auth'], function ($routes) {
 });
 
 // Construction (Pengawas)
-$routes->group('construction', ['filter' => 'auth'], function ($routes) {
+$routes->group('construction', ['filter' => 'auth:5'], function ($routes) {
 	// List Work Order
 	$routes->get('/', 'Construction\WorkOrder::index');
 
@@ -194,15 +194,41 @@ $routes->group('construction', ['filter' => 'auth'], function ($routes) {
 });
 
 // Managers
-$routes->group('manager', ['filter' => 'auth'], function ($routes) {
+$routes->group('manager', ['filter' => 'auth:19,20,21'], function ($routes) {
 	// Approve Report Log
 	$routes->post('approve', 'Managers\ReportApproval::approve');
 
 	// Approve Report Log
 	$routes->post('reject', 'Managers\ReportApproval::reject');
 
-	// Konstruksi
-	$routes->group('konstruksi', ['filter' => 'auth'], function ($routes) {
+	// Data Problem Report
+	$routes->post('report/(:num)', 'Managers\DataProblemReport::dataReport/$1');
+	$routes->post('problem-report/(:num)', 'Managers\DataProblemReport::dataProblemReport/$1');
+
+	// Manager Pemasaran
+	$routes->group('pemasaran', ['filter' => 'auth:20'], function ($routes) {
+		// Dashboard
+		$routes->get('/', 'Managers\Pemasaran\Dashboard::index');
+
+		// Detail Customer
+		$routes->add('detail/(:num)', 'Managers\Pemasaran\DetailCustomer::index/$1');
+
+		// List Problem Log
+		$routes->get('problem-report', 'Managers\Pemasaran\ProblemReport::index');
+
+		// Form Approve Problem
+		$routes->get('form-approve-problem/(:num)', 'Managers\Pemasaran\ProblemReport::approve/$1');
+
+		// Approve Problem Report
+		$routes->put('approve-problem-report/(:num)', 'Managers\Pemasaran\ProblemReport::approve/$1');
+
+		// Reject / Problem Solve
+		$routes->get('problem-solve/(:num)', 'Managers\Pemasaran\ProblemReport::reject/$1');
+		$routes->put('problem-solve/(:num)', 'Managers\Pemasaran\ProblemReport::reject/$1');
+	});
+
+	// Manager Konstruksi
+	$routes->group('konstruksi', ['filter' => 'auth:19'], function ($routes) {
 		$routes->get('workorder', 'Managers\Konstruksi\WorkOrder::index');
 		$routes->add('detail/(:num)', 'Managers\Konstruksi\WorkOrder::detail/$1');
 		$routes->post('choose-pengawas/(:num)', 'Managers\Konstruksi\WorkOrder::pilihPengawas/$1');
@@ -212,7 +238,6 @@ $routes->group('manager', ['filter' => 'auth'], function ($routes) {
 
 		// List Problem Log
 		$routes->get('problem-report', 'Managers\Konstruksi\ProblemReport::index');
-		$routes->post('problem-report/(:num)', 'Managers\Konstruksi\ProblemReport::dataProblemReport/$1');
 
 		// Approve Problem Report
 		$routes->post('problem-solve', 'Managers\Konstruksi\ProblemReport::approve');

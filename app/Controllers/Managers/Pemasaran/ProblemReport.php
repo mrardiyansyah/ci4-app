@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Managers\Konstruksi;
+namespace App\Controllers\Managers\Pemasaran;
 
 use App\Controllers\BaseController;
 use App\Models\M_Auth;
@@ -42,7 +42,7 @@ class ProblemReport extends BaseController
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
         $data['notif'] = get_new_notif();
 
-        $role = 'Construction';
+        $role = 'Account Executive';
 
         // All Problem Report
         $data['problem_report'] = $this->M_CancellationReport->getCancellationReportByRole($role);
@@ -50,35 +50,60 @@ class ProblemReport extends BaseController
         return view('managers/listProblemReport', $data);
     }
 
-    public function approve()
+    public function approve($id_report)
     {
         $session = session();
-        if ($this->request->isAJAX()) {
-            $id_user_report = $this->request->getPost();
-            // echo json_encode(['id' => $id_user_report]);
-            try {
-                $status = [
-                    'id_approval_status' => 4
-                ];
-                $report = $this->M_CancellationReport->update($id_user_report, $status);
+        $data['title'] = 'Form Approval Problem Report';
+        $data['user'] = $this->M_Auth->find($session->get('id_user'));
+        $data['role'] =  $this->M_Role->find($session->get('id_role'));
+        $data['notif'] = get_new_notif();
 
-                if ($report) {
-                    echo json_encode([
-                        'success' => 'success',
-                        'data' => $report,
-                    ]);
-                } else {
-                    throw new \Exception("Error Processing Request", 1);
+        $data['list_status'] = $this->CustomerModel->getApprovalStatus();
+
+        // All Problem Report
+        $data['problem_report'] = $this->M_CancellationReport->getReportLogById($id_report);
+        // d($data['problem_report']);
+
+        if ($this->request->getMethod() == 'put') {
+            $rules = [
+                'cancellation_notes' => [
+                    'label' => 'Notes',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $data['validation'] = $this->validator;
+            } else {
+                $cancellation_notes = $this->request->getPost('cancellation_notes');
+                $id_customer = $data['problem_report']['id_customer'];
+
+                $approval_status = [
+                    'id_approval_status' => 2,
+                    'cancellation_notes' => $cancellation_notes
+                ];
+
+                $customer_status = [
+                    'id_status' => 7,
+                    'id_information' => 13
+                ];
+
+                try {
+                    $update = $this->M_CancellationReport->update($id_report, $approval_status);
+                    $this->M_Customer->update($id_customer, $customer_status);
+                } catch (\Exception $e) {
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to update! Please try again ' . $this->M_CancellationReport->errors() . '</div>');
+                    return redirect()->to(site_url("manager/pemasaran"));
                 }
-            } catch (\Exception $e) {
-                echo json_encode([
-                    'error' => [
-                        'message' => $e->getMessage(),
-                        'code' => $e->getCode(),
-                    ],
-                ]);
+                $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Problem Report rejected!</div>');
+                return redirect()->to(site_url("manager/pemasaran"));
             }
         }
+
+        return view('managers/pemasaran/formApproveProblemReport', $data);
     }
 
     public function reject($id_report)

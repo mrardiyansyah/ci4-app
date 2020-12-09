@@ -11,7 +11,7 @@ class M_CompanyLeader extends Model
 
     // protected $returnType     = 'array';
 
-    protected $allowedFields = ['name_company_leader', 'position', 'phone', 'email'];
+    protected $allowedFields = ['name_company_leader', 'position_company_leader', 'phone_company_leader', 'email_company_leader'];
 
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;

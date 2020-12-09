@@ -11,7 +11,7 @@ class M_CompanyGeneral extends Model
 
     // protected $returnType     = 'array';
 
-    protected $allowedFields = ['name_company_general', 'position', 'phone', 'email'];
+    protected $allowedFields = ['name_company_general', 'position_company_general', 'phone_company_general', 'email_company_general'];
 
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;

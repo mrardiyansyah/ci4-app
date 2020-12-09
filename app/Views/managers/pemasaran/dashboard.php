@@ -43,36 +43,6 @@
                 </div>
             </div>
 
-            <!-- Work Order Request -->
-            <div class="col-xl-3 col-md-5 mb-3">
-                <div class="card border-left-info shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Work Order</div>
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?= !empty($work_order) ? count($work_order) . ' Request' : "0"; ?></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-user-clock fa-2x text-info"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <hr> -->
-                    <div class="text-center">
-                        <a href="<?= base_url('manager/konstruksi/workorder'); ?>" <?= !empty($work_order) ? 'class="stretched-link"  title="' . count($work_order) . ' Request"' : 'class="stretched-link" style="cursor: default;" title="No Work Order Request"' ?>>
-                            <!-- View More
-                            <span>
-                                <i class="far fa-arrow-alt-circle-right"></i>
-                            </span> -->
-                        </a>
-                    </div>
-                </div>
-            </div>
-
             <!-- Pending Report Log Approval -->
             <div class="col-xl-3 col-md-5 mb-3">
                 <div class="card border-left-cadetblue shadow h-100 py-2">
@@ -110,7 +80,7 @@
                     </div>
                     <!-- <hr> -->
                     <div class="text-center">
-                        <a href="<?= !empty($problem_report) ? base_url('manager/konstruksi/problem-report') : "#" ?>" <?= !empty($problem_report) ? 'class="stretched-link"' : 'class="stretched-link" style="cursor: default;" title="No Problem Reports Received"' ?>>
+                        <a href="<?= !empty($problem_report) ? base_url('manager/pemasaran/problem-report') : "#" ?>" <?= !empty($problem_report) ? 'class="stretched-link"' : 'class="stretched-link" style="cursor: default;" title="No Problem Reports Received"' ?>>
                             <!-- View More
                             <span>
                                 <i class="far fa-arrow-alt-circle-right"></i>
@@ -119,12 +89,69 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Total Customer Problem Mapping -->
+            <div class="col-xl-3 col-md-5 mb-3">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Problem Mapping</div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $total_problem_mapping; ?></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-map-marked-alt fa-2x text-info"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <hr> -->
+                    <div class="text-center">
+                        <a class="stretched-link disabled" title="<?= ($total_problem_mapping > 0) ? $total_problem_mapping . "Customer on Problem Mapping" : 'No Customer on Problem Mapping'; ?>">
+                            <!-- View More
+                            <span>
+                                <i class="far fa-arrow-alt-circle-right"></i>
+                            </span> -->
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- Card Row 2 -->
         <div class="row justify-content-center mb-0 ">
+
+            <!-- Total Customer Closing -->
+            <div class="col-xl-3 col-md-5 mb-3 ">
+                <div class="card border-left-purple shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-purple text-uppercase mb-1">Closing</div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $total_closing; ?></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-handshake fa-2x text-purple"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <hr> -->
+                    <div class="text-center">
+                        <span class="stretched-link disabled" <?= ($total_closing > 0) ? 'title="' . $total_closing . ' Customer Closing"' : 'title="No Problem Reports Received"' ?> style="cursor: default;">
+                    </div>
+                </div>
+            </div>
+
             <!-- On Construction -->
-            <div class="col-xl-3 col-md-5 mb-3 d-md-block d-none">
+            <div class="col-xl-3 col-md-5 mb-3 ">
                 <div class="card border-left-orange shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -149,7 +176,7 @@
             </div>
 
             <!-- Energizing -->
-            <div class="col-xl-3 col-md-5 mb-3 d-md-block d-none">
+            <div class="col-xl-3 col-md-5 mb-3">
                 <div class="card border-left-success shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -175,7 +202,7 @@
             </div>
 
             <!-- Terminated -->
-            <div class="col-xl-3 col-md-5 mb-3 d-md-block d-none">
+            <div class="col-xl-3 col-md-5 mb-3">
                 <div class="card border-left-danger shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -199,37 +226,34 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
         <!-- Card Row 3 -->
         <div class="row">
-            <!-- List SuperVisor -->
+            <!-- List Account Executive -->
             <div class="col-lg-4 mt-2 mb-2">
                 <div class="card shadow">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">List Supervisor</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Account Executive</h6>
                     </div>
                     <div class="card-body" style="max-height: 370px; overflow-y: auto;">
-                        <?php foreach ($list_spv as $spv) : ?>
-                            <?php if (!is_null($spv['name_customer'])) : ?>
-                                <span class="float-right text-orange small font-weight-bolder animate__animated animate__flash animate__infinite animate__slower" title="On Construction <i>(<?= $spv['name_customer']; ?>)</i>" data-html='true'>On Construction</span>
-                            <?php else : ?>
-                                <span class="float-right text-primary small font-weight-bolder" title="Available for Construction">Free</span>
-                            <?php endif; ?>
+                        <?php foreach ($list_ae as $ae) : ?>
+                            <span class="float-right text-cadetblue small font-weight-bolder" data-toggle="tooltip" title="Have <?= ($ae['total'] > 0) ? $ae['total'] : 'No'; ?> Potential Customer"><i class="fas fa-user-friends"></i> <?= $ae['total']; ?></span>
                             <div class="row mb-4">
                                 <div class="">
-                                    <?php if ($spv['image'] == 'default.jpg') { ?>
-                                        <img class="img-fluid rounded-circle" src="<?= base_url('assets/img/profile/' . $spv['image']); ?>" width="35" height="35">
+                                    <?php if ($ae['image'] == 'default.jpg') { ?>
+                                        <img class="img-fluid rounded-circle" src="<?= base_url('assets/img/profile/' . $ae['image']); ?>" width="35" height="35">
                                     <?php } else { ?>
-                                        <img class="img-fluid rounded-circle" src="<?= base_url('assets/img/profile/' . $spv['id_user'] . '/' . $spv['image']); ?>" width="35" height="35">
+                                        <img class="img-fluid rounded-circle" src="<?= base_url('assets/img/profile/' . $ae['id_user'] . '/' . $ae['image']); ?>" width="35" height="35">
                                     <?php } ?>
                                 </div>
                                 <div class="col">
                                     <div class="list-heading">
-                                        <span class="ml-1 small font-weight-bold"><?= $spv['name']; ?> </span>
+                                        <span class="ml-1 small font-weight-bold"><?= $ae['name']; ?> </span>
                                     </div>
                                     <div class="list-subheading">
-                                        <span class="ml-1 text-gray-500 small"><?= $spv['role_type']; ?></span>
+                                        <span class="ml-1 text-gray-500 small"><?= $ae['role_type']; ?></span>
                                     </div>
                                 </div>
                             </div>
@@ -259,12 +283,12 @@
                                 <?php foreach ($report_log as $c) : ?>
                                     <tr class="table-light">
                                         <td><?= $c['name']; ?></td>
-                                        <td><?= excerpt($c['description'], NULL, 40); ?></td>
+                                        <td><?= word_limiter($c['description'], 6, '...'); ?></td>
                                         <td class="text-center"><i class="fas fa-fw fa-calendar-alt"></i><?= localizedDateString($c['date_report']); ?><br><?= localizedTimeString($c['start_time']); ?> - <?= localizedTimeString($c['end_time']); ?></td>
                                         <td class="text-center">
                                             <!-- Button View Report -->
                                             <div class="tooltip-wrapper mb-1" data-toggle="tooltip" data-placement="left" data-original-title="View Report">
-                                                <a href="#" id="viewReportLog" class="btn btn-sm btn-primary btn-view-report" data-toggle="modal" data-target="#modalReport" data-id="<?= $c['id_user_report']; ?>" data-url="<?= base_url('construction/report'); ?>" data-baseurl="<?= base_url(); ?>"><i class="fas fa-fw fa-eye"></i></a>
+                                                <a href="#" id="viewReportLog" class="btn btn-sm btn-primary btn-view-report" data-toggle="modal" data-target="#modalReport" data-id="<?= $c['id_user_report']; ?>" data-url="<?= base_url('manager/report'); ?>" data-baseurl="<?= base_url(); ?>"><i class="fas fa-fw fa-eye"></i></a>
                                             </div>
                                             <!-- Button Approve Report Log -->
                                             <div class="tooltip-wrapper mb-1" data-toggle="tooltip" data-placement="left" data-original-title="#">
@@ -292,7 +316,7 @@
                 <div class="card shadow" id="cardCustomer">
                     <div class="card-header py-3">
                         <!-- <h5 class="">List Customer</h5> -->
-                        <h6 class="m-0 text-primary font-weight-bold">Customer (On Construction)</h6>
+                        <h6 class="m-0 text-primary font-weight-bold">Customer</h6>
                     </div>
                     <div class="card-body">
                         <table class="table table-striped table-hover table-construction-customer" style="width: 100%;">
@@ -305,7 +329,7 @@
                                     <th scope="col">Layanan</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Informasi</th>
-                                    <th scope="col">Pengawas</th>
+                                    <th scope="col">Account Executive</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -326,7 +350,7 @@
                                         <td class="text-center"><?= $c['information']; ?></td>
                                         <td class="text-center"><?= $c['name'] ?? '-'; ?></td>
                                         <td class="text-center">
-                                            <form action="<?= base_url('manager/konstruksi/detail/' . $c['id_customer']); ?>" method="post">
+                                            <form action="<?= base_url('manager/pemasaran/detail/' . $c['id_customer']); ?>" method="post">
                                                 <?= csrf_field(); ?>
                                                 <button type="submit" class="btn btn-sm btn-primary btn-work-order" data-toggle="tooltip" data-placement="bottom" data-id="<?= $c['id_customer']; ?>" data-url="<?= base_url('manager/'); ?>" data-information="<?= $c['information']; ?>" title="See Detail Info <?= $c['name_customer']; ?>"><i class="fas fa-fw fa-edit"></i></button>
                                             </form>
@@ -452,7 +476,10 @@
                 'width': '120px'
             }, {
                 'targets': 6,
-                'width': "161px"
+                'width': "100px"
+            }, {
+                'targets': 7,
+                'width': "100px"
             }],
         });
 
@@ -481,6 +508,9 @@
             }, ]
 
         });
+
+        $($.fn.dataTable.tables(true)).DataTable()
+            .columns.adjust();
     });
 </script>
 <?= $this->endSection(); ?>

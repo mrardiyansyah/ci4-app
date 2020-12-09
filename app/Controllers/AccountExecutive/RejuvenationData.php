@@ -290,15 +290,16 @@ class RejuvenationData extends BaseController
 
         if (!$this->validate($rules)) {
             // Validator with rules
+
             $validation = \Config\Services::validation();
-            return redirect()->back()->withInput()->with('validation', $validation);
+            return redirect()->back()->withInput()->with('validation', $validation)->with('message', '<div class="alert alert-danger" role="alert">Please complete the form!</div>');
         } else {
 
             // Company Profile fields
             $company_profile = [
                 'name_company' => $this->request->getPost('company-name'),
                 'address_company' => $this->request->getPost('address-company'),
-                'phone' => $this->request->getPost('phone-company[full]'),
+                'phone_company' => $this->request->getPost('phone-company[full]'),
                 'facsimile' => $this->request->getPost('facsimile'),
                 'email_company' => $this->request->getPost('email-company'),
                 'date_of_establishment' => $this->request->getPost('establishment')
@@ -307,53 +308,61 @@ class RejuvenationData extends BaseController
             // Leader Company fields
             $company_leader = [
                 'name_company_leader' => $this->request->getPost('company-leader-name'),
-                'position' => $this->request->getPost('leader-position-company'),
-                'phone' => $this->request->getPost('phone-leader-company[full]'),
-                'email' => $this->request->getPost('email-leader-company'),
+                'position_company_leader' => $this->request->getPost('leader-position-company'),
+                'phone_company_leader' => $this->request->getPost('phone-leader-company[full]'),
+                'email_company_leader' => $this->request->getPost('email-leader-company'),
             ];
 
             // Company Finance fields
             $company_finance = [
                 'name_company_finance' => !empty($this->request->getPost('company-finance-name')) ? $this->request->getPost('company-finance-name') : NULL,
-                'position' => !empty($this->request->getPost('finance-position-company')) ? $this->request->getPost('finance-position-company') : NULL,
-                'phone' => !empty($this->request->getPost('phone-finance-company[full]')) ? $this->request->getPost('phone-finance-company[full]') : NULL,
-                'email' => !empty($this->request->getPost('email-finance-company')) ? $this->request->getPost('email-finance-company') : NULL,
+                'position_company_finance' => !empty($this->request->getPost('finance-position-company')) ? $this->request->getPost('finance-position-company') : NULL,
+                'phone_company_finance' => !empty($this->request->getPost('phone-finance-company[full]')) ? $this->request->getPost('phone-finance-company[full]') : NULL,
+                'email_company_finance' => !empty($this->request->getPost('email-finance-company')) ? $this->request->getPost('email-finance-company') : NULL,
             ];
 
             $company_engineering = [
                 'name_company_engineering' => !empty($this->request->getPost('company-engineering-name')) ? $this->request->getPost('company-engineering-name') : NULL,
-                'position' => !empty($this->request->getPost('engineering-position-company')) ? $this->request->getPost('engineering-position-company') : NULL,
-                'phone' => !empty($this->request->getPost('phone-engineering-company[full]')) ? $this->request->getPost('phone-engineering-company[full]') : NULL,
-                'email' => !empty($this->request->getPost('email-engineering-company')) ? $this->request->getPost('email-engineering-company') : NULL,
+                'position_company_engineering' => !empty($this->request->getPost('engineering-position-company')) ? $this->request->getPost('engineering-position-company') : NULL,
+                'phone_company_engineering' => !empty($this->request->getPost('phone-engineering-company[full]')) ? $this->request->getPost('phone-engineering-company[full]') : NULL,
+                'email_company_engineering' => !empty($this->request->getPost('email-engineering-company')) ? $this->request->getPost('email-engineering-company') : NULL,
             ];
 
             // Company General Fields
             $company_general = [
                 'name_company_general' => !empty($this->request->getPost('company-general-name')) ? $this->request->getPost('email-engineering-company') : NULL,
-                'position' => !empty($this->request->getPost('general-position-company')) ? $this->request->getPost('general-position-company') : NULL,
-                'phone' => !empty($this->request->getPost('phone-general-company[full]')) ? $this->request->getPost('general-position-company') : NULL,
-                'email' => !empty($this->request->getPost('email-general-company')) ? $this->request->getPost('general-position-company') : NULL,
+                'position_company_general' => !empty($this->request->getPost('general-position-company')) ? $this->request->getPost('general-position-company') : NULL,
+                'phone_company_general' => !empty($this->request->getPost('phone-general-company[full]')) ? $this->request->getPost('general-position-company') : NULL,
+                'email_company_general' => !empty($this->request->getPost('email-general-company')) ? $this->request->getPost('general-position-company') : NULL,
             ];
+
+            $asu = $this->request->getPost('phone-company[full]');
+            d($asu);
+            d($company_profile);
+            d($company_leader);
+            d($company_finance);
+            d($company_engineering);
+            // dd($company_general);
 
 
             // Insert Data for Company Profile and Get Insert ID
-            $this->M_CompanyProfile->save($company_profile);
+            $this->M_CompanyProfile->insert($company_profile);
             $id_company_profile = $this->M_CompanyProfile->getInsertID();
 
             // Insert Data for Company Leader and Get Insert ID
-            $this->M_CompanyLeader->save($company_leader);
+            $this->M_CompanyLeader->insert($company_leader);
             $id_company_leader = $this->M_CompanyLeader->getInsertID();
 
             // Insert Data for Company Finance and Get Insert ID
-            $this->M_CompanyFinance->save($company_finance);
+            $this->M_CompanyFinance->insert($company_finance);
             $id_company_finance = $this->M_CompanyFinance->getInsertID();
 
             // Insert Data for Company Engineering and Get Insert ID
-            $this->M_CompanyEngineering->save($company_engineering);
+            $this->M_CompanyEngineering->insert($company_engineering);
             $id_company_engineering = $this->M_CompanyEngineering->getInsertID();
 
             // Insert Data for Company General and Get Insert ID
-            $this->M_CompanyGeneral->save($company_general);
+            $this->M_CompanyGeneral->insert($company_general);
             $id_company_general = $this->M_CompanyGeneral->getInsertID();
 
             // Data For Update on Customer Tables
@@ -374,6 +383,8 @@ class RejuvenationData extends BaseController
                 'amount_of_power' => $this->request->getPost('amount-of-power'),
                 'suggestion' => $this->request->getPost('suggestion')
             ];
+
+
 
             try {
                 $rejuvenation = $this->M_Customer->update($id_customer, $data_customer);

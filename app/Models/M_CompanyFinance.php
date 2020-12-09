@@ -11,7 +11,7 @@ class M_CompanyFinance extends Model
 
     // protected $returnType     = 'array';
 
-    protected $allowedFields = ['name_company_finance', 'position', 'phone', 'email'];
+    protected $allowedFields = ['name_company_finance', 'position_company_finance', 'phone_company_finance', 'email_company_finance'];
 
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;

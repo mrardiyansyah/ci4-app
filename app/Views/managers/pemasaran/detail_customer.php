@@ -15,6 +15,7 @@
     </div>
 
     <div class="card shadow mt-2 border-5 pt-2 active pb-0 px-3">
+        <!-- Card Body -->
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
@@ -24,6 +25,7 @@
             </div>
             <!-- Customer and Company Profile -->
             <div class="row">
+                <!-- Customer Profile -->
                 <div class="col">
                     <div class="card shadow">
                         <h6 class="card-header bg-gradient-info">
@@ -99,6 +101,8 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Company Profile -->
                 <div class="col">
                     <div class="card shadow">
                         <h6 class="card-header bg-gradient-info">
@@ -139,7 +143,7 @@
                                         <tr>
                                             <td>Establishment</td>
                                             <td>:</td>
-                                            <td id="date_of_establishment"><?= localizedDateString($customer['date_of_establishment']); ?></td>
+                                            <td id="date_of_establishment"><?= localizedDateString($customer['date_of_establishment']) ?? '-'; ?></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -193,6 +197,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Finance Affairs -->
                 <div class="col">
                     <div class="card shadow">
@@ -232,6 +237,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Engineering Affairs -->
                 <div class="col">
                     <div class="card shadow">
@@ -271,6 +277,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- General Affairs -->
                 <div class="col">
                     <div class="card shadow">
@@ -316,25 +323,16 @@
         <div class="card-footer bg-white px-0 ">
             <div class="row">
                 <div class="col-auto">
-                    <?php if (is_null($customer['id_pengawas'])) { ?>
-                        <div class="col">
-                            <button data-toggle="modal" data-target="#pilihPengawas" id="btn-pilih-pengawas" class="btn btn-sm btn-primary btn-pengawas float-right animate__animated animate__pulse animate__slow animate__infinite"><i class="fas fa-fw fa-user-check"></i> Pilih Pengawas Konstruksi</button>
-                        </div>
-                    <?php } else if ($pengawas['image'] == 'default.jpg') { ?>
-                        <span class="col-auto  d-lg-inline font-weight-bold text-primary">Pengawas :</span>
-                        <img class="d-lg-inline rounded-circle" src="<?= base_url('assets/img/profile/' . $pengawas['image']); ?>" width="35" height="35">
-                        <span class="ml-2 d-lg-inline text-gray-600 small"><?= $pengawas['name']; ?> </span>
-                    <?php } else { ?>
-                        <span class="col-auto  d-lg-inline font-weight-bold text-primary">Pengawas :</span>
-                        <img class="d-lg-inline rounded-circle" src="<?= base_url('assets/img/profile/' . $pengawas['id_user'] . '/' . $pengawas['image']); ?>" width="35" height="35">
-                        <span class="ml-2 d-lg-inline text-gray-600 small"><?= $pengawas['name']; ?> </span>
-                    <?php } ?>
-                </div>
-                <?php if ($customer['id_information'] == 8) { ?>
-                    <div class="ml-auto col-auto d-sm-inline d-none">
-                        <span class="text-warning small font-weight-bolder animate__animated animate__flash animate__infinite animate__slower">&#8226; On Construction</span>
+                    <span class="col-auto d-lg-inline font-weight-bold text-primary">Account Executive :</span>
+                    <div class="d-inline-block mt-1">
+                        <?php if ($ae['image'] == 'default.jpg') { ?>
+                            <img class="d-lg-inline rounded-circle" src="<?= base_url('assets/img/profile/' . $ae['image']); ?>" width="35" height="35">
+                        <?php } else { ?>
+                            <img class="d-lg-inline rounded-circle" src="<?= base_url('assets/img/profile/' . $ae['id_user'] . '/' . $ae['image']); ?>" width="35" height="35">
+                        <?php } ?>
+                        <span class="ml-2 d-lg-inline text-gray-600 small"><?= $ae['name']; ?> </span>
                     </div>
-                <?php }  ?>
+                </div>
             </div>
         </div>
     </div>
@@ -346,14 +344,14 @@
                 <div class="card-header bg-transparent border-0">
                     <!-- Tab List -->
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <?php if ($customer['id_information'] >= 8) : ?>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" id="reportLog-tab" data-toggle="tab" href="#reportLog" role="tab" aria-controls="reportLog" aria-selected="true">Report Log</a>
+                        </li>
+                        <?php if ($customer['id_status'] >= 3) : ?>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link active" id="reportLog-tab" data-toggle="tab" href="#reportLog" role="tab" aria-controls="reportLog" aria-selected="true">Report Log</a>
+                                <a class="nav-link" id="file-tab" data-toggle="tab" href="#file" role="tab" aria-controls="file" aria-selected="true">File</a>
                             </li>
                         <?php endif; ?>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link <?= ($customer['id_information'] >= 8) ? '' : 'active' ?>" id="file-tab" data-toggle="tab" href="#file" role="tab" aria-controls="file" aria-selected="true">File</a>
-                        </li>
                         <?php if (!empty($cancellation_report)) :  ?>
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link" id="problemLog-tab" data-toggle="tab" href="#problemLog" role="tab" aria-controls="problemLog" aria-selected="true">Problem Report Log</a>
@@ -369,91 +367,64 @@
                 <div class="card-body">
                     <div class="tab-content" id="myTabContent">
                         <!-- Report Log Tab Pane -->
-                        <?php if ($customer['id_information'] >= 8) : ?>
-                            <div class="tab-pane fade show active" id="reportLog" role="tabpanel" aria-labelledby="reportLog-tab">
-                                <div>
-                                    <table class="table table-bordered table-hover table-striped table-reportLog" style="width: 100%;">
-                                        <thead class="thead-dark">
+                        <div class="tab-pane fade show active" id="reportLog" role="tabpanel" aria-labelledby="reportLog-tab">
+                            <div>
+                                <table class="table table-bordered table-hover table-striped table-reportLog" style="width: 100%;">
+                                    <thead class="thead-dark">
+                                        <tr class="text-center">
+                                            <th scope="col">Date and Time</th>
+                                            <th scope="col">Description</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($report_log as $log) : ?>
                                             <tr class="text-center">
-                                                <th scope="col">Date and Time</th>
-                                                <th scope="col">Description</th>
-                                                <th scope="col">Status</th>
-                                                <th scope="col">Action</th>
+                                                <td><i class="fas fa-fw fa-calendar-alt"></i><?= localizedDateString($log['date_report']); ?><br><?= localizedTimeString($log['start_time']); ?> - <?= localizedTimeString($log['end_time']); ?></td>
+                                                <td><?= word_limiter($log['description'], 15, "..."); ?></td>
+                                                <td><span class="badge <?= $log['badge']; ?>"><?= $log['approval_status']; ?></span></td>
+                                                <td>
+                                                    <!-- Button View Report -->
+                                                    <div class="tooltip-wrapper mb-1" data-toggle="tooltip" data-placement="left" data-original-title="View Report">
+                                                        <a href="#" id="viewReportLog" class="btn btn-sm btn-primary btn-view-report" data-toggle="modal" data-target="#modalReport" data-id="<?= $log['id_user_report']; ?>" data-url="<?= base_url('manager/report'); ?>" data-baseurl="<?= base_url(); ?>"><i class="fas fa-fw fa-eye"></i></a>
+                                                    </div>
+                                                    <!-- Button Approve Report Log -->
+                                                    <div class="tooltip-wrapper mb-1" data-toggle="tooltip" data-placement="left" data-original-title="#">
+                                                        <a href="#" id="approveReportLog" class="btn btn-sm btn-success btn-approve-log" data-url="<?= base_url('manager'); ?>" data-id="<?= $log['id_user_report']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-fw fa-check"></i></a>
+                                                    </div>
+                                                    <!-- Button Reject Report Log -->
+                                                    <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
+                                                        <a href="#" id="rejectReportLog" class="btn btn-sm btn-danger btn-reject-log" data-url="<?= base_url('manager'); ?>" data-id="<?= $log['id_user_report']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-fw fa-times"></i></a>
+                                                    </div>
+                                                </td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($report_log as $log) : ?>
-                                                <tr>
-                                                    <td><i class="fas fa-fw fa-calendar-alt"></i><?= localizedDateString($log['date_report']); ?><br><?= localizedTimeString($log['start_time']); ?> - <?= localizedTimeString($log['end_time']); ?></td>
-                                                    <td><?= excerpt($log['description'], NULL, 80); ?></td>
-                                                    <td><span class="badge <?= $log['badge']; ?>"><?= $log['approval_status']; ?></span></td>
-                                                    <td>
-                                                        <!-- Button View Report -->
-                                                        <div class="tooltip-wrapper mb-1" data-toggle="tooltip" data-placement="left" data-original-title="View Report">
-                                                            <a href="#" id="viewReportLog" class="btn btn-sm btn-primary btn-view-report" data-toggle="modal" data-target="#modalReport" data-id="<?= $log['id_user_report']; ?>" data-url="<?= base_url('construction/report'); ?>" data-baseurl="<?= base_url(); ?>"><i class="fas fa-fw fa-eye"></i></a>
-                                                        </div>
-                                                        <!-- Button Approve Report Log -->
-                                                        <div class="tooltip-wrapper mb-1" data-toggle="tooltip" data-placement="left" data-original-title="#">
-                                                            <a href="#" id="approveReportLog" class="btn btn-sm btn-success btn-approve-log" data-url="<?= base_url('manager'); ?>" data-id="<?= $log['id_user_report']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-fw fa-check"></i></a>
-                                                        </div>
-                                                        <!-- Button Reject Report Log -->
-                                                        <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
-                                                            <a href="#" id="rejectReportLog" class="btn btn-sm btn-danger btn-reject-log" data-url="<?= base_url('manager'); ?>" data-id="<?= $log['id_user_report']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-fw fa-times"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- File Tab Pane -->
+                        <?php if ($customer['id_status'] >= 3) : ?>
+                            <div class="tab-pane fade <?= ($customer['id_information'] >= 8) ? '' : 'show active' ?>" id="file" role="tabpanel" aria-labelledby="file-tab">
+                                <table class="table table-bordered table-hover table-striped table-file" style="width: 100%;">
+                                    <thead class="thead-dark">
+                                        <tr class="text-center">
+                                            <th scope="col">#</th>
+                                            <th scope="col">Nama File</th>
+                                            <th scope="col">Size</th>
+                                            <th scope="col">Keterangan</th>
+                                            <th scope="col">Uploaded By</th>
+                                            <th scope="col">Timestamp</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
                             </div>
                         <?php endif; ?>
-                        <!-- File Tab Pane -->
-                        <div class="tab-pane fade <?= ($customer['id_information'] >= 8) ? '' : 'show active' ?>" id="file" role="tabpanel" aria-labelledby="file-tab">
-                            <table class="table table-bordered table-hover table-striped table-file" style="width: 100%;">
-                                <thead class="thead-dark">
-                                    <tr class="text-center">
-                                        <th scope="col">#</th>
-                                        <th scope="col">Nama File</th>
-                                        <th scope="col">Size</th>
-                                        <th scope="col">Keterangan</th>
-                                        <th scope="col">Uploaded By</th>
-                                        <th scope="col">Timestamp</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php $i = 1; ?>
-                                    <?php $j = 1; ?>
-                                    <?php $file_name_temp = ''; ?>
-                                    <?php foreach ($file_construction as $file) : ?>
-                                        <?php $nama_file = renameFile($file['storage_file_name']); ?>
-                                        <tr>
-                                            <th scope="row"><?= $i; ?></th>
-                                            <?php if ($nama_file == $file_name_temp) { ?>
-                                                <td><?= $nama_file . "($j)"; ?></td>
-                                            <?php
-                                                $j++;
-                                            } else { ?>
-                                                <td><?= $nama_file; ?></td>
-                                            <?php } ?>
-                                            <td class="text-center"><?= bytesToHuman($file['size']); ?></td>
-                                            <td class="text-center"><?= $file['description']; ?></td>
-                                            <td class="text-center"><?= $file['name']; ?></td>
-                                            <td class="text-center"><?= ($file['created_at']); ?></td>
-                                            <td class="text-center">
-                                                <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="View PDF File">
-                                                    <a href="<?= base_url('viewer/' . $file['id_file']); ?>" target="_blank" class="btn btn-sm btn-info"><i class=" fas fa-fw fa-eye"></i></a>
-                                                </div>
-                                            </td>
-
-                                        </tr>
-                                        <?php $i++; ?>
-                                        <?php $file_name_temp = $nama_file ?>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
                         <!-- Problem Report Log Tab Pane -->
                         <?php if (!empty($cancellation_report)) : ?>
                             <div class="tab-pane fade" id="problemLog" role="tabpanel" aria-labelledby="problemLog-tab">
@@ -472,7 +443,7 @@
                                         <tbody>
                                             <?php foreach ($cancellation_report as $log) : ?>
                                                 <tr>
-                                                    <td><i class="fas fa-fw fa-calendar-alt"></i><?= localizedDateString($log['date_report']); ?><br><?= localizedTimeString($log['start_time']); ?> - <?= localizedTimeString($log['end_time']); ?></td>
+                                                    <td><i class="fas fa-fw fa-calendar-alt"></i><?= ($log['date_report']); ?><br><?= ($log['start_time']); ?> - <?= ($log['end_time']); ?></td>
                                                     <td><?= excerpt($log['description'], NULL, 80); ?></td>
                                                     <td><?= (!is_null($log['suggestion_solution'])) ? excerpt($log['suggestion_solution'], NULL, 80) : '-'; ?></td>
                                                     <td><?= (!is_null($log['solutions'])) ? excerpt($log['solutions'], NULL, 80) : '-'; ?></td>
@@ -770,7 +741,7 @@
                 'orderable': false
             }, {
                 'targets': 0,
-                'width': '120px'
+                'width': '110px'
             }]
         });
     });

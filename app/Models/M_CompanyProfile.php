@@ -11,7 +11,7 @@ class M_CompanyProfile extends Model
 
     // protected $returnType     = 'array';
 
-    protected $allowedFields = ['name_company', 'address_company', 'phone', 'facsimile', 'email_company', 'date_of_establishment'];
+    protected $allowedFields = ['name_company', 'address_company', 'phone_company', 'facsimile', 'email_company', 'date_of_establishment'];
 
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;

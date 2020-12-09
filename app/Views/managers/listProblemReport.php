@@ -34,15 +34,15 @@
                             <td class="text-center">
                                 <!-- Button View Report -->
                                 <div class="tooltip-wrapper mb-1" data-toggle="tooltip" data-placement="left" data-original-title="View Report">
-                                    <a href="#" id="viewReportLog" class="btn btn-sm btn-primary btn-view-problemreport" data-toggle="modal" data-target="#modalReport" data-id="<?= $log['id_user_cancellation']; ?>" data-url="<?= base_url('manager/konstruksi/problem-report'); ?>" data-baseurl="<?= base_url(); ?>"><i class="fas fa-fw fa-eye"></i></a>
+                                    <a href="#" id="viewReportLog" class="btn btn-sm btn-primary btn-view-problemreport" data-toggle="modal" data-target="#modalReport" data-id="<?= $log['id_user_cancellation']; ?>" data-url="<?= base_url('manager/problem-report'); ?>" data-baseurl="<?= base_url(); ?>"><i class="fas fa-fw fa-eye"></i></a>
                                 </div>
                                 <!-- Button Approve Report Log -->
                                 <div class="tooltip-wrapper mb-1" data-toggle="tooltip" data-placement="left" data-original-title="#">
-                                    <a href="#" id="approveProblemReport" class="btn btn-sm btn-success btn-approve-log" data-url="<?= base_url('manager/konstruksi'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-fw fa-check"></i></a>
+                                    <a href="#" id="approveProblemReport" class="btn btn-sm btn-success btn-approve-log" data-user="<?= $role['id_role']; ?>" data-url="<?= base_url('manager'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-fw fa-check"></i></a>
                                 </div>
                                 <!-- Button Reject Report Log -->
                                 <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
-                                    <a href="#" id="rejectProblemReport" class="btn btn-sm btn-danger btn-reject-log" data-url="<?= base_url('manager/konstruksi'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-fw fa-times"></i></a>
+                                    <a href="#" id="rejectProblemReport" class="btn btn-sm btn-danger btn-reject-log" data-user="<?= $role['id_role']; ?>" data-url="<?= base_url('manager/pemasaran'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-fw fa-times"></i></a>
                                 </div>
                             </td>
                         </tr>
@@ -60,7 +60,7 @@
 
 <!-- Modal View Problem Report -->
 <div class="modal fade" id="modalReport">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -88,7 +88,7 @@
                     <h3>Project A</h3>
                 </div> -->
                 <div id="info" class="pt-3">
-                    <table class="table table-borderless table-responsive-sm">
+                    <table class="table table-sm table-borderless table-responsive-sm">
                         <tbody>
                             <tr>
                                 <th>Date</th>
@@ -101,7 +101,7 @@
                                 <td id="data-time"></td>
                             </tr>
                             <tr>
-                                <th>User</th>
+                                <th>Reported By</th>
                                 <th>:</th>
                                 <td id="data-user"></td>
                             </tr>
