@@ -546,10 +546,19 @@ $(document).on('click', '.btn-reject-log#rejectReportLog', function (e) {
 // Button Approve Problem Report Log
 $(document).on('click', '.btn-approve-log#approveProblemReport', function (e) {
     e.preventDefault();
+    let user = $(this).data('user');
     let url = $(this).data('url');
     let id_user_report = $(this).data('id');
 
-    const href = url + '/problem-solve';
+    path = window.location.pathname.split('/');
+    if (path.includes('pemasaran')) {
+        href = url + "/pemasaran/form-approve-problem/" + id_user_report;
+        return window.location.href = href
+    } else if (path.includes('konstruksi')) {
+        href = url + "/konstruksi/problem-solve";
+    } else {
+        return;
+    }
 
     Swal.fire({
         title: false,
@@ -575,6 +584,10 @@ $(document).on('click', '.btn-approve-log#approveProblemReport', function (e) {
     }).then((result) => {
         if (result.isConfirmed) {
             // document.location.href = href;
+            if (user == 20) {
+                document.location.href = href;
+            }
+
             $.ajax({
                 type: "POST",
                 url: href,

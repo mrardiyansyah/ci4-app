@@ -214,6 +214,17 @@ a.text-cadetblue:focus {
 	border-radius: 13px;
 	background-clip: padding-box;
 	border: 10px solid transparent;
+	visibility: hidden;
+}
+
+*:hover::-webkit-scrollbar,
+*:hover::-webkit-scrollbar-thumb {
+	visibility: visible;
+}
+
+*:focus::-webkit-scrollbar,
+*:focus::-webkit-scrollbar-thumb {
+	visibility: visible;
 }
 
 *::-webkit-scrollbar-thumb {
