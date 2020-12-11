@@ -67,7 +67,7 @@ class Dashboard extends BaseController
 
         // List Supervisor Construction
         $data['list_spv'] = $this->M_Auth->getAllSupervisor();
-        // d($data['list_spv']);
+        d($data['list_spv']);
 
         return view('managers/konstruksi/dashboard', $data);
     }

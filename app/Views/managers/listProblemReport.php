@@ -42,7 +42,7 @@
                                 </div>
                                 <!-- Button Reject Report Log -->
                                 <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
-                                    <a href="#" id="rejectProblemReport" class="btn btn-sm btn-danger btn-reject-log" data-user="<?= $role['id_role']; ?>" data-url="<?= base_url('manager/pemasaran'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-fw fa-times"></i></a>
+                                    <a href="#" id="rejectProblemReport" class="btn btn-sm btn-danger btn-reject-log" data-user="<?= $role['id_role']; ?>" data-url="<?= base_url('manager'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-fw fa-times"></i></a>
                                 </div>
                             </td>
                         </tr>

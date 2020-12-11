@@ -12,7 +12,7 @@ class M_UserReport extends Model
     // protected $returnType     = 'array';
     // protected $useSoftDeletes = true;
 
-    protected $allowedFields = ['id_user', 'id_customer', 'id_directories', 'description', 'date_report', 'start_time',  'end_time', 'id_approval_status'];
+    protected $allowedFields = ['id_user', 'id_customer', 'id_manager', 'id_directories', 'description', 'date_report', 'start_time',  'end_time', 'id_approval_status'];
 
     protected $useSoftDeletes = true;
     protected $useTimestamps = true;

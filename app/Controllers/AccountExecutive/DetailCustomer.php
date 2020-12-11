@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Managers\Pemasaran;
+namespace App\Controllers\AccountExecutive;
 
 use App\Controllers\BaseController;
 use App\Models\M_Auth;
@@ -54,7 +54,6 @@ class DetailCustomer extends BaseController
             ->orderBy('created_at', 'desc')
             ->first();
 
-        // d($closing);
         if ($closing) {
             $id_dir_file_closing = [
                 'id_app_letter' => $closing['id_app_letter'],
@@ -65,9 +64,7 @@ class DetailCustomer extends BaseController
             ];
 
             $data['file_closing'] = $this->M_Files->getFileFromMultipleDirectories($id_dir_file_closing);
-            // d($data['file_closing']);
         }
-        d($closing);
 
 
         // Data Pengawas
@@ -76,25 +73,89 @@ class DetailCustomer extends BaseController
         // Data Report Log
         $data['report_log'] = $this->M_UserReport->getReportByRolePerCustomer($role, $id_customer);
 
+        // Data Report Log (Construction)
+        if (!is_null($data['customer']['id_pengawas'])) {
+            // Jika sudah ditentukan pengawasnya
+            $data['pengawas'] = $this->M_Auth->find($data['customer']['id_pengawas']);
+            $data['construction_log'] = $this->M_UserReport->getReportByRolePerCustomer('Construction', $id_customer);
+        }
+
         // Data Cancellation Report
-        $data['cancellation_report'] = $this->M_CancellationReport->getCancellationReportByRole($role, $id_customer);
+        $data['cancellation_report'] = $this->M_CancellationReport->getCancellationReport($session->get('id_user'), $id_customer);
 
         // Data Energize Report
         $id_dir_file_energize = $this->M_UserEnergize->getFileEnergize($id_customer);
         if ($id_dir_file_energize) {
             $data['file_energize'] =
-                $this->M_Files->getFileEnergize($id_dir_file_energize['id_ba_aco'], $id_dir_file_energize['id_work_order']);
+                $this->M_Files->getFileEnergize($id_dir_file_energize['id_ba_aco'], $id_dir_file_energize['id_work_order'], $id_dir_file_energize['id_documentation']);
         }
 
-        // Jika sudah ditentukan pengawasnya
-        if (!is_null($data['customer']['id_pengawas'])) {
-            $data['pengawas'] = $this->M_Auth->find($data['customer']['id_pengawas']);
-            // Data Report Log
-            $data['construction_log'] = $this->M_UserReport->getReportByRolePerCustomer('Construction', $id_customer);
-        }
+
 
         $data['user_construction'] = $this->M_Auth->where('id_role', 5)->find();
         // d($data['customer']);
-        return view('managers/pemasaran/detail_customer', $data);
+        return view('account_executive/detail_customer', $data);
+    }
+
+    public function dataReport($id_report)
+    {
+        $session = session();
+        if ($this->request->isAJAX()) {
+            try {
+                $report = $this->M_UserReport->getReportLogById($id_report);
+
+                $dir = $this->M_Directories->find($report['id_directories']);
+
+                $images = $this->M_Files->getAllInfoFileFromDirectories($dir['id_dir']);
+
+                if (!empty($report) && !empty($images)) {
+                    echo json_encode([
+                        'success' => 'success',
+                        'data' => $report,
+                        'images' => $images
+                    ]);
+                } else {
+                    throw new \Exception("Error Processing Request", 1);
+                }
+            } catch (\Exception $e) {
+                echo json_encode([
+                    'error' => [
+                        'message' => $e->getMessage(),
+                        'code' => $e->getCode(),
+                    ],
+                ]);
+            }
+        }
+    }
+
+    public function dataProblemReport($id_report)
+    {
+        $session = session();
+        if ($this->request->isAJAX()) {
+            try {
+                $report = $this->M_CancellationReport->getReportLogById($id_report);
+
+                $dir = $this->M_Directories->find($report['id_directories']);
+
+                $images = $this->M_Files->getAllInfoFileFromDirectories($dir['id_dir']);
+
+                if (!empty($report) && !empty($images)) {
+                    echo json_encode([
+                        'success' => 'success',
+                        'data' => $report,
+                        'images' => $images
+                    ]);
+                } else {
+                    throw new \Exception("Error Processing Request", 1);
+                }
+            } catch (\Exception $e) {
+                echo json_encode([
+                    'error' => [
+                        'message' => $e->getMessage(),
+                        'code' => $e->getCode(),
+                    ],
+                ]);
+            }
+        }
     }
 }

@@ -623,6 +623,19 @@ $(document).on('click', '.btn-approve-log#approveProblemReport', function (e) {
 
 $("#form-problem-report").on('submit', function (e) {
     e.preventDefault();
+    let status = $(".btn-submit-problem-report").data('status');
+    let url = $(".btn-submit-problem-report").data('url')
+    let id = $(".btn-submit-problem-report").data('id')
+
+    if (status == 'Problem Mapping') {
+        url = url + "/pemasaran/problem-solve/" + id;
+    } else if (status == 'Construction') {
+        url = url + "/konstruksi/problem-solve/" + id;
+    } else {
+        return false;
+    }
+    action = $(this).attr('action', url);
+    console.log(status);
     Swal.fire({
         title: false,
         html: `Are you sure you want to submit this form? This action can't be undo`,
@@ -651,6 +664,37 @@ $("#form-problem-report").on('submit', function (e) {
     });
 });
 
+// Form Energize Now
+$("#form-energize-now").on('submit', function (e) {
+    e.preventDefault();
+    Swal.fire({
+        title: false,
+        html: `Are you sure you want to submit this form? Customer will change aand can't be Undo`,
+        icon: 'warning',
+        padding: '1em',
+        width: 400,
+        showCancelButton: true,
+        cancelButtonText: `Cancel`,
+        confirmButtonText: 'Yes, Energize Now!',
+        buttonsStyling: false,
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown animate__fast',
+            icon: 'animate__animated animate__fadeIn animate__delay-1s animate__repeat-3'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        },
+        customClass: {
+            confirmButton: 'btn btn-success btn-sm font-small',
+            cancelButton: 'btn btn-secondary btn-sm ml-3 font-small',
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $(this)[0].submit();
+        }
+    });
+});
+
 // Button Reject Problem Report Log
 $(document).on('click', '.btn-reject-log#rejectProblemReport', function (e) {
 
@@ -658,9 +702,16 @@ $(document).on('click', '.btn-reject-log#rejectProblemReport', function (e) {
 
     let url = $(this).data('url');
     let id_user_report = $(this).data('id');
-    const form_reksis = $(this).parent()
 
-    const href = url + '/problem-solve/' + id_user_report;
+    path = window.location.pathname.split('/');
+    if (path.includes('pemasaran')) {
+        href = url + "/pemasaran/problem-solve/" + id_user_report;
+        return window.location.href = href
+    } else if (path.includes('konstruksi')) {
+        href = url + "/konstruksi/problem-solve/" + id_user_report;
+    } else {
+        return;
+    }
 
     Swal.fire({
         title: false,

@@ -36,6 +36,20 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group ">
+                            <label for="ba_kesepakatan" class="col-sm col-form-label-sm">File Record of Agreement</label>
+                            <div class="col-sm-6">
+                                <div class="custom-file">
+                                    <input type="file" class="form-control custom-file-input <?php if (isset($validation)) echo $validation->hasError('ba_kesepakatan') ? 'is-invalid' : ''; ?>" id="ba_kesepakatan" name="ba_kesepakatan[]" multiple>
+                                    <label class="custom-file-label <?php if (isset($validation)) echo $validation->hasError('ba_kesepakatan') ? 'selected alert-danger' : ''; ?>" for="ba_kesepakatan">Choose file</label>
+                                    <?php if (isset($validation)) : ?>
+                                        <div class="invalid-feedback">
+                                            <?= $validation->getError('ba_kesepakatan'); ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group justify-content-end">
                             <div class="col-sm-10">
                                 <button class="btn btn-sm btn-primary" type="submit" name="uploadSPJBTL" id="uploadSPJBTL">

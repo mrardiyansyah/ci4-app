@@ -157,7 +157,7 @@ class ProblemReport extends BaseController
 
                 try {
                     $update = $this->M_CancellationReport->update($id_report, $update_status);
-                    $this->M_Customer->update($id_customer, ['id_information' => 8]);
+                    $this->M_Customer->update($id_customer, ['id_information' => 2]);
                 } catch (\Exception $e) {
                     $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to update! Please try again ' . $this->M_CancellationReport->errors() . '</div>');
                     return redirect()->to(site_url("manager/konstruksi"));

@@ -12,7 +12,7 @@ class M_UserClosing extends Model
     // protected $returnType     = 'array';
     // protected $useSoftDeletes = true;
 
-    protected $allowedFields = ['id_salesman', 'id_customer', 'id_app_letter', 'id_reksis_sld', 'id_spjbtl',  'id_working_order'];
+    protected $allowedFields = ['id_salesman', 'id_customer', 'id_app_letter', 'id_record_of_agreement', 'id_reksis_sld', 'id_spjbtl',  'id_working_order'];
 
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';

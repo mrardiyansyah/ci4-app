@@ -61,16 +61,26 @@ class Closing extends BaseController
                 // Get Files Uploaded by Client
                 $files = $this->request->getFiles();
 
-                // Call Upload Files Function to store
-                $upload_files = $this->uploadFiles($files, $id_customer, $cust_name, $description);
+                $app_letter = $files['app_letter'];
 
-                if ($upload_files) {
+                // Call Upload Files Function to store
+                // dd($app_letter);
+                // dd($id_dir_app_letter);
+                $id_dir_app_letter = $this->uploadFiles($app_letter, $cust_name, $description);
+                if ($id_dir_app_letter) {
+                    $data_closing = [
+                        'id_salesman' => $session->get('id_user'),
+                        'id_customer' => $id_customer,
+                        'id_app_letter' => $id_dir_app_letter,
+                    ];
+
                     $status = [
                         'id_information' => 3,
                         'id_status' => 3
                     ];
 
                     try {
+                        $this->M_UserClosing->save($data_closing);
                         // Update Status and Information (Closing and Menunggu Reksis)
                         $this->M_Customer->update($id_customer, $status);
                     } catch (\Exception $e) {
@@ -111,30 +121,65 @@ class Closing extends BaseController
                         'mime_in' => 'The File type is not allowed. Allowed types : .pdf, .doc, .docx'
                     ],
                 ],
+                'ba_kesepakatan' => [
+                    'label' => 'Record of Agreement',
+                    'rules' => 'uploaded[ba_kesepakatan.0]|max_size[ba_kesepakatan,4096]|mime_in[ba_kesepakatan,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document]',
+                    'errors' => [
+                        'uploaded' => '{field} field is required',
+                        'max_size' => 'Allowed maximum size is 4MB',
+                        'mime_in' => 'The File type is not allowed. Allowed types : .pdf, .doc, .docx'
+                    ],
+                ],
             ];
 
             if (!$this->validate($rules)) {
                 $data['validation'] = $this->validator;
             } else {
                 $cust_name = $data['customer']['name_customer']; //Customer Name
-                $description = "SPJBTL";
 
                 // Get Files Uploaded by Client
                 $files = $this->request->getFiles();
 
-                // Call Upload Files Function to store
-                $upload_files = $this->uploadFiles($files, $id_customer, $cust_name, $description);
+                $spjbtl = $files['spjbtl'];
+                $ba_kesepakatan = $files['ba_kesepakatan'];
 
-                if ($upload_files) {
+                if ($spjbtl[0]->isValid()) {
+                    $description = "SPJBTL";
+                    $id_spjbtl = $this->uploadFiles($spjbtl, $cust_name, $description);
+                }
+
+                if ($id_spjbtl != false && $ba_kesepakatan[0]->isValid()) {
+                    $description = 'Berita Acara Kesepakatan';
+                    $id_ba_kesepakatan = $this->uploadFiles($ba_kesepakatan, $cust_name, $description);
+                } else {
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">There something went wrong! Please call the Administrator</div>');
+                    return redirect()->to(site_url("construction"));
+                }
+
+
+                if ($id_ba_kesepakatan) {
+
+                    $where = [
+                        'id_salesman' => $session->get('id_user'),
+                        'id_customer' => $id_customer,
+                    ];
+
+                    $data_update = [
+                        'id_spjbtl' => $id_spjbtl,
+                        'id_record_of_agreement' => $id_ba_kesepakatan
+                    ];
+
                     $status = [
                         'id_information' => 6,
                     ];
 
                     try {
+                        // Insert data
+                        $this->M_UserClosing->where($where)->set($data_update)->update();
                         // Update Status and Information (Closing and Menunggu Reksis)
                         $this->M_Customer->update($id_customer, $status);
                     } catch (\Exception $e) {
-                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">There something went wrong! ' . $this->M_Customer->errors() . '</div>');
+                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">There something went wrong! ' . $this->M_UserClosing->errors() . '</div>');
                         return redirect()->to(site_url("account-executive"));
                     }
 
@@ -183,20 +228,34 @@ class Closing extends BaseController
                 // Get Files Uploaded by Client
                 $files = $this->request->getFiles();
 
-                // Call Upload Files Function to store
-                $upload_files = $this->uploadFiles($files, $id_customer, $cust_name, $description);
+                $working_order_files = $files['working_order'];
 
-                if ($upload_files) {
+                // Call Upload Files Function to store
+                $id_working_order = $this->uploadFiles($working_order_files, $cust_name, $description);
+
+                if ($id_working_order) {
+
+                    $where = [
+                        'id_salesman' => $session->get('id_user'),
+                        'id_customer' => $id_customer,
+                    ];
+
+                    $data_update = [
+                        'id_working_order' => $id_working_order
+                    ];
+
                     $status = [
                         'id_status' => 4,
                         'id_information' => 7,
                     ];
 
                     try {
+                        // Insert data
+                        $this->M_UserClosing->where($where)->set($data_update)->update();
                         // Update Status and Information (Closing and Menunggu Reksis)
                         $this->M_Customer->update($id_customer, $status);
                     } catch (\Exception $e) {
-                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">There something went wrong! ' . $this->M_Customer->errors() . '</div>');
+                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">There something went wrong! ' . $this->M_UserClosing->errors() . '</div>');
                         return redirect()->to(site_url("account-executive"));
                     }
 
@@ -212,7 +271,7 @@ class Closing extends BaseController
         return view('account_executive/upload_wo', $data);
     }
 
-    protected function uploadFiles($files, $id_customer, $cust_name, string $description)
+    protected function uploadFiles($files, $cust_name, string $description)
     {
         $session = session();
 
@@ -221,19 +280,16 @@ class Closing extends BaseController
 
         if ($description == 'Application Letter') {
             $FolderPath = 'app_letter/'; //Nama Folder Salesman Log Report
-            $file_uploaded = $files['app_letter'];
             $localFileName = 'app_letter'; //Nama Local File
-            $id_closing = 'id_app_letter';
         } else if ($description == 'SPJBTL') {
             $FolderPath = 'SPJBTL/'; //Nama Folder Cancellation Report
-            $file_uploaded = $files['spjbtl'];
             $localFileName = 'spjbtl'; //Nama Local File
-            $id_closing = 'id_spjbtl';
+        } else if ($description == 'Berita Acara Kesepakatan') {
+            $FolderPath = 'SPJBTL/'; //Nama Folder Cancellation Report
+            $localFileName = 'ba_kesepakatan'; //Nama Local File
         } else if ($description == 'Working Order') {
             $FolderPath = 'working_order/'; //Nama Folder Cancellation Report
-            $file_uploaded = $files['working_order'];
             $localFileName = 'working_order'; //Nama Local File
-            $id_closing = 'id_working_order';
         } else {
             return false;
         }
@@ -273,7 +329,7 @@ class Closing extends BaseController
         // Direktori Folder Salesman Log Report
         $reportDirectoryName = $structure . $cust_name . '/' . $FolderPath;
 
-        foreach ($file_uploaded as $file) {
+        foreach ($files as $file) {
             //Original File Name
             $originalFileName = $file->getClientName();
 
@@ -284,6 +340,9 @@ class Closing extends BaseController
 
             // Size file
             $size_file = $file->getSize();
+
+            // Mime type 
+            $mime_type = $file->getMimeType();
 
             // File Path
             $file_path = "$reportDirectoryName$file_name";
@@ -307,6 +366,7 @@ class Closing extends BaseController
                 'original_file_name' => $originalFileName,
                 'storage_file_name' => $file_name,
                 'size' => $size_file,
+                'mime_type' => $mime_type,
                 'file_path' => $file_path,
                 'description' => $description,
                 'created_at' => date("Y-m-d H:i:s"),
@@ -322,27 +382,7 @@ class Closing extends BaseController
             return false;
         }
 
-        $id_salesman = $session->get('id_user');
-
-        $data_closing = [
-            'id_salesman' => $id_salesman,
-            'id_customer' => $id_customer,
-            "$id_closing" => $id_dir,
-        ];
-
-        if ($description != 'Application Letter') {
-            $id_user_closing = $this->M_UserClosing->getID($id_salesman, $id_customer);
-
-            $data_closing['id_user_closing'] = $id_user_closing;
-        }
-
-        $insertUserClosing = $this->M_UserClosing->save($data_closing);
-
-        if (!$insertUserClosing) {
-            return false;
-        }
-
-        // Jika berhasil memindahkan semua file yang di upload return TRUE
-        return true;
+        // Jika berhasil memindahkan semua file yang di upload return ID Directories
+        return $id_dir;
     }
 }

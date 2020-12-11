@@ -34,6 +34,16 @@ class M_Files extends Model
             ->getResultArray();
     }
 
+    public function getFileFromMultipleDirectories(array $id_directories)
+    {
+        $builder = $this->db->table($this->table);
+        return $builder->select("$this->table.*,user.name")
+            ->whereIn('id_dir', $id_directories)
+            ->join('user', "$this->table.id_uploadedby = user.id_user")
+            ->get()
+            ->getResultArray();
+    }
+
     public function getInfoFile($id_file)
     {
         $builder = $this->db->table($this->table);
@@ -54,10 +64,10 @@ class M_Files extends Model
             ->getResultArray();
     }
 
-    public function getFileEnergize($id_ba_aco, $id_working_order_energize, $id_documentation)
+    public function getFileEnergize($id_ba_aco, $id_working_order_energize)
     {
         $builder = $this->db->table($this->table);
-        $id = [$id_ba_aco, $id_working_order_energize, $id_documentation];
+        $id = [$id_ba_aco, $id_working_order_energize];
         return $builder->select("$this->table.*,user.name")
             ->whereIn('id_dir', $id)
             ->where('mime_type', 'application/pdf')

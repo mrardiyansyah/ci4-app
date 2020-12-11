@@ -103,17 +103,36 @@ $routes->group('account-executive', ['filter' => 'auth:3,20'], function ($routes
 	// Data Potential
 	$routes->get('/', 'AccountExecutive\DataPotential::index');
 
+	// Detail Customer
+	$routes->get('detail/(:num)', 'AccountExecutive\DetailCustomer::index/$1');
+
+	// Data Report (View Modal)
+	$routes->post('report/(:num)', 'AccountExecutive\DetailCustomer::dataReport/$1');
+	$routes->post('problem-report/(:num)', 'AccountExecutive\DetailCustomer::dataProblemReport/$1');
+
+	// Data Energize
+	$routes->post('energizing-doc/(:num)', 'AccountExecutive\DataEnergize::dataEnergizeDocumentation/$1');
+
+	// Probing Report Log (Kunjungan)
+	$routes->get('probing/(:num)', 'AccountExecutive\Probing::index/$1');
+	$routes->post('save-probing/(:num)', 'AccountExecutive\Probing::index/$1');
+
+	// Cancellation Report Log
+	$routes->get('cancellationReport/(:num)', 'AccountExecutive\Probing::confirmCancellation/$1');
+	$routes->post('cancellationReport/(:num)', 'AccountExecutive\Probing::confirmCancellation/$1');
+	// Edit Log Form
+	$routes->add('edit-log-form/(:num)', 'AccountExecutive\Probing::editLog/$1');
+	$routes->add('edit-problem-log/(:num)', 'AccountExecutive\Probing::editProblemLog/$1');
+
+	// Delete Log
+	$routes->delete('delete-log/(:num)', 'AccountExecutive\Probing::deleteLog/$1');
+	$routes->delete('delete-problem-log/(:num)', 'AccountExecutive\Probing::deleteProblemLog/$1');
+
 	// Peremajaan Data Pelanggan
 	$routes->get('rejuvenate/(:num)', 'AccountExecutive\RejuvenationData::index/$1');
 	$routes->post('rejuvenate/(:num)', 'AccountExecutive\RejuvenationData::add/$1');
 
-	// Probing (Kunjungan)
-	$routes->get('probing/(:num)', 'AccountExecutive\Probing::index/$1');
-	$routes->post('save-probing/(:num)', 'AccountExecutive\Probing::index/$1');
 
-	// Cancellation Report
-	$routes->get('cancellationReport/(:num)', 'AccountExecutive\Probing::confirmCancellation/$1');
-	$routes->post('cancellationReport/(:num)', 'AccountExecutive\Probing::confirmCancellation/$1');
 
 	// Confirm Closing (Upload Application Letter)
 	$routes->get('closing/(:num)', 'AccountExecutive\Closing::index/$1');
@@ -174,6 +193,7 @@ $routes->group('construction', ['filter' => 'auth:5'], function ($routes) {
 
 	// Data Report (View Modal)
 	$routes->post('report/(:num)', 'Construction\WorkOrder::dataReport/$1');
+	$routes->post('problem-report/(:num)', 'Construction\WorkOrder::dataProblemReport/$1');
 
 	// Construction Log Form
 	$routes->add('log-form/(:num)', 'Construction\ReportLog::index/$1');
@@ -191,6 +211,8 @@ $routes->group('construction', ['filter' => 'auth:5'], function ($routes) {
 
 	// Energizing
 	$routes->match(['get', 'post'], 'energize/(:num)', 'Construction\Energize::index/$1');
+
+	$routes->post('energizing-doc/(:num)', 'Construction\Energize::dataEnergizeDocumentation/$1');
 });
 
 // Managers
@@ -204,6 +226,9 @@ $routes->group('manager', ['filter' => 'auth:19,20,21'], function ($routes) {
 	// Data Problem Report
 	$routes->post('report/(:num)', 'Managers\DataProblemReport::dataReport/$1');
 	$routes->post('problem-report/(:num)', 'Managers\DataProblemReport::dataProblemReport/$1');
+
+	// Data Energize Documentation
+	$routes->post('energizing-doc/(:num)', 'Managers\DataEnergize::dataEnergizeDocumentation/$1');
 
 	// Manager Pemasaran
 	$routes->group('pemasaran', ['filter' => 'auth:20'], function ($routes) {
@@ -225,6 +250,9 @@ $routes->group('manager', ['filter' => 'auth:19,20,21'], function ($routes) {
 		// Reject / Problem Solve
 		$routes->get('problem-solve/(:num)', 'Managers\Pemasaran\ProblemReport::reject/$1');
 		$routes->put('problem-solve/(:num)', 'Managers\Pemasaran\ProblemReport::reject/$1');
+
+		// Confirm to Energize
+		$routes->put('energize-now/(:num)', 'Managers\Pemasaran\Energize::index/$1');
 	});
 
 	// Manager Konstruksi

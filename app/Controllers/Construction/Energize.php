@@ -262,4 +262,33 @@ class Energize extends BaseController
         // Jika berhasil memindahkan semua file yang di upload return ID Directories
         return $id_dir;
     }
+
+    public function dataEnergizeDocumentation($id_customer)
+    {
+        $session = session();
+        if ($this->request->isAJAX()) {
+            try {
+
+                $id_dir_file_energize = $this->M_UserEnergize->getFileEnergize($id_customer);
+
+                $images = $this->M_Files->getAllInfoFileFromDirectories($id_dir_file_energize['id_documentation']);
+
+                if (!empty($images)) {
+                    echo json_encode([
+                        'success' => 'success',
+                        'images' => $images
+                    ]);
+                } else {
+                    throw new \Exception("Error Processing Request", 1);
+                }
+            } catch (\Exception $e) {
+                echo json_encode([
+                    'error' => [
+                        'message' => $e->getMessage(),
+                        'code' => $e->getCode(),
+                    ],
+                ]);
+            }
+        }
+    }
 }

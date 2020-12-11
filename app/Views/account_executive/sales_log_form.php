@@ -11,7 +11,9 @@
     <div class="row">
         <div class="col-lg">
             <a href="<?= base_url('account-executive/cancellationReport/' . $customer['id_customer']); ?>" class="btn btn-sm btn-danger mb-3 ml-1 float-right btn-confirm-cancellation"><i class="fas fa-times text-white"></i> Rejected</a>
-            <a href="<?= base_url('account-executive/closing/' . $customer['id_customer']); ?>" class="btn btn-sm btn-warning mb-3 float-right btn-confirm-closing"><i class="far fa-handshake text-white"></i> Closing</a>
+            <?php if ($customer['id_status'] < 3) : ?>
+                <a href="<?= base_url('account-executive/closing/' . $customer['id_customer']); ?>" class="btn btn-sm btn-warning mb-3 float-right btn-confirm-closing"><i class="far fa-handshake text-white"></i> Closing</a>
+            <?php endif; ?>
             <div class="col-lg-6 float-left">
                 <?= session()->get('message'); ?>
             </div>

@@ -211,8 +211,8 @@
                     </div>
                     <div class="card-body" style="max-height: 370px; overflow-y: auto;">
                         <?php foreach ($list_spv as $spv) : ?>
-                            <?php if (!is_null($spv['name_customer'])) : ?>
-                                <span class="float-right text-orange small font-weight-bolder animate__animated animate__flash animate__infinite animate__slower" title="On Construction <i>(<?= $spv['name_customer']; ?>)</i>" data-html='true'>On Construction</span>
+                            <?php if (!is_null($spv['name_customer']) && ($spv['id_status']) < 6) : ?>
+                                <span class="float-right text-orange small font-weight-bolder animate__animated animate__flash animate__infinite animate__slower" title="On Construction (<?= $spv['name_customer']; ?>)" data-html='true'>On Construction</span>
                             <?php else : ?>
                                 <span class="float-right text-primary small font-weight-bolder" title="Available for Construction">Free</span>
                             <?php endif; ?>
@@ -264,7 +264,7 @@
                                         <td class="text-center">
                                             <!-- Button View Report -->
                                             <div class="tooltip-wrapper mb-1" data-toggle="tooltip" data-placement="left" data-original-title="View Report">
-                                                <a href="#" id="viewReportLog" class="btn btn-sm btn-primary btn-view-report" data-toggle="modal" data-target="#modalReport" data-id="<?= $c['id_user_report']; ?>" data-url="<?= base_url('construction/report'); ?>" data-baseurl="<?= base_url(); ?>"><i class="fas fa-fw fa-eye"></i></a>
+                                                <a href="#" id="viewReportLog" class="btn btn-sm btn-primary btn-view-report" data-toggle="modal" data-target="#modalReport" data-id="<?= $c['id_user_report']; ?>" data-url="<?= base_url('manager/report'); ?>" data-baseurl="<?= base_url(); ?>"><i class="fas fa-fw fa-eye"></i></a>
                                             </div>
                                             <!-- Button Approve Report Log -->
                                             <div class="tooltip-wrapper mb-1" data-toggle="tooltip" data-placement="left" data-original-title="#">

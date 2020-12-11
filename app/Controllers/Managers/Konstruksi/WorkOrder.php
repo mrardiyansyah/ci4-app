@@ -62,12 +62,14 @@ class WorkOrder extends BaseController
         $id_dir_file = $this->M_UserClosing->getDirFileForConstruction($id_customer);
         $data['file_construction'] =
             $this->M_Files->getInfoFileForConstruction($id_dir_file['id_reksis_sld'], $id_dir_file['id_working_order']);
+        d($data['file_construction']);
 
         // Data Pengawas
         $data['pengawas'] = $this->M_Auth->find($data['customer']['id_pengawas']);
 
         // Data Report Log
-        $data['report_log'] = $this->M_UserReport->getReportLog($session->get('id_user'), $id_customer);
+        $role = 'Construction';
+
 
         // Data Cancellation Report
         $data['cancellation_report'] = $this->M_CancellationReport->getCancellationReport($session->get('id_user'), $id_customer);
@@ -84,7 +86,7 @@ class WorkOrder extends BaseController
         if (!is_null($data['customer']['id_pengawas'])) {
             $data['pengawas'] = $this->M_Auth->find($data['customer']['id_pengawas']);
             // Data Report Log
-            $data['report_log'] = $this->M_UserReport->getReportLog($session->get('id_user'), $id_customer);
+            $data['report_log'] = $this->M_UserReport->getReportByRolePerCustomer($role, $id_customer);
         }
 
         $data['user_construction'] = $this->M_Auth->where('id_role', 5)->find();

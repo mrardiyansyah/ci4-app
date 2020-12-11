@@ -63,12 +63,13 @@ class M_CancellationReport extends Model
     public function getReportLogById($id_user_cancellation)
     {
         $builder = $this->db->table($this->table);
-        $builder->select('user_cancellation.*, user.name, customer.name_customer, approval_status.*, user_role.role_type');
+        $builder->select('user_cancellation.*, user.name, customer.name_customer, approval_status.*, user_role.role_type, status.*');
         return $builder
             ->where('id_user_cancellation', $id_user_cancellation)
             ->join('user', 'user_cancellation.id_user = user.id_user')
             ->join('user_role', 'user.id_role = user_role.id_role')
             ->join('customer', 'user_cancellation.id_customer = customer.id_customer')
+            ->join('status', 'customer.id_status = status.id_status')
             ->join('approval_status', 'user_cancellation.id_approval_status = approval_status.id_approval_status')
             ->get()
             ->getRowArray();

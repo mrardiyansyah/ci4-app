@@ -41,8 +41,8 @@
                             <td class="text-center"><?= $c['status']; ?></td>
                             <td class="text-center"><?= $c['information']; ?></td>
                             <td class="text-center">
-                                <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
-                                    <a href="#" class="btn btn-sm btn-information btn-info" data-id="<?= $c['id_customer']; ?>" data-information="<?= $c['information']; ?>" data-url="<?= base_url('account-executive'); ?>"><i class="fas fa-fw fa-info"></i></a>
+                                <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="See Detail Customer">
+                                    <a href="<?= base_url('account-executive/detail/' . $c['id_customer']); ?>" class="btn btn-sm btn-information btn-info"><i class="fas fa-fw fa-info"></i></a>
                                 </div>
                                 <div class="tooltip-wrapper pt-1" data-toggle="tooltip" data-placement="left" data-original-title="#">
                                     <a href="#" class="btn btn-sm btn-salesman btn-primary" data-id="<?= $c['id_customer']; ?>" data-information="<?= $c['information']; ?>" data-url="<?= base_url('account-executive'); ?>"><i class="far fa-fw fa-edit"></i></a>

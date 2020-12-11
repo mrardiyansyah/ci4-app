@@ -172,7 +172,7 @@ $('.btn-view-problemreport').on('click', function (e) {
 	let id_report = $(this).data('id');
 	const url = $(this).data('url');
 	const base_url = $(this).data('baseurl');
-	console.log(url);
+	// console.log(url);
 	$.ajax({
 		type: "POST",
 		url: `${url}/${id_report}`,
@@ -214,6 +214,30 @@ $('.btn-view-problemreport').on('click', function (e) {
 $("#modalReport").on("hidden.bs.modal", function () {
 	$("#carousel-item-image").html("");
 	$("ol.carousel-indicators").html("");
+});
+
+$('.btn-view-energize').on('click', function (e) {
+	e.preventDefault();
+	let id_report = $(this).data('id');
+	const url = $(this).data('url');
+	const base_url = $(this).data('baseurl');
+	$.ajax({
+		type: "POST",
+		url: `${url}/${id_report}`,
+		// data: "data",
+		dataType: "JSON",
+		success: function (data) {
+
+			$.each(data.images, function (k, v) {
+				let active_item = (k == 0) ? 'active' : '';
+				let source = `${base_url}/${v.file_path}`;
+				$('#carousel-item-image-energize').append(
+					`<div class="carousel-item ${active_item}"><img class="img-fluid mx-auto d-block img-report" src="${source}" alt="item${k+1}">
+                        </div>`
+				);
+			});
+		}
+	});
 });
 
 $(document).on('click', 'a.anchor-link[href^="#"]', function (e) {
@@ -402,7 +426,7 @@ $('a.btn-reject-log#rejectProblemReport').each(function (index, element) {
 	if (user == 1) {
 		switch (information) {
 			case 'Waiting for Approval':
-				$(this).parent().attr("data-original-title", "Approve Report");
+				$(this).parent().attr("data-original-title", "Reject Report");
 				break;
 
 			case 'Approved':

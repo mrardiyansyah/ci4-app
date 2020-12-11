@@ -68,7 +68,8 @@ class WorkOrder extends BaseController
             $data['pengawas'] = $this->M_Auth->find($data['customer']['id_pengawas']);
 
             // Data Report Log
-            $data['report_log'] = $this->M_UserReport->getReportLog($session->get('id_user'), $id_customer);
+            $role = 'Construction';
+            $data['report_log'] = $this->M_UserReport->getReportByRolePerCustomer($role, $id_customer);
 
             // Data Cancellation Report
             $data['cancellation_report'] = $this->M_CancellationReport->getCancellationReport($session->get('id_user'), $id_customer);
@@ -152,6 +153,37 @@ class WorkOrder extends BaseController
         if ($this->request->isAJAX()) {
             try {
                 $report = $this->M_UserReport->getReportLogById($id_report);
+
+                $dir = $this->M_Directories->find($report['id_directories']);
+
+                $images = $this->M_Files->getAllInfoFileFromDirectories($dir['id_dir']);
+
+                if (!empty($report) && !empty($images)) {
+                    echo json_encode([
+                        'success' => 'success',
+                        'data' => $report,
+                        'images' => $images
+                    ]);
+                } else {
+                    throw new \Exception("Error Processing Request", 1);
+                }
+            } catch (\Exception $e) {
+                echo json_encode([
+                    'error' => [
+                        'message' => $e->getMessage(),
+                        'code' => $e->getCode(),
+                    ],
+                ]);
+            }
+        }
+    }
+
+    public function dataProblemReport($id_report)
+    {
+        $session = session();
+        if ($this->request->isAJAX()) {
+            try {
+                $report = $this->M_CancellationReport->getReportLogById($id_report);
 
                 $dir = $this->M_Directories->find($report['id_directories']);
 

@@ -15,19 +15,19 @@
             </div>
             <div class="card col-lg shadow">
                 <div class="card-body col-lg-9">
-                    <form action="<?= base_url('account-executive/cancellationReport/' . $customer['id_customer']); ?>" method="post" id="form-problem-report" enctype="multipart/form-data">
+                    <form action="<?= base_url('construction/edit-log-form/' . $construction_log['id_user_report']); ?>" method="post" id="form-construction-log" enctype="multipart/form-data">
                         <?= csrf_field(); ?>
                         <div class="form-group">
                             <label for="customer" class="col-sm-3 col-form-label-sm">Customer</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control form-control-sm" id="customer" name="customer" value="<?= $customer['name_customer']; ?>" readonly>
+                                <input type="text" class="form-control form-control-sm" id="customer" name="customer" value="<?= $construction_log['name_customer']; ?>" readonly>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="date_report" class="col-sm-2 col-form-label-sm">Date</label>
                             <div class="col-sm-5">
                                 <div class="input-group date" id="datetimepicker-datereport" data-target-input="nearest">
-                                    <input type="text" class="form-control form-control-sm datepicker datetimepicker-input <?php if (isset($validation)) echo $validation->hasError('date_report') ? 'is-invalid' : ''; ?>" data-toggle="datetimepicker" data-target="#datetimepicker-datereport" name="date_report" id="date_report" value="<?= set_value('date_report'); ?>" placeholder="DD-MM-YYYY" />
+                                    <input type="text" class="form-control form-control-sm datepicker datetimepicker-input <?php if (isset($validation)) echo $validation->hasError('date_report') ? 'is-invalid' : ''; ?>" data-toggle="datetimepicker" data-target="#datetimepicker-datereport" name="date_report" id="date_report" value="<?= set_value('date_report'); ?><?= $construction_log['date_report']; ?>" placeholder="DD-MM-YYYY" />
                                     <div class="input-group-append" data-target="#datetimepicker-datereport" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="fas fa-calendar"></i></div>
                                     </div>
@@ -44,7 +44,7 @@
                                 <label for="start_time" class="col-sm col-form-label-sm">Start</label>
                                 <div class="col-sm">
                                     <div class="input-group date" id="datetimepicker-starttime" data-target-input="nearest">
-                                        <input type="text" class="form-control form-control-sm datepicker datetimepicker-input <?php if (isset($validation)) echo $validation->hasError('start_time') ? 'is-invalid' : ''; ?>" data-toggle="datetimepicker" data-target="#datetimepicker-starttime" name="start_time" id="start_time" value="<?= set_value('start_time'); ?>" placeholder="<?= date("H:i"); ?>" />
+                                        <input type="text" class="form-control form-control-sm datepicker datetimepicker-input <?php if (isset($validation)) echo $validation->hasError('start_time') ? 'is-invalid' : ''; ?>" data-toggle="datetimepicker" data-target="#datetimepicker-starttime" name="start_time" id="start_time" value="<?= set_value('start_time'); ?><?= $construction_log['start_time']; ?>" placeholder="<?= date("H:i"); ?>" />
                                         <div class="input-group-append" data-target="#datetimepicker-starttime" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fas fa-clock"></i></div>
                                         </div>
@@ -60,7 +60,7 @@
                                 <label for="end_time" class="col-sm col-form-label-sm">End</label>
                                 <div class="col-sm">
                                     <div class="input-group date" id="datetimepicker-endtime" data-target-input="nearest">
-                                        <input type="text" class="form-control form-control-sm datepicker datetimepicker-input <?php if (isset($validation)) echo $validation->hasError('end_time') ? 'is-invalid' : ''; ?>" data-toggle="datetimepicker" data-target="#datetimepicker-endtime" name="end_time" id="end_time" value="<?= set_value('end_time'); ?>" placeholder="<?= date("H:i"); ?>">
+                                        <input type="text" class="form-control form-control-sm datepicker datetimepicker-input <?php if (isset($validation)) echo $validation->hasError('end_time') ? 'is-invalid' : ''; ?>" data-toggle="datetimepicker" data-target="#datetimepicker-endtime" name="end_time" id="end_time" value="<?= set_value('end_time'); ?><?= $construction_log['start_time']; ?>" placeholder="<?= date("H:i"); ?>">
                                         <div class="input-group-append" data-target="#datetimepicker-endtime" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fas fa-clock"></i></div>
                                         </div>
@@ -74,23 +74,12 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="description" class="col-sm-3 col-form-label-sm">Problem Description</label>
+                            <label for="description" class="col-sm-3 col-form-label-sm">Description</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control form-control-sm <?php if (isset($validation)) echo $validation->hasError('description') ? 'is-invalid' : ''; ?>" name="description" id="description" cols="30" rows="4" value="<?= set_value('description'); ?>" placeholder="Type something here..."><?= set_value('description'); ?></textarea>
+                                <textarea class="form-control form-control-sm <?php if (isset($validation)) echo $validation->hasError('description') ? 'is-invalid' : ''; ?>" name="description" id="description" cols="30" rows="4" placeholder="Type something here..."><?= $construction_log['description']; ?></textarea>
                                 <?php if (isset($validation)) : ?>
                                     <div class="invalid-feedback">
                                         <?= $validation->getError('description'); ?>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="solution" class="col-sm-6 col-form-label-sm">Problem Solution <small>(Optional)</small></label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control form-control-sm <?php if (isset($validation)) echo $validation->hasError('solution') ? 'is-invalid' : ''; ?>" name="solution" id="solution" cols="30" rows="4" value="<?= set_value('solution'); ?>" placeholder="Type something here..."><?= set_value('solution'); ?></textarea>
-                                <?php if (isset($validation)) : ?>
-                                    <div class="invalid-feedback">
-                                        <?= $validation->getError('solution'); ?>
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -110,7 +99,7 @@
                             </div>
                         </div>
                         <div class="form-group justify-content-end">
-                            <div class="col-sm-10">
+                            <div class="col-sm-10 pt-4">
                                 <button class="btn btn-primary" type="submit">
                                     Save
                                     <i class="fas fa-save ml-1 text-white"></i>
@@ -145,14 +134,17 @@
             buttons: {
                 showToday: true,
             },
+            useCurrent: false
         });
 
         $('#datetimepicker-starttime').datetimepicker({
             format: 'HH:mm',
+            useCurrent: false
         });
 
         $('#datetimepicker-endtime').datetimepicker({
             format: 'HH:mm',
+            useCurrent: false
         });
     });
 </script>

@@ -23,6 +23,11 @@
 	background-color: #3fb65b
 }
 
+.badge-orange {
+	color: #fff;
+	background-color: #f77a28
+}
+
 .input-group-focus {
 	border-radius: 4px;
 	-webkit-transition: box-shadow ease-in-out .15s;

@@ -242,7 +242,7 @@ class Probing extends BaseController
     public function confirmCancellation($id_customer)
     {
         $session = session();
-        $data['title'] = 'Cancellation Form';
+        $data['title'] = 'Cancellation Log Form';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
         $data['notif'] = get_new_notif();
@@ -258,17 +258,39 @@ class Probing extends BaseController
                         'required' => '{field} field is required'
                     ]
                 ],
-                'cancellation-reason' => [
-                    'label' => 'Reason for Cancellation',
+                'start_time' => [
+                    'label' => 'Start Time',
                     'rules' => 'required',
                     'errors' => [
                         'required' => '{field} field is required'
                     ]
                 ],
+                'end_time' => [
+                    'label' => 'End Time',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'description' => [
+                    'label' => 'Problem Description',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'solution' => [
+                    'label' => 'Problem Solution',
+                    'rules' => 'permit_empty',
+                    // 'errors' => [
+                    //     'required' => '{field} field is required'
+                    // ]
+                ],
                 'images' => [
                     'label' => 'Images',
-                    'rules' => 'max_size[images,4096]|is_image[images]|mime_in[images,image/gif,image/jpeg,image/png]',
+                    'rules' => 'uploaded[images.0]|max_size[images,4096]|is_image[images]|mime_in[images,image/gif,image/jpeg,image/png]',
                     'errors' => [
+                        'uploaded' => '{field} field is required',
                         'max_size' => 'Allowed maximum size is 4MB',
                         'is_image' => 'Uploaded files are not Image files',
                         'mime_in' => 'The Image type is not allowed. Allowed types : gif, jpeg, png'
@@ -279,6 +301,7 @@ class Probing extends BaseController
             if (!$this->validate($rules)) {
                 $data['validation'] = $this->validator;
             } else {
+
                 $cust_name = $data['customer']['name_customer'];
 
                 // Get Uploaded Files
@@ -309,18 +332,292 @@ class Probing extends BaseController
                         $this->M_Customer->update($id_customer, ['id_information' => 12]);
                     } catch (\Exception $e) {
                         $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to add! Please try again ' . $this->M_CancellationReport->errors() . '</div>');
-                        return redirect()->to(site_url("construction"));
+                        return redirect()->to(site_url("account-executive"));
                     }
 
                     $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Problem Report added Successfully! Please wait for confirmation</div>');
-                    return redirect()->to(site_url("construction"));
+                    return redirect()->to(site_url("account-executive"));
                 } else {
                     $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to add! Please try again</div>');
-                    return redirect()->to(site_url("construction"));
+                    return redirect()->to(site_url("account-executive"));
                 }
             }
         }
 
         return view('account_executive/cancellation_report', $data);
+    }
+
+    public function editProblemLog($id_user_cancellation)
+    {
+        $session = session();
+        $data['title'] = 'Edit Cancellation Log Form';
+        $data['user'] = $this->M_Auth->find($session->get('id_user'));
+        $data['role'] =  $this->M_Role->find($session->get('id_role'));
+        $data['notif'] = get_new_notif();
+
+        $data['cancellation_log'] = $this->M_CancellationReport->getReportLogById($id_user_cancellation);
+
+        if ($this->request->getMethod() == 'post') {
+            $rules = [
+                'date_report' => [
+                    'label' => 'Date',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'start_time' => [
+                    'label' => 'Start Time',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'end_time' => [
+                    'label' => 'End Time',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'description' => [
+                    'label' => 'Description',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'images' => [
+                    'label' => 'Images',
+                    'rules' => 'max_size[images,4096]|is_image[images]|mime_in[images,image/gif,image/jpeg,image/png]',
+                    'errors' => [
+                        // 'uploaded' => '{field} field is required',
+                        'is_image' => 'Uploaded files are not Image files.',
+                        'max_size' => 'Allowed maximum size is 4MB',
+                        'mime_in' => 'The Image type is not allowed. Allowed types : gif, jpeg, png'
+                    ],
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $data['validation'] = $this->validator;
+            } else {
+
+                // Get Uploaded Files
+                $file = $this->request->getFiles();
+
+                // Check If There's File Uploaded
+                if ($file['images'][0]->isValid() === true) {
+                    $cust_name = $this->request->getPost('customer');
+
+                    // Description of Report
+                    $description = 'Cancellation';
+
+                    // Call Upload Images Function
+                    $id_directories = $this->uploadImages($file, $cust_name, $description);
+
+                    if ($id_directories) {
+                        // dd($id_directories);
+                        $solutions = $this->request->getPost('solution');
+                        $ReportData = [
+                            'id_user_cancellation' => $id_user_cancellation,
+                            'id_user' => $session->get('id_user'),
+                            'id_customer' => (int) $data['cancellation_log']['id_customer'],
+                            'id_directories' => $id_directories,
+                            'date_report' => $this->request->getPost('date_report'),
+                            'start_time' => $this->request->getPost('start_time'),
+                            'end_time' => $this->request->getPost('end_time'),
+                            'description' => $this->request->getPost('description'),
+                            'suggestion_solution' => (!empty($solutions)) ? $solutions : NULL,
+                        ];
+                    } else {
+                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to add! Please try again</div>');
+                        return redirect()->to(site_url("construction"));
+                    }
+                } else {
+                    $ReportData = [
+                        'id_user_cancellation' => $id_user_cancellation,
+                        'id_user' => $session->get('id_user'),
+                        'id_customer' => (int) $data['cancellation_log']['id_customer'],
+                        'date_report' => $this->request->getPost('date_report'),
+                        'start_time' => $this->request->getPost('start_time'),
+                        'end_time' => $this->request->getPost('end_time'),
+                        'description' => $this->request->getPost('description'),
+                        'suggestion_solution' => (!empty($solutions)) ? $solutions : NULL,
+                    ];
+                }
+
+                try {
+                    $this->M_CancellationReport->save($ReportData);
+                } catch (\Exception $e) {
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to add! Please try again ' . $this->M_CancellationReport->errors() . '</div>');
+                    return redirect()->to(site_url("construction"));
+                }
+
+                $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Problem Report has been edited!</div>');
+                return redirect()->to(site_url("construction"));
+            }
+        }
+
+        // d($data['construction_log']);
+        return view('account-executive/edit_problem_log', $data);
+    }
+
+    public function editLog($id_user_report)
+    {
+        $session = session();
+        $data['title'] = 'Edit Report Log';
+        $data['user'] = $this->M_Auth->find($session->get('id_user'));
+        $data['role'] =  $this->M_Role->find($session->get('id_role'));
+        $data['notif'] = get_new_notif();
+
+        $data['construction_log'] = $this->M_UserReport->getReportLogById($id_user_report);
+
+        if ($this->request->getMethod() == 'post') {
+            $rules = [
+                'date_report' => [
+                    'label' => 'Date',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'start_time' => [
+                    'label' => 'Start Time',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'end_time' => [
+                    'label' => 'End Time',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'description' => [
+                    'label' => 'Description',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} field is required'
+                    ]
+                ],
+                'images' => [
+                    'label' => 'Images',
+                    'rules' => 'max_size[images,4096]|is_image[images]|mime_in[images,image/gif,image/jpeg,image/png]',
+                    'errors' => [
+                        // 'uploaded' => '{field} field is required',
+                        'is_image' => 'Uploaded files are not Image files.',
+                        'max_size' => 'Allowed maximum size is 4MB',
+                        'mime_in' => 'The Image type is not allowed. Allowed types : gif, jpeg, png'
+                    ],
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $data['validation'] = $this->validator;
+            } else {
+
+                // Get Uploaded Files
+                $file = $this->request->getFiles();
+
+                // Check If There's File Uploaded
+                if ($file['images'][0]->isValid() === true) {
+                    $cust_name = $this->request->getPost('customer');
+
+                    // Description of Report
+                    $description = 'Salesman Log';
+
+                    // Call Upload Images Function
+                    $id_directories = $this->uploadImages($file, $cust_name, $description);
+
+                    if ($id_directories) {
+                        // dd($id_directories);
+                        $ReportData = [
+                            'id_user_report' => $id_user_report,
+                            'id_user' => $session->get('id_user'),
+                            'id_customer' => (int) $data['construction_log']['id_customer'],
+                            'id_directories' => $id_directories,
+                            'date_report' => $this->request->getPost('date_report'),
+                            'start_time' => $this->request->getPost('start_time'),
+                            'end_time' => $this->request->getPost('end_time'),
+                            'description' => $this->request->getPost('description'),
+                        ];
+                    } else {
+                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Report Log failed to add! Please try again</div>');
+                        return redirect()->to(site_url("construction"));
+                    }
+                } else {
+                    $ReportData = [
+                        'id_user_report' => $id_user_report,
+                        'id_user' => $session->get('id_user'),
+                        'id_customer' => (int) $data['construction_log']['id_customer'],
+                        'date_report' => $this->request->getPost('date_report'),
+                        'start_time' => $this->request->getPost('start_time'),
+                        'end_time' => $this->request->getPost('end_time'),
+                        'description' => $this->request->getPost('description'),
+                    ];
+                }
+
+                try {
+                    $this->M_UserReport->save($ReportData);
+                } catch (\Exception $e) {
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Report Log failed to add! Please try again ' . $this->M_UserReport->errors() . '</div>');
+                    return redirect()->to(site_url("construction"));
+                }
+
+                $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Report Log added Successfully!</div>');
+                return redirect()->to(site_url("construction"));
+            }
+        }
+
+        // d($data['construction_log']);
+        return view('construction/edit_log_form', $data);
+    }
+
+    public function deleteProblemLog($id_user_cancellation)
+    {
+        $session = session();
+        $uri = service('uri');
+        $uri_id_customer = $uri->getSegment(3);
+        if (filter_var($uri_id_customer, FILTER_VALIDATE_INT)) {
+            $check = $this->M_CancellationReport->find($id_user_cancellation);
+            if ($check) {
+                try {
+                    $this->M_CancellationReport->delete($id_user_cancellation);
+                    $this->M_Customer->update($check['id_customer'], ['id_information' => 8]);
+                } catch (\Exception $e) {
+                    return redirect()->to(site_url('construction'))->with('message', '<div class="alert alert-danger" role="alert">There Something Went Wrong! Please Contact Admin</div>');
+                }
+                return redirect()->to(site_url('construction'))->with('message', '<div class="alert alert-success" role="alert">Log has been Deleted!</div>');
+            } else {
+                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Data is not found. Please check again!');
+            }
+        } else {
+            return redirect()->to(site_url('construction'))->with('message', '<div class="alert alert-danger" role="alert">Please check again!</div>');
+        }
+    }
+
+    public function deleteLog($id_user_report)
+    {
+        $session = session();
+        $uri = service('uri');
+        $uri_id_customer = $uri->getSegment(3);
+        if (filter_var($uri_id_customer, FILTER_VALIDATE_INT)) {
+            $check = $this->M_UserReport->find($id_user_report);
+            if ($check) {
+                try {
+                    $this->M_UserReport->delete($id_user_report);
+                    return redirect()->to(site_url('construction'))->with('message', '<div class="alert alert-success" role="alert">Log has been Deleted!</div>');
+                } catch (\Exception $e) {
+                    return redirect()->to(site_url('construction'))->with('message', '<div class="alert alert-danger" role="alert">There Something Went Wrong! Please Contact Admin</div>');
+                }
+            } else {
+                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Data is not found. Please check again!');
+            }
+        } else {
+            return redirect()->to(site_url('construction'))->with('message', '<div class="alert alert-danger" role="alert">Please check again!</div>');
+        }
     }
 }

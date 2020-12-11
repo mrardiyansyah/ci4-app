@@ -20,7 +20,12 @@
                             <tr>
                                 <th>Customer</th>
                                 <th>:</th>
-                                <td id="data-date"><?= $problem_report['name_customer']; ?></td>
+                                <td class="text-info font-weight-bold" id="data-date"><?= $problem_report['name_customer']; ?></td>
+                            </tr>
+                            <tr>
+                                <th>Status</th>
+                                <th>:</th>
+                                <td class="badge <?= $problem_report['badge_status']; ?>" id="data-status"><?= $problem_report['status']; ?></td>
                             </tr>
                             <tr>
                                 <th>Date</th>
@@ -33,7 +38,7 @@
                                 <td id="data-time"><?= localizedTimeString($problem_report['start_time']); ?> - <?= localizedTimeString($problem_report['end_time']); ?></td>
                             </tr>
                             <tr>
-                                <th>User</th>
+                                <th>Reported By</th>
                                 <th>:</th>
                                 <td id="data-user"><?= $problem_report['name']; ?></td>
                             </tr>
@@ -45,12 +50,12 @@
                             <tr>
                                 <th>Suggestion Solution</th>
                                 <th>:</th>
-                                <td id="data-solution"><?= $problem_report['suggestion_solution']; ?></td>
+                                <td id="data-solution"><?= $problem_report['suggestion_solution'] ?? '-'; ?></td>
                             </tr>
                         </tbody>
                     </table>
                     <hr>
-                    <form action="<?= base_url('manager/konstruksi/problem-solve/' . $problem_report['id_user_cancellation']); ?>" method="post" id="form-problem-report">
+                    <form action="#" method="post" id="form-problem-report">
                         <?= csrf_field(); ?>
                         <input type="hidden" name="_method" value="PUT">
                         <div class="form-group">
@@ -84,11 +89,11 @@
                         </div>
                         <div class="form-group justify-content-end">
                             <div class="col-sm-10">
-                                <button class="btn btn-sm btn-primary mb-1" type="submit">
+                                <button class="btn btn-sm btn-primary btn-submit-problem-report mb-1" type="submit" data-id="<?= $problem_report['id_user_cancellation']; ?>" data-status="<?= $problem_report['status']; ?>" data-url="<?= base_url('manager'); ?>">
                                     Submit
                                     <i class="fas fa-save ml-1 text-white"></i>
                                 </button>
-                                <a href="<?= base_url('manager/konstruksi'); ?>" class="btn btn-sm btn-secondary">Cancel</a>
+                                <a href="<?= previous_url(); ?>" class="btn btn-sm btn-secondary btn-cancel">Cancel</a>
                             </div>
                         </div>
                     </form>
