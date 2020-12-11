@@ -488,7 +488,7 @@
                                                         </div>
                                                         <!-- Button Reject Report Log -->
                                                         <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
-                                                            <a href="#" id="rejectProblemReport" class="btn btn-sm btn-danger btn-reject-log" data-user="<?= $role['id_role']; ?>" data-url="<?= base_url('manager/pemasaran'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-fw fa-times"></i></a>
+                                                            <a href="#" id="rejectProblemReport" class="btn btn-sm btn-danger btn-reject-log" data-user="<?= $role['id_role']; ?>" data-url="<?= base_url('manager'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-fw fa-times"></i></a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -501,48 +501,56 @@
                         <!-- Energize Tab Pane -->
                         <?php if ($customer['id_status'] >= 5) : ?>
                             <div class="tab-pane fade <?= ($customer['id_information'] >= 8) ? '' : 'show active' ?>" id="energize" role="tabpanel" aria-labelledby="energize-tab">
-                                <table class="table table-bordered table-hover table-striped table-energize" style="width: 100%;">
-                                    <thead class="thead-dark">
-                                        <tr class="text-center">
-                                            <th scope="col">#</th>
-                                            <th scope="col">Nama File</th>
-                                            <th scope="col">Size</th>
-                                            <th scope="col">Keterangan</th>
-                                            <th scope="col">Uploaded By</th>
-                                            <th scope="col">Timestamp</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php $i = 1; ?>
-                                        <?php $j = 1; ?>
-                                        <?php $file_name_temp = ''; ?>
-                                        <?php foreach ($file_energize as $file) : ?>
-                                            <?php $nama_file = renameFile($file['storage_file_name']); ?>
-                                            <tr>
-                                                <th scope="row"><?= $i; ?></th>
-                                                <?php if ($nama_file == $file_name_temp) { ?>
-                                                    <td><?= $nama_file . "($j)"; ?></td>
-                                                <?php
-                                                    $j++;
-                                                } else { ?>
-                                                    <td><?= $nama_file; ?></td>
-                                                <?php } ?>
-                                                <td class="text-center"><?= bytesToHuman($file['size']); ?></td>
-                                                <td class="text-center"><?= $file['description']; ?></td>
-                                                <td class="text-center"><?= $file['name']; ?></td>
-                                                <td class="text-center"><?= ($file['created_at']); ?></td>
-                                                <td class="text-center">
-                                                    <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="View PDF File">
-                                                        <a href="<?= base_url('viewer/' . $file['id_file']); ?>" target="_blank" class="btn btn-sm btn-info"><i class=" fas fa-fw fa-eye"></i></a>
-                                                    </div>
-                                                </td>
+                                <!-- Button View Energize Documentation -->
+                                <div class="pb-3 float-left">
+                                    <button class="btn btn-primary btn-view-energize" data-toggle="modal" id="viewImageEnergize" data-target="#modalEnergizeDoc" data-id="<?= $customer['id_customer']; ?>" data-url="<?= base_url('manager/energizing-doc'); ?>" data-baseurl="<?= base_url(); ?>">
+                                        <i class="far fa-fw fa-images"></i> Energize Documentation
+                                    </button>
+                                </div>
+                                <div>
+                                    <table class="table table-bordered table-hover table-striped table-energize" style="width: 100%;">
+                                        <thead class="thead-dark">
+                                            <tr class="text-center">
+                                                <th scope="col">#</th>
+                                                <th scope="col">Nama File</th>
+                                                <th scope="col">Size</th>
+                                                <th scope="col">Keterangan</th>
+                                                <th scope="col">Uploaded By</th>
+                                                <th scope="col">Timestamp</th>
+                                                <th scope="col">Action</th>
                                             </tr>
-                                            <?php $i++; ?>
-                                            <?php $file_name_temp = $nama_file ?>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            <?php $i = 1; ?>
+                                            <?php $j = 1; ?>
+                                            <?php $file_name_temp = ''; ?>
+                                            <?php foreach ($file_energize as $file) : ?>
+                                                <?php $nama_file = renameFile($file['storage_file_name']); ?>
+                                                <tr>
+                                                    <th scope="row"><?= $i; ?></th>
+                                                    <?php if ($nama_file == $file_name_temp) { ?>
+                                                        <td><?= $nama_file . "($j)"; ?></td>
+                                                    <?php
+                                                        $j++;
+                                                    } else { ?>
+                                                        <td><?= $nama_file; ?></td>
+                                                    <?php } ?>
+                                                    <td class="text-center"><?= bytesToHuman($file['size']); ?></td>
+                                                    <td class="text-center"><?= $file['description']; ?></td>
+                                                    <td class="text-center"><?= $file['name']; ?></td>
+                                                    <td class="text-center"><?= ($file['created_at']); ?></td>
+                                                    <td class="text-center">
+                                                        <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="View PDF File">
+                                                            <a href="<?= base_url('viewer/' . $file['id_file']); ?>" target="_blank" class="btn btn-sm btn-info"><i class=" fas fa-fw fa-eye"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <?php $i++; ?>
+                                                <?php $file_name_temp = $nama_file ?>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         <?php endif; ?>
                     </div>
@@ -682,6 +690,38 @@
     </div>
 </div>
 
+<!-- Modal View Energize Documentation -->
+<div class="modal fade" id="modalEnergizeDoc">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="energizeDoc" class="carousel slide project-slide" data-interval="false">
+                    <div class="carousel-inner">
+                        <div id="carousel-item-image-energize" style="cursor: zoom-in;">
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#energizeDoc" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#energizeDoc" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
         $($.fn.dataTable.tables(true)).DataTable()
@@ -799,7 +839,7 @@
                 'targets': 5,
                 'searchable': false,
                 'orderable': false,
-                'width': '100px'
+                'width': '130px'
             }, {
                 'targets': 4,
                 'width': '110px'
@@ -811,6 +851,25 @@
                 'targets': 0,
                 'width': '120px'
             }]
+        });
+    });
+</script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        var galley = document.getElementById('carousel-item-image-energize');
+        var viewer;
+
+        $('#modalEnergizeDoc').on('shown.bs.modal', function(e) {
+            // WARNING: should ignore Viewer's `shown` event here.
+            if (e.namespace === 'bs.modal') {
+                viewer = new Viewer(galley, {});
+            }
+        }).on('hidden.bs.modal', function(e) {
+            // WARNING: should ignore Viewer's `hidden` event here.
+            if (e.namespace === 'bs.modal') {
+                viewer.destroy();
+            }
         });
     });
 </script>

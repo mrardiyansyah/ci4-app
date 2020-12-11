@@ -177,7 +177,7 @@ class Probing extends BaseController
                 $this->M_Directories->save($directories_data);
             } catch (\Exception $e) {
                 $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">There something went wrong! ' . $this->M_Directories->errors() . '</div>');
-                return redirect()->to(site_url("construction"));
+                return redirect()->to(site_url("account-executive"));
             }
         }
 
@@ -432,7 +432,7 @@ class Probing extends BaseController
                         ];
                     } else {
                         $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to add! Please try again</div>');
-                        return redirect()->to(site_url("construction"));
+                        return redirect()->to(site_url("account-executive"));
                     }
                 } else {
                     $ReportData = [
@@ -451,16 +451,16 @@ class Probing extends BaseController
                     $this->M_CancellationReport->save($ReportData);
                 } catch (\Exception $e) {
                     $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to add! Please try again ' . $this->M_CancellationReport->errors() . '</div>');
-                    return redirect()->to(site_url("construction"));
+                    return redirect()->to(site_url("account-executive"));
                 }
 
                 $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Problem Report has been edited!</div>');
-                return redirect()->to(site_url("construction"));
+                return redirect()->to(site_url("account-executive"));
             }
         }
 
-        // d($data['construction_log']);
-        return view('account-executive/edit_problem_log', $data);
+        // d($data['report_log']);
+        return view('account_executive/edit_problem_log', $data);
     }
 
     public function editLog($id_user_report)
@@ -471,7 +471,7 @@ class Probing extends BaseController
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
         $data['notif'] = get_new_notif();
 
-        $data['construction_log'] = $this->M_UserReport->getReportLogById($id_user_report);
+        $data['report_log'] = $this->M_UserReport->getReportLogById($id_user_report);
 
         if ($this->request->getMethod() == 'post') {
             $rules = [
@@ -537,7 +537,7 @@ class Probing extends BaseController
                         $ReportData = [
                             'id_user_report' => $id_user_report,
                             'id_user' => $session->get('id_user'),
-                            'id_customer' => (int) $data['construction_log']['id_customer'],
+                            'id_customer' => (int) $data['report_log']['id_customer'],
                             'id_directories' => $id_directories,
                             'date_report' => $this->request->getPost('date_report'),
                             'start_time' => $this->request->getPost('start_time'),
@@ -546,13 +546,13 @@ class Probing extends BaseController
                         ];
                     } else {
                         $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Report Log failed to add! Please try again</div>');
-                        return redirect()->to(site_url("construction"));
+                        return redirect()->to(site_url("account-executive"));
                     }
                 } else {
                     $ReportData = [
                         'id_user_report' => $id_user_report,
                         'id_user' => $session->get('id_user'),
-                        'id_customer' => (int) $data['construction_log']['id_customer'],
+                        'id_customer' => (int) $data['report_log']['id_customer'],
                         'date_report' => $this->request->getPost('date_report'),
                         'start_time' => $this->request->getPost('start_time'),
                         'end_time' => $this->request->getPost('end_time'),
@@ -564,16 +564,16 @@ class Probing extends BaseController
                     $this->M_UserReport->save($ReportData);
                 } catch (\Exception $e) {
                     $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Report Log failed to add! Please try again ' . $this->M_UserReport->errors() . '</div>');
-                    return redirect()->to(site_url("construction"));
+                    return redirect()->to(site_url("account-executive"));
                 }
 
                 $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Report Log added Successfully!</div>');
-                return redirect()->to(site_url("construction"));
+                return redirect()->to(site_url("account-executive"));
             }
         }
 
-        // d($data['construction_log']);
-        return view('construction/edit_log_form', $data);
+        // d($data['account-executive_log']);
+        return view('account_executive/edit_log_form', $data);
     }
 
     public function deleteProblemLog($id_user_cancellation)
@@ -588,14 +588,14 @@ class Probing extends BaseController
                     $this->M_CancellationReport->delete($id_user_cancellation);
                     $this->M_Customer->update($check['id_customer'], ['id_information' => 8]);
                 } catch (\Exception $e) {
-                    return redirect()->to(site_url('construction'))->with('message', '<div class="alert alert-danger" role="alert">There Something Went Wrong! Please Contact Admin</div>');
+                    return redirect()->to(site_url('account-executive'))->with('message', '<div class="alert alert-danger" role="alert">There Something Went Wrong! Please Contact Admin</div>');
                 }
-                return redirect()->to(site_url('construction'))->with('message', '<div class="alert alert-success" role="alert">Log has been Deleted!</div>');
+                return redirect()->to(site_url('account-executive'))->with('message', '<div class="alert alert-success" role="alert">Log has been Deleted!</div>');
             } else {
                 throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Data is not found. Please check again!');
             }
         } else {
-            return redirect()->to(site_url('construction'))->with('message', '<div class="alert alert-danger" role="alert">Please check again!</div>');
+            return redirect()->to(site_url('account-executive'))->with('message', '<div class="alert alert-danger" role="alert">Please check again!</div>');
         }
     }
 
@@ -609,15 +609,15 @@ class Probing extends BaseController
             if ($check) {
                 try {
                     $this->M_UserReport->delete($id_user_report);
-                    return redirect()->to(site_url('construction'))->with('message', '<div class="alert alert-success" role="alert">Log has been Deleted!</div>');
+                    return redirect()->to(site_url('account-executive'))->with('message', '<div class="alert alert-success" role="alert">Log has been Deleted!</div>');
                 } catch (\Exception $e) {
-                    return redirect()->to(site_url('construction'))->with('message', '<div class="alert alert-danger" role="alert">There Something Went Wrong! Please Contact Admin</div>');
+                    return redirect()->to(site_url('account-executive'))->with('message', '<div class="alert alert-danger" role="alert">There Something Went Wrong! Please Contact Admin</div>');
                 }
             } else {
                 throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Data is not found. Please check again!');
             }
         } else {
-            return redirect()->to(site_url('construction'))->with('message', '<div class="alert alert-danger" role="alert">Please check again!</div>');
+            return redirect()->to(site_url('account-executive'))->with('message', '<div class="alert alert-danger" role="alert">Please check again!</div>');
         }
     }
 }

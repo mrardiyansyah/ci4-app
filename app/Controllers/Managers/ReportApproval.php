@@ -64,6 +64,7 @@ class ReportApproval extends BaseController
             }
         }
     }
+
     public function reject()
     {
         $session = session();

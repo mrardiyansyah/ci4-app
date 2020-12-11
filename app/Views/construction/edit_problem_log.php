@@ -15,7 +15,7 @@
             </div>
             <div class="card col-lg shadow">
                 <div class="card-body col-lg-9">
-                    <form action="<?= base_url('construction/edit-problem-log/' . $cancellation_log['id_user_cancellation']); ?>" method="post" id="form-problem-report" enctype="multipart/form-data">
+                    <form action="<?= base_url('construction/edit-problem-log/' . $cancellation_log['id_user_cancellation']); ?>" method="post" id="form-problem-report-user" enctype="multipart/form-data">
                         <?= csrf_field(); ?>
                         <div class="form-group">
                             <label for="customer" class="col-sm-3 col-form-label-sm">Customer</label>

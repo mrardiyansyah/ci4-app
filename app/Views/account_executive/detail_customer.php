@@ -350,7 +350,7 @@
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link active" id="reportLog-tab" data-toggle="tab" href="#reportLog" role="tab" aria-controls="reportLog" aria-selected="true">Report Log</a>
                             </li>
-                            <?php if ($customer['id_status'] > 3 && $customer['id_information'] != 11) : ?>
+                            <?php if ($customer['id_status'] > 3 && $customer['id_information'] != 11 && $customer['id_information'] != 7) : ?>
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link" id="constructionLog-tab" data-toggle="tab" href="#constructionLog" role="tab" aria-controls="constructionLog" aria-selected="true">Construction Log</a>
                                 </li>
@@ -433,7 +433,7 @@
                                 </div>
                             </div>
                             <!-- Construction Report -->
-                            <?php if ($customer['id_status'] > 3 && $customer['id_information'] != 11) : ?>
+                            <?php if ($customer['id_status'] > 3 && $customer['id_information'] != 11 && $customer['id_information'] != 7) : ?>
                                 <div class="tab-pane fade" id="constructionLog" role="tabpanel" aria-labelledby="constructionLog-tab">
                                     <table class="table table-bordered table-hover table-striped table-constructionLog" style="width: 100%;">
                                         <thead class="thead-dark">
@@ -539,13 +539,13 @@
                                                                 <a href="#" id="viewProblemReport" class="btn btn-sm btn-primary btn-view-problemreport" data-toggle="modal" data-target="#modalReport" data-id="<?= $log['id_user_cancellation']; ?>" data-url="<?= base_url('account-executive/problem-report'); ?>" data-baseurl="<?= base_url(); ?>"><i class="fas fa-fw fa-eye"></i></a>
                                                             </div>
                                                             <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
-                                                                <a href="#" id="editProblemLog" class="btn btn-sm btn-info btn-edit-log" data-url="<?= base_url('construction'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-edit"></i></a>
+                                                                <a href="#" id="editProblemLog" class="btn btn-sm btn-info btn-edit-log" data-url="<?= base_url('account-executive'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-edit"></i></a>
                                                             </div>
                                                             <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
                                                                 <form action="#" method="post">
                                                                     <?= csrf_field(); ?>
                                                                     <input type="hidden" name="_method" value="DELETE">
-                                                                    <button id="deleteProblemLog" class="btn btn-sm btn-danger btn-delete-log" data-url="<?= base_url('construction'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-trash-alt" type="button"></i></button>
+                                                                    <button id="deleteProblemLog" class="btn btn-sm btn-danger btn-delete-log" data-url="<?= base_url('account-executive'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-trash-alt" type="button"></i></button>
                                                                 </form>
                                                             </div>
                                                         </td>

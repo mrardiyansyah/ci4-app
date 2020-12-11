@@ -15,7 +15,7 @@
             </div>
             <div class="card col-lg shadow">
                 <div class="card-body col-lg-9">
-                    <form action="<?= base_url('account-executive/cancellationReport/' . $customer['id_customer']); ?>" method="post" id="form-problem-report" enctype="multipart/form-data">
+                    <form action="<?= base_url('account-executive/cancellationReport/' . $customer['id_customer']); ?>" method="post" id="form-problem-report-user" enctype="multipart/form-data">
                         <?= csrf_field(); ?>
                         <div class="form-group">
                             <label for="customer" class="col-sm-3 col-form-label-sm">Customer</label>
@@ -115,7 +115,7 @@
                                     Save
                                     <i class="fas fa-save ml-1 text-white"></i>
                                 </button>
-                                <a href="<?= base_url('construction'); ?>" class="btn btn-secondary">Cancel</a>
+                                <a href="<?= base_url('account-executive'); ?>" class="btn btn-secondary">Cancel</a>
                             </div>
                         </div>
                     </form>

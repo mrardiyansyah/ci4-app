@@ -621,6 +621,7 @@ $(document).on('click', '.btn-approve-log#approveProblemReport', function (e) {
     });
 });
 
+// Form Problem Report (Manager)
 $("#form-problem-report").on('submit', function (e) {
     e.preventDefault();
     let status = $(".btn-submit-problem-report").data('status');
@@ -635,7 +636,38 @@ $("#form-problem-report").on('submit', function (e) {
         return false;
     }
     action = $(this).attr('action', url);
-    console.log(status);
+    // console.log(status);
+    Swal.fire({
+        title: false,
+        html: `Are you sure you want to submit this form? This action can't be undo`,
+        icon: 'warning',
+        padding: '1em',
+        width: 400,
+        showCancelButton: true,
+        cancelButtonText: `Cancel`,
+        confirmButtonText: 'Yes, I\'m sure',
+        buttonsStyling: false,
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown animate__fast',
+            icon: 'animate__animated animate__fadeIn animate__delay-1s animate__repeat-3'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        },
+        customClass: {
+            confirmButton: 'btn btn-warning btn-sm font-small',
+            cancelButton: 'btn btn-secondary btn-sm ml-3 font-small',
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $(this)[0].submit();
+        }
+    });
+});
+
+// Form Problem Report
+$("#form-problem-report-user").on('submit', function (e) {
+    e.preventDefault();
     Swal.fire({
         title: false,
         html: `Are you sure you want to submit this form? This action can't be undo`,

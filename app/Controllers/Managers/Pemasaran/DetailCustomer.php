@@ -67,7 +67,6 @@ class DetailCustomer extends BaseController
             $data['file_closing'] = $this->M_Files->getFileFromMultipleDirectories($id_dir_file_closing);
             // d($data['file_closing']);
         }
-        d($closing);
 
 
         // Data Pengawas
@@ -77,7 +76,8 @@ class DetailCustomer extends BaseController
         $data['report_log'] = $this->M_UserReport->getReportByRolePerCustomer($role, $id_customer);
 
         // Data Cancellation Report
-        $data['cancellation_report'] = $this->M_CancellationReport->getCancellationReportByRole($role, $id_customer);
+        $data['cancellation_report'] = $this->M_CancellationReport->getCancellationReportByRole($role);
+        d($data['cancellation_report']);
 
         // Data Energize Report
         $id_dir_file_energize = $this->M_UserEnergize->getFileEnergize($id_customer);

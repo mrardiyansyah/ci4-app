@@ -160,10 +160,10 @@ class ProblemReport extends BaseController
                     $this->M_Customer->update($id_customer, ['id_information' => 2]);
                 } catch (\Exception $e) {
                     $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to update! Please try again ' . $this->M_CancellationReport->errors() . '</div>');
-                    return redirect()->to(site_url("manager/konstruksi"));
+                    return redirect()->to(site_url("manager/pemasaran"));
                 }
                 $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Problem Report rejected!</div>');
-                return redirect()->to(site_url("manager/konstruksi"));
+                return redirect()->to(site_url("manager/pemasaran"));
             }
         }
 

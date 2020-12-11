@@ -62,7 +62,7 @@ class WorkOrder extends BaseController
         $id_dir_file = $this->M_UserClosing->getDirFileForConstruction($id_customer);
         $data['file_construction'] =
             $this->M_Files->getInfoFileForConstruction($id_dir_file['id_reksis_sld'], $id_dir_file['id_working_order']);
-        d($data['file_construction']);
+        // d($data['file_construction']);
 
         // Data Pengawas
         $data['pengawas'] = $this->M_Auth->find($data['customer']['id_pengawas']);
@@ -70,16 +70,15 @@ class WorkOrder extends BaseController
         // Data Report Log
         $role = 'Construction';
 
-
         // Data Cancellation Report
-        $data['cancellation_report'] = $this->M_CancellationReport->getCancellationReport($session->get('id_user'), $id_customer);
+        $data['cancellation_report'] = $this->M_CancellationReport->getCancellationReportByRole($role);
 
         // Data Energize Report
         $id_dir_file_energize = $this->M_UserEnergize->getFileEnergize($id_customer);
         if ($id_dir_file_energize) {
             $data['file_energize'] =
                 $this->M_Files->getFileEnergize($id_dir_file_energize['id_ba_aco'], $id_dir_file_energize['id_work_order'], $id_dir_file_energize['id_documentation']);
-            d($data['file_energize']);
+            // d($data['file_energize']);
         }
 
         // Jika sudah ditentukan pengawasnya

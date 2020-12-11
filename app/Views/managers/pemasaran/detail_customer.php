@@ -359,7 +359,7 @@
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link active" id="reportLog-tab" data-toggle="tab" href="#reportLog" role="tab" aria-controls="reportLog" aria-selected="true">Report Log</a>
                             </li>
-                            <?php if ($customer['id_status'] > 3 && $customer['id_information'] != 11) : ?>
+                            <?php if ($customer['id_status'] > 3 && $customer['id_information'] != 11 && $customer['id_information'] != 7) : ?>
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link" id="constructionLog-tab" data-toggle="tab" href="#constructionLog" role="tab" aria-controls="constructionLog" aria-selected="true">Construction Log</a>
                                 </li>
@@ -471,7 +471,7 @@
                                 </div>
                             <?php endif; ?>
                             <!-- Construction Report -->
-                            <?php if ($customer['id_status'] > 3 && $customer['id_information'] != 11) : ?>
+                            <?php if ($customer['id_status'] > 3 && $customer['id_information'] != 11 && $customer['id_information'] != 7) : ?>
                                 <div class="tab-pane fade" id="constructionLog" role="tabpanel" aria-labelledby="constructionLog-tab">
                                     <table class="table table-bordered table-hover table-striped table-constructionLog" style="width: 100%;">
                                         <thead class="thead-dark">
@@ -517,22 +517,24 @@
                                             </thead>
                                             <tbody>
                                                 <?php foreach ($cancellation_report as $log) : ?>
-                                                    <tr>
-                                                        <td><i class="fas fa-fw fa-calendar-alt"></i><?= ($log['date_report']); ?><br><?= ($log['start_time']); ?> - <?= ($log['end_time']); ?></td>
-                                                        <td><?= excerpt($log['description'], NULL, 80); ?></td>
-                                                        <td><?= (!is_null($log['suggestion_solution'])) ? excerpt($log['suggestion_solution'], NULL, 80) : '-'; ?></td>
-                                                        <td><?= (!is_null($log['solutions'])) ? excerpt($log['solutions'], NULL, 80) : '-'; ?></td>
+                                                    <tr class="text-center">
+                                                        <td><i class="fas fa-fw fa-calendar-alt"></i><?= localizedDateString($log['date_report']); ?><br><?= localizedTimeString($log['start_time']); ?> - <?= localizedTimeString($log['end_time']); ?></td>
+                                                        <td><?= word_limiter($log['description'], 8, "..."); ?></td>
+                                                        <td><?= (!is_null($log['suggestion_solution'])) ? word_limiter($log['suggestion_solution'], 8, "...") : '-'; ?></td>
+                                                        <td><?= (!is_null($log['solutions'])) ? word_limiter($log['solutions'], 8, "...") : '-'; ?></td>
                                                         <td><span class="badge <?= $log['badge']; ?>"><?= $log['approval_status']; ?></span></td>
                                                         <td>
-                                                            <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
-                                                                <a href="#" id="editProblemLog" class="btn btn-sm btn-info btn-edit-log" data-url="<?= base_url('construction'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-edit"></i></a>
+                                                            <!-- Button View Report -->
+                                                            <div class="tooltip-wrapper mb-1" data-toggle="tooltip" data-placement="left" data-original-title="View Report">
+                                                                <a href="#" id="viewReportLog" class="btn btn-sm btn-primary btn-view-problemreport" data-toggle="modal" data-target="#modalReport" data-id="<?= $log['id_user_cancellation']; ?>" data-url="<?= base_url('manager/problem-report'); ?>" data-baseurl="<?= base_url(); ?>"><i class="fas fa-fw fa-eye"></i></a>
                                                             </div>
+                                                            <!-- Button Approve Report Log -->
+                                                            <div class="tooltip-wrapper mb-1" data-toggle="tooltip" data-placement="left" data-original-title="#">
+                                                                <a href="#" id="approveProblemReport" class="btn btn-sm btn-success btn-approve-log" data-user="<?= $role['id_role']; ?>" data-url="<?= base_url('manager'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-fw fa-check"></i></a>
+                                                            </div>
+                                                            <!-- Button Reject Report Log -->
                                                             <div class="tooltip-wrapper" data-toggle="tooltip" data-placement="left" data-original-title="#">
-                                                                <form action="#" method="post">
-                                                                    <?= csrf_field(); ?>
-                                                                    <input type="hidden" name="_method" value="DELETE">
-                                                                    <button id="deleteProblemLog" class="btn btn-sm btn-danger btn-delete-log" data-url="<?= base_url('construction'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-trash-alt" type="button"></i></button>
-                                                                </form>
+                                                                <a href="#" id="rejectProblemReport" class="btn btn-sm btn-danger btn-reject-log" data-user="<?= $role['id_role']; ?>" data-url="<?= base_url('manager'); ?>" data-id="<?= $log['id_user_cancellation']; ?>" data-information="<?= $log['approval_status']; ?>"><i class="fas fa-fw fa-times"></i></a>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -919,10 +921,10 @@
                 'targets': 5,
                 'searchable': false,
                 'orderable': false,
-                'width': '100px'
+                'width': '130px'
             }, {
                 'targets': 4,
-                'width': '110px'
+                'width': '100px'
             }, {
                 'targets': [1, 2, 3],
                 'orderable': false,
