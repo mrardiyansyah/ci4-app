@@ -12,10 +12,11 @@ use App\Models\M_Directories;
 use App\Models\M_Files;
 use App\Models\M_UserReport;
 use App\Models\M_CancellationReport;
+use App\Models\M_Notification;
 
 class Dashboard extends BaseController
 {
-    protected $M_Auth, $M_Role, $M_Customer, $M_UserReport, $M_CancellationReport, $M_UserClosing, $M_Directories, $M_Files, $CustomerModel;
+    protected $M_Auth, $M_Role, $M_Customer, $M_UserReport, $M_CancellationReport, $M_UserClosing, $M_Directories, $M_Files, $CustomerModel, $M_Notification;
 
 
     public function __construct()
@@ -28,6 +29,7 @@ class Dashboard extends BaseController
         $this->M_UserClosing = new M_UserClosing();
         $this->M_Directories = new M_Directories();
         $this->M_Files = new M_Files();
+        $this->M_Notification = new M_Notification();
         $db = db_connect();
         $this->CustomerModel = new CustomerModel($db);
     }
@@ -38,8 +40,20 @@ class Dashboard extends BaseController
         $data['title'] = 'Dashboard Pemasaran';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
+        // $data['notif'] = get_new_notif();
         $role = 'Account Executive';
+
+        // $notif = $this->M_Notification->setNotification(
+        //     1,
+        //     $session->get('id_user'),
+        //     1,
+        //     'test',
+        //     'test',
+        //     'Info'
+        // );
+        // d($notif);
+        // $data['asu'] = 'asu';
+        // $this->pusher->trigger('my-channel', 'my-event', $data['asu']);
 
         // Total Customer
         $data['total_customer'] = $this->M_Customer->countAllResults();

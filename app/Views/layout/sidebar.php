@@ -55,10 +55,7 @@
                 <a class="nav-link pb-0" href="<?= base_url($sm['url']); ?>">
                     <i class="<?= $sm['icon']; ?>"></i>
                     <span><?= ($sm['title']); ?> </span>
-                    <?php
-                    if (count_notif($sm['title']) != 0) : ?>
-                        <!-- <span class="badge badge-danger font-weight-bold align-items-stretch" style="display:inline; font-size:69%;"><?= count_notif($sm['title']) ?></span> -->
-                    <?php endif; ?>
+
                     <?php if ($sm['title'] == "Notification") { ?>
                         <?php if (sizeof($notif) != 0) { ?>
                             <span class="badge badge-danger font-weight-bold align-items-stretch" style="display:inline; font-size:69%;">

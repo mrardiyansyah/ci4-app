@@ -40,7 +40,6 @@ class ProblemReport extends BaseController
         $data['title'] = 'List Problem Report';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $role = 'Construction';
 
@@ -56,13 +55,31 @@ class ProblemReport extends BaseController
         if ($this->request->isAJAX()) {
             $id_user_report = $this->request->getPost();
             // echo json_encode(['id' => $id_user_report]);
+
+
             try {
                 $status = [
                     'id_approval_status' => 4
                 ];
+
+                $cancel = $this->M_CancellationReport->where('id_user_cancellation', $id_user_report)->get()->getRowArray();
+                $id_customer = $cancel['id_customer'];
                 $report = $this->M_CancellationReport->update($id_user_report, $status);
 
                 if ($report) {
+                    $this->M_Notification->setNotification(
+                        $id_customer,
+                        $session->get('id_user'),
+                        6,
+                        'Problem',
+                        "The Construction Manager passes on a Problem Report for immediate confirmation. Please kindly check the report!",
+                        'Problem'
+                    );
+                    $message = [
+                        'message' => 'success'
+                    ];
+                    $this->pusher->trigger('my-channel', 'my-event', $message);
+
                     echo json_encode([
                         'success' => 'success',
                         'data' => $report,
@@ -87,7 +104,6 @@ class ProblemReport extends BaseController
         $data['title'] = 'Problem Report';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['list_status'] = $this->CustomerModel->getApprovalStatus();
 
@@ -137,6 +153,7 @@ class ProblemReport extends BaseController
                     $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to update! Please try again ' . $this->M_CancellationReport->errors() . '</div>');
                     return redirect()->to(site_url("manager/konstruksi"));
                 }
+
                 $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Problem Report rejected!</div>');
                 return redirect()->to(site_url("manager/konstruksi"));
             }

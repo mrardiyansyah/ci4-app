@@ -8,7 +8,8 @@
 		"php": ">=7.2",
 		"codeigniter4/framework": "^4",
 		"phpoffice/phpspreadsheet": "^1.14",
-		"giggsey/libphonenumber-for-php": "^8.12"
+		"giggsey/libphonenumber-for-php": "^8.12",
+		"pusher/pusher-php-server": "^4.1"
 	},
 	"require-dev": {
 		"mikey179/vfsstream": "1.6.*",

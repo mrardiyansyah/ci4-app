@@ -612,7 +612,7 @@ $(document).on('click', '.btn-approve-log#approveProblemReport', function (e) {
                             }
                         });
                     } else {
-                        // console.log(response);
+                        console.log(response);
                         Swal.fire('Failed', result.error.message, 'error');
                     }
                 }
@@ -665,6 +665,38 @@ $("#form-problem-report").on('submit', function (e) {
     });
 });
 
+$("#form-problem-report-approve").on('submit', function (e) {
+    e.preventDefault();
+
+    // console.log(status);
+    Swal.fire({
+        title: false,
+        html: `Are you sure you want to submit this form? This action can't be undo`,
+        icon: 'warning',
+        padding: '1em',
+        width: 400,
+        showCancelButton: true,
+        cancelButtonText: `Cancel`,
+        confirmButtonText: 'Yes, I\'m sure',
+        buttonsStyling: false,
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown animate__fast',
+            icon: 'animate__animated animate__fadeIn animate__delay-1s animate__repeat-3'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        },
+        customClass: {
+            confirmButton: 'btn btn-warning btn-sm font-small',
+            cancelButton: 'btn btn-secondary btn-sm ml-3 font-small',
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $(this)[0].submit();
+        }
+    });
+});
+
 // Form Problem Report
 $("#form-problem-report-user").on('submit', function (e) {
     e.preventDefault();
@@ -686,7 +718,7 @@ $("#form-problem-report-user").on('submit', function (e) {
             popup: 'animate__animated animate__fadeOutUp'
         },
         customClass: {
-            confirmButton: 'btn btn-warning btn-sm font-small',
+            confirmButton: 'btn btn-danger btn-sm font-small',
             cancelButton: 'btn btn-secondary btn-sm ml-3 font-small',
         }
     }).then((result) => {
@@ -769,6 +801,30 @@ $(document).on('click', '.btn-reject-log#rejectProblemReport', function (e) {
     }).then((result) => {
         if (result.isConfirmed) {
             document.location.href = href;
+        }
+    });
+});
+
+$("#list-notification").on('click', '.notifs', function (e) {
+    e.preventDefault()
+    id_notif = $(this).data('id');
+    url = $(this).data('url');
+    // console.log(id_notif);
+    // console.log(url);
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: {
+            id_notif: id_notif
+        },
+        dataType: "JSON",
+        success: function (response) {
+            // console.log(response);
+            if (response.redirect) {
+                window.location.href = response.redirect_url;
+            } else {
+                console.log(response);
+            }
         }
     });
 });

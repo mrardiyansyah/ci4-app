@@ -50,7 +50,7 @@
                         </tbody>
                     </table>
                     <hr>
-                    <form action="<?= base_url('manager/pemasaran/approve-problem-report/' . $problem_report['id_user_cancellation']); ?>" method="post" id="form-problem-report">
+                    <form action="<?= base_url('manager/pemasaran/approve-problem-report/' . $problem_report['id_user_cancellation']); ?>" method="post" id="form-problem-report-approve">
                         <?= csrf_field(); ?>
                         <input type="hidden" name="_method" value="PUT">
                         <div class="form-group" id="notes">

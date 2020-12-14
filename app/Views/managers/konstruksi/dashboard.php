@@ -101,7 +101,7 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Problem Report</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= !empty($problem_report) ? count($problem_report) . ' Reports' : count($problem_report); ?></div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= !empty($problem_report) ? ($problem_report) . ' Reports' : ($problem_report); ?></div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-exclamation-triangle fa-2x text-warning"></i>

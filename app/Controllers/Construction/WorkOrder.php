@@ -40,7 +40,7 @@ class WorkOrder extends BaseController
         $data['title'] = 'Work Order Request';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
+        // $data['notif'] = get_new_notif();
 
         $data['information'] = $this->CustomerModel->getWorkOrderForConstruction($session->get('id_user'));
 
@@ -54,7 +54,7 @@ class WorkOrder extends BaseController
             $data['title'] = 'Detail Information';
             $data['user'] = $this->M_Auth->find($session->get('id_user'));
             $data['role'] =  $this->M_Role->find($session->get('id_role'));
-            $data['notif'] = get_new_notif();
+            // $data['notif'] = get_new_notif();
 
             // Data Customer
             $data['customer'] = $this->CustomerModel->getAllInformationCustomerById($id_customer);
@@ -90,48 +90,44 @@ class WorkOrder extends BaseController
         }
     }
 
-    public function pilihPengawas($id_customer)
-    {
-        $session = session();
-        if ($this->request->getMethod() == 'post') {
-            $rules = [
-                'pengawas' => [
-                    'label' => 'Pengawas Konstruksi',
-                    'rules' => 'required',
-                ],
-            ];
-
-            if (!$this->validate($rules)) {
-                session()->setFlashdata('message', '<div class="alert alert-danger" role="alert">' . $this->validator->listErrors() . '</div>');
-                return redirect()->back();
-            } else {
-                $id_pengawas = $this->request->getPost('pengawas');
-                // dd($id_pengawas);
-                try {
-                    $this->M_Customer->update($id_customer, ['id_pengawas' => $id_pengawas]);
-                } catch (\Exception $e) {
-                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">There something went wrong! ' . $this->M_Customer->errors() . '</div>');
-                    return redirect()->back();
-                }
-
-                $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
-                   The Construction Supervisor has been Selected!</div>');
-                return redirect()->back();
-            }
-        } else {
-            $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Failed to select The Supervisor!' . '</div>');
-            return redirect()->back();
-        }
-    }
-
     public function startConstruct($id_customer)
     {
         $session = session();
         if ($this->request->isAJAX()) {
             try {
                 $update_information = $this->M_Customer->update($id_customer, ['id_information' => 8]);
-
+                $customer = $this->CustomerModel->getCustomerById($id_customer);
+                $cust_name = $customer['name_customer'];
+                $id_salesman = $customer['id_salesman'];
                 if ($update_information) {
+                    $this->M_Notification->setNotification(
+                        $id_customer,
+                        $session->get('id_user'),
+                        $id_salesman,
+                        'Info',
+                        "Construction for {$cust_name} has started. Please check the construction reports periodically!",
+                        'Info'
+                    );
+                    $this->M_Notification->setNotification(
+                        $id_customer,
+                        $session->get('id_user'),
+                        5,
+                        'Info',
+                        "Construction for {$cust_name} has started. Please check the construction reports periodically!",
+                        'Info'
+                    );
+                    $this->M_Notification->setNotification(
+                        $id_customer,
+                        $session->get('id_user'),
+                        6,
+                        'Info',
+                        "Construction for {$cust_name} has started. Please check the construction reports periodically!",
+                        'Info'
+                    );
+                    $message = [
+                        'message' => 'success'
+                    ];
+                    $this->pusher->trigger('my-channel', 'my-event', $message);
                     echo json_encode(['success' => 'success']);
                 } else {
                     throw new \Exception("Error Processing Request", 1);

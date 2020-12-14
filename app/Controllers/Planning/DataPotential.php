@@ -29,7 +29,6 @@ class DataPotential extends BaseController
         $data['title'] = 'Data Potential Customer';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         // Data Semua customer
         $data['customer'] = $this->CustomerModel->getCustomer();
@@ -51,7 +50,6 @@ class DataPotential extends BaseController
         $data['title'] = 'Detail Customer';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         return view('planning/detail_customer', $data);
     }
@@ -68,7 +66,6 @@ class DataPotential extends BaseController
         $data['title'] = 'Edit Customer';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['service'] = $this->CustomerModel->getService();
         $data['substation'] = $this->CustomerModel->getSubstation();

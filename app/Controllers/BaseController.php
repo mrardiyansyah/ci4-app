@@ -15,7 +15,9 @@ namespace App\Controllers;
  * @package CodeIgniter
  */
 
+use App\Models\M_Notification;
 use CodeIgniter\Controller;
+use CodeIgniter\Model;
 
 class BaseController extends Controller
 {
@@ -29,6 +31,7 @@ class BaseController extends Controller
 	 */
 	protected $helpers = ['form', 'html', 'filesystem', 'security', 'text', 'url', 'lpremium_helper'];
 
+
 	/**
 	 * Constructor.
 	 */
@@ -41,6 +44,22 @@ class BaseController extends Controller
 		// Preload any models, libraries, etc, here.
 		//--------------------------------------------------------------------
 		// E.g.:
+
+		// Pusher
+		$options = array(
+			'cluster' => 'ap1',
+			'useTLS' => true
+		);
+
+		$this->pusher = new \Pusher\Pusher(
+			'df1a99135b646cb1942a',
+			'34a28e8552a1baf72c4c',
+			'1121961',
+			$options
+		);
+
+		// Notification
+		$this->M_Notification = new M_Notification();
 		// $this->session = \Config\Services::session();
 	}
 }

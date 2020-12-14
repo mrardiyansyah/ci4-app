@@ -42,6 +42,39 @@ class Energize extends BaseController
             $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">There\'s something went wrong! Please try again ' . $this->M_Customer->errors() . '</div>');
             return redirect()->to(site_url("manager/pemasaran"));
         }
+
+        $id_salesman = $customer['id_salesman'];
+        $id_pengawas = $customer['id_pengawas'];
+        $cust_name = $customer['name_customer'];
+        $this->M_Notification->setNotification(
+            $id_customer,
+            $session->get('id_user'),
+            $id_salesman,
+            'Info',
+            "Customer {$cust_name} officialy subscribed Premium Service! Congratulations!!",
+            'Info'
+        );
+        $this->M_Notification->setNotification(
+            $id_customer,
+            $session->get('id_user'),
+            $id_pengawas,
+            'Info',
+            "Customer {$cust_name} officialy subscribed Premium Service! Congratulations!!",
+            'Info'
+        );
+        $this->M_Notification->setNotification(
+            $id_customer,
+            $session->get('id_user'),
+            5,
+            'Info',
+            "Customer {$cust_name} officialy subscribed Premium Service! Congratulations!!",
+            'Info'
+        );
+        $message = [
+            'message' => 'success'
+        ];
+        $this->pusher->trigger('my-channel', 'my-event', $message);
+
         $session->setFlashdata('message', '<div class="alert alert-success" role="alert">' . $customer['name_customer'] . ' has been Energized! Congratulations</div>');
         return redirect()->to(site_url("manager/pemasaran"));
     }

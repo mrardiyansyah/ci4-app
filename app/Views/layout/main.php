@@ -66,6 +66,9 @@
         }
     </style>
 
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <script src="<?= base_url('assets/js/notification.js'); ?>"></script>
+
 </head>
 
 <body id="page-top">
@@ -136,14 +139,29 @@
     <script src="<?= base_url('assets/js/pln_premium.js'); ?>"></script>
     <script src="<?= base_url('assets/js/swal.js'); ?>"></script>
 
+    <!-- Pusher -->
+    <script>
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = false;
+
+        var pusher = new Pusher('df1a99135b646cb1942a', {
+            cluster: 'ap1'
+        });
+
+        var channel = pusher.subscribe('my-channel');
+        channel.bind('my-event', function(data) {
+            // alert(JSON.stringify(data));
+            $("#counter-notif").hide().load(location.href + " #counter-notif").fadeIn('1000');
+            $("#list-notification").hide().load(location.href + " #list-notification").fadeIn('1000');
+
+        });
+    </script>
 
     <script>
         $(document).ready(function() {
             $('[data-toggle="tooltip"]').tooltip()
         });
     </script>
-
-
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -178,43 +196,6 @@
                         $('.modal-data-submenu').html(data); //menampilkan data ke dalam modal
                     }
                 });
-            });
-        });
-
-        $(document).ready(function() {
-            $("#confirm-submit-probing").click(function() {
-                $("#addProblemMapping").submit();
-            });
-        });
-
-        $(document).ready(function() {
-            $("#confirm-submit-visit-ae").click(function() {
-                $("#addKunjungan").submit();
-            });
-        });
-
-        $(document).ready(function() {
-            $("#confirm-submit-cancel").click(function() {
-                $("#addCancellation").submit();
-            });
-        });
-
-        $(document).ready(function() {
-            $("#confirm-submit-cancel-cons").click(function() {
-                $("#addCancellationCons").submit();
-            });
-        });
-
-        $(document).ready(function() {
-            $("#confirm-submit-cons").click(function() {
-                $("#uploadReportCons").submit();
-            });
-        });
-
-        $(document).ready(function() {
-            $("#input-potential-file").click(function() {
-                $("#inputPotentialExcel").submit();
-                // alert('asu');
             });
         });
 

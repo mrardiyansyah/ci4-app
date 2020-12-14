@@ -12,10 +12,12 @@ use App\Models\M_Directories;
 use App\Models\M_Files;
 use App\Models\M_UserReport;
 use App\Models\M_CancellationReport;
+use App\Models\M_Notification;
+
 
 class Probing extends BaseController
 {
-    protected $M_Auth, $M_Role, $M_Customer, $M_UserClosing, $M_Directories, $M_Files, $M_UserReport, $M_CancellationReport, $CustomerModel;
+    protected $M_Auth, $M_Role, $M_Customer, $M_UserClosing, $M_Directories, $M_Files, $M_UserReport, $M_CancellationReport, $M_Notification, $CustomerModel;
 
 
     public function __construct()
@@ -28,6 +30,7 @@ class Probing extends BaseController
         $this->M_Files = new M_Files();
         $this->M_UserReport = new M_UserReport();
         $this->M_CancellationReport = new M_CancellationReport();
+        $this->M_Notification = new M_Notification();
         $db = db_connect();
         $this->CustomerModel = new CustomerModel($db);
     }
@@ -38,7 +41,6 @@ class Probing extends BaseController
         $data['title'] = 'Sales Log Form';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
 
@@ -112,11 +114,24 @@ class Probing extends BaseController
                     ];
 
                     try {
-                        $this->M_UserReport->save($ReportData);
+                        $save = $this->M_UserReport->save($ReportData);
                     } catch (\Exception $e) {
                         $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Report Log failed to add! Please try again ' . $this->M_UserReport->errors() . '</div>');
                         return redirect()->to(site_url("account-executive"));
                     }
+
+                    $this->M_Notification->setNotification(
+                        $id_customer,
+                        $session->get('id_user'),
+                        6,
+                        'Report',
+                        "Report has been received from {$data['user']['name']}. Please kindly check the report.",
+                        'Report'
+                    );
+                    $message = [
+                        'message' => 'success'
+                    ];
+                    $this->pusher->trigger('my-channel', 'my-event', $message);
 
                     $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Report Log added Successfully!</div>');
                     return redirect()->to(site_url("account-executive"));
@@ -245,7 +260,6 @@ class Probing extends BaseController
         $data['title'] = 'Cancellation Log Form';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
 
@@ -335,6 +349,19 @@ class Probing extends BaseController
                         return redirect()->to(site_url("account-executive"));
                     }
 
+                    $this->M_Notification->setNotification(
+                        $id_customer,
+                        $session->get('id_user'),
+                        6,
+                        'Problem',
+                        "Problem Report has been received from {$data['user']['name']}. Please kindly check the report.",
+                        'Problem'
+                    );
+                    $message = [
+                        'message' => 'success'
+                    ];
+                    $this->pusher->trigger('my-channel', 'my-event', $message);
+
                     $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Problem Report added Successfully! Please wait for confirmation</div>');
                     return redirect()->to(site_url("account-executive"));
                 } else {
@@ -353,7 +380,6 @@ class Probing extends BaseController
         $data['title'] = 'Edit Cancellation Log Form';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['cancellation_log'] = $this->M_CancellationReport->getReportLogById($id_user_cancellation);
 
@@ -469,7 +495,6 @@ class Probing extends BaseController
         $data['title'] = 'Edit Report Log';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['report_log'] = $this->M_UserReport->getReportLogById($id_user_report);
 

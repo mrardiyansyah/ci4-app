@@ -169,6 +169,18 @@ div.error-msg {
 	color: #9829fa !important;
 }
 
+.bg-purple {
+	background-color: #9829fa !important;
+}
+
+.bg-light-purple {
+	background-color: #a55eea !important;
+}
+
+.bg-blurple {
+	background-color: #4834d4 !important;
+}
+
 a.text-purple:hover,
 a.text-purple:focus {
 	color: #7910d4 !important;
@@ -180,6 +192,10 @@ a.text-purple:focus {
 
 .text-orange {
 	color: #f77a28 !important;
+}
+
+.bg-orange {
+	background-color: #f77a28 !important;
 }
 
 a.text-orange:hover,
@@ -195,6 +211,10 @@ a.text-orange:focus {
 	color: chocolate !important;
 }
 
+.bg-chocolate {
+	background-color: chocolate !important;
+}
+
 a.text-chocolate:hover,
 a.text-chocolate:focus {
 	color: rgb(187, 83, 8) !important;
@@ -208,6 +228,10 @@ a.text-chocolate:focus {
 	color: cadetblue !important;
 }
 
+.bg-cadetblue {
+	background-color: cadetblue !important;
+}
+
 a.text-cadetblue:hover,
 a.text-cadetblue:focus {
 	color: rgb(69, 148, 151) !important;
@@ -215,12 +239,18 @@ a.text-cadetblue:focus {
 
 *::-webkit-scrollbar,
 *::-webkit-scrollbar-thumb {
-	width: 26px;
+	width: 24px;
 	border-radius: 13px;
 	background-clip: padding-box;
 	border: 10px solid transparent;
 	visibility: hidden;
 }
+
+#list-notification::-webkit-scrollbar,
+#list-notification::-webkit-scrollbar-thumb {
+	display: none;
+}
+
 
 *:hover::-webkit-scrollbar,
 *:hover::-webkit-scrollbar-thumb {

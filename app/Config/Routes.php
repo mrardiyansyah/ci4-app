@@ -62,6 +62,9 @@ $routes->PUT('change-password', 'Users\profile::changePassword', ['filter' => 'a
 // PDF Viewer / File viewer
 $routes->add('viewer/(:num)', 'Users\Viewer::index/$1');
 
+// Notification
+$routes->post('read-notif', 'Users\Notification::read');
+
 
 // Administrator
 $routes->group('admin', ['filter' => 'auth:1'], function ($routes) {

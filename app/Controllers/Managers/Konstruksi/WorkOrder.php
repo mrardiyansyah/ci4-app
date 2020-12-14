@@ -40,7 +40,6 @@ class WorkOrder extends BaseController
         $data['title'] = 'Work Order Request';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['information'] = $this->CustomerModel->getInformationForWorkingOrder();
 
@@ -53,7 +52,6 @@ class WorkOrder extends BaseController
         $data['title'] = 'Customer Profile';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         // Data Customer
         $data['customer'] = $this->CustomerModel->getAllInformationCustomerById($id_customer);
@@ -109,6 +107,9 @@ class WorkOrder extends BaseController
                 return redirect()->back();
             } else {
                 $id_pengawas = $this->request->getPost('pengawas');
+                $customer = $this->CustomerModel->getCustomerById($id_customer);
+                $cust_name = $customer['name_customer'];
+                $id_salesman = $customer['id_salesman'];
                 // dd($id_pengawas);
                 try {
                     $this->M_Customer->update($id_customer, ['id_pengawas' => $id_pengawas]);
@@ -117,6 +118,26 @@ class WorkOrder extends BaseController
                     return redirect()->back();
                 }
 
+                $this->M_Notification->setNotification(
+                    $id_customer,
+                    $session->get('id_user'),
+                    $id_pengawas,
+                    'Request',
+                    "Congratulations, you have been selected as the construction supervisor for customer {$cust_name}. Please check the following attachments and start construction!",
+                    'Request'
+                );
+                $this->M_Notification->setNotification(
+                    $id_customer,
+                    $session->get('id_user'),
+                    $id_salesman,
+                    'Info',
+                    "The construction supervisor for customer {$cust_name} has been selected. Check it out!",
+                    'Info'
+                );
+                $message = [
+                    'message' => 'success'
+                ];
+                $this->pusher->trigger('my-channel', 'my-event', $message);
                 $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
                    The Construction Supervisor has been Selected!</div>');
                 return redirect()->back();

@@ -34,7 +34,6 @@ class Energize extends BaseController
         $data['title'] = 'Energize Form';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
 
@@ -136,6 +135,40 @@ class Energize extends BaseController
                         return redirect()->to(site_url("construction"));
                     }
 
+                    $id_salesman = $data['customer']['id_salesman'];
+
+                    $this->M_Notification->setNotification(
+                        $id_customer,
+                        $session->get('id_user'),
+                        $id_salesman,
+                        'Info',
+                        "{$cust_name} has started to Energize Process. Check it Out!",
+                        'Info'
+                    );
+                    $this->M_Notification->setNotification(
+                        $id_customer,
+                        $session->get('id_user'),
+                        5,
+                        'Info',
+                        "{$cust_name} has started to Energize Process. Check it Out!",
+                        'Info'
+                    );
+                    $this->M_Notification->setNotification(
+                        $id_customer,
+                        $session->get('id_user'),
+                        6,
+                        'Info',
+                        "{$cust_name} has started to Energize Process. Confirm immediately to complete the process!",
+                        'Info'
+                    );
+                    $message = [
+                        'message' => 'success'
+                    ];
+                    $this->pusher->trigger(
+                        'my-channel',
+                        'my-event',
+                        $message
+                    );
                     $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Energize Report successfully uploaded! Please wait for confirmation to energize</div>');
                     return redirect()->to(site_url("construction"));
                 } else {

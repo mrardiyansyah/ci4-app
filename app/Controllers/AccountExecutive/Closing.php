@@ -34,7 +34,6 @@ class Closing extends BaseController
         $data['title'] = 'Closing Confirmation';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
 
@@ -88,6 +87,28 @@ class Closing extends BaseController
                         return redirect()->to(site_url("account-executive"));
                     }
 
+                    $this->M_Notification->setNotification(
+                        $id_customer,
+                        $session->get('id_user'),
+                        2,
+                        'Request',
+                        "{$cust_name} starts Closing Sales. Please publish System Recommendation and SLD immediately. ",
+                        'Request'
+                    );
+
+                    $this->M_Notification->setNotification(
+                        $id_customer,
+                        $session->get('id_user'),
+                        6,
+                        'Info',
+                        "{$cust_name} starts Closing Sales. Check it out!",
+                        'Info'
+                    );
+
+                    $message = [
+                        'message' => 'success'
+                    ];
+                    $this->pusher->trigger('my-channel', 'my-event', $message);
                     $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Application Letter successfully uploaded!</div>');
                     return redirect()->to(site_url("account-executive"));
                 } else {
@@ -106,7 +127,6 @@ class Closing extends BaseController
         $data['title'] = 'Upload File SPJBTL';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
 
@@ -183,6 +203,19 @@ class Closing extends BaseController
                         return redirect()->to(site_url("account-executive"));
                     }
 
+                    $this->M_Notification->setNotification(
+                        $id_customer,
+                        $session->get('id_user'),
+                        6,
+                        'Info',
+                        "SPJBTL and Record of Agreement from {$cust_name} has been received from {$data['user']['name']}. Check it out! ",
+                        'Info'
+                    );
+                    $message = [
+                        'message' => 'success'
+                    ];
+                    $this->pusher->trigger('my-channel', 'my-event', $message);
+
                     $session->setFlashdata('message', '<div class="alert alert-success" role="alert">SPJBTL successfully uploaded!</div>');
                     return redirect()->to(site_url("account-executive"));
                 } else {
@@ -201,7 +234,6 @@ class Closing extends BaseController
         $data['title'] = 'Upload File Working Order';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
 
@@ -258,6 +290,19 @@ class Closing extends BaseController
                         $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">There something went wrong! ' . $this->M_UserClosing->errors() . '</div>');
                         return redirect()->to(site_url("account-executive"));
                     }
+
+                    $this->M_Notification->setNotification(
+                        $id_customer,
+                        $session->get('id_user'),
+                        5,
+                        'Info',
+                        "Working Order has been received from {$data['user']['name']}. Please check the following attachments! ",
+                        'Info'
+                    );
+                    $message = [
+                        'message' => 'success'
+                    ];
+                    $this->pusher->trigger('my-channel', 'my-event', $message);
 
                     $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Working Order successfully uploaded!</div>');
                     return redirect()->to(site_url("account-executive"));

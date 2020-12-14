@@ -30,7 +30,6 @@ class AddPotential extends BaseController
         $data['title'] = 'Add Data Potential';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['customer'] = $this->CustomerModel->getCustomer();
         $data['service'] = $this->CustomerModel->getService();

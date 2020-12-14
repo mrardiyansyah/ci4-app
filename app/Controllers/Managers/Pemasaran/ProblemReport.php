@@ -40,7 +40,6 @@ class ProblemReport extends BaseController
         $data['title'] = 'List Problem Report';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $role = 'Account Executive';
 
@@ -56,7 +55,6 @@ class ProblemReport extends BaseController
         $data['title'] = 'Form Approval Problem Report';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['list_status'] = $this->CustomerModel->getApprovalStatus();
 
@@ -98,6 +96,40 @@ class ProblemReport extends BaseController
                     $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to update! Please try again ' . $this->M_CancellationReport->errors() . '</div>');
                     return redirect()->to(site_url("manager/pemasaran"));
                 }
+
+                $customer = $this->CustomerModel->getCustomerById($id_customer);
+                $id_pengawas = $customer['id_pengawas'];
+                $id_salesman = $customer['id_salesman'];
+                $cust_name = $customer['name_customer'];
+
+                $this->M_Notification->setNotification(
+                    $id_customer,
+                    $session->get('id_user'),
+                    $id_salesman,
+                    'Info',
+                    "Customer {$cust_name} failed to continue the process of Premium Service. Customers will be updated on the status of the next info!",
+                    'Info'
+                );
+                $this->M_Notification->setNotification(
+                    $id_customer,
+                    $session->get('id_user'),
+                    $id_pengawas,
+                    'Info',
+                    "Customer {$cust_name} failed to continue the process of Premium Service. Customers will be updated on the status of the next info!",
+                    'Info'
+                );
+                $this->M_Notification->setNotification(
+                    $id_customer,
+                    $session->get('id_user'),
+                    5,
+                    'Info',
+                    "Customer {$cust_name} failed to continue the process of Premium Service. Customers will be updated on the status of the next info!",
+                    'Info'
+                );
+                $message = [
+                    'message' => 'success'
+                ];
+                $this->pusher->trigger('my-channel', 'my-event', $message);
                 $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Problem Report rejected!</div>');
                 return redirect()->to(site_url("manager/pemasaran"));
             }
@@ -112,7 +144,6 @@ class ProblemReport extends BaseController
         $data['title'] = 'Problem Report';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['list_status'] = $this->CustomerModel->getApprovalStatus();
 

@@ -49,7 +49,7 @@ class M_CancellationReport extends Model
             // ->where('user_cancellation.id_approval_status', 1)
             ->where('deleted_at', NULL)
             ->where('user_role.role_type', $role)
-            // ->orWhere('user_cancellation.id_approval_status', 4)
+            ->orWhere('user_cancellation.id_approval_status', 4)
             ->join('user', 'user_cancellation.id_user = user.id_user')
             ->join('user_role', "user.id_role = user_role.id_role")
             ->join(

@@ -26,7 +26,6 @@ class DataPotential extends BaseController
         $data['title'] = 'Data Potential Customer';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         // Data Potential Customer Sesuai dengan Salesnya
         $data['customer'] =

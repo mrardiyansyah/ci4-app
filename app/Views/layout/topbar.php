@@ -15,51 +15,30 @@
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
 
-                <!-- Nav Item - Alerts -->
+                <!-- Nav Item - Notification -->
+                <!-- <div class="navbar-notification"> -->
                 <li class="nav-item dropdown no-arrow mx-auto">
                     <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-bell fa-fw"></i>
                         <!-- Counter - Alerts -->
-                        <?php if (sizeof($notif) != 0) { ?>
-                            <span class="badge badge-danger badge-counter">
-                                <?php if (sizeof($notif) > 99) {
-                                    echo '99+';
-                                } else {
-                                    echo sizeof($notif);
-                                } ?>
-                            </span>
-                        <?php } ?>
+                        <div class="badge-counter">
+                            <div id="counter-notif">
+                                <?= view_cell('\App\Libraries\Notification::renderCounterNotif', ['id_user' => session()->get('id_user')]); ?>
+                            </div>
+                        </div>
                     </a>
                     <!-- Dropdown - Alerts -->
                     <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown" style="max-width:350px;">
                         <h6 class="dropdown-header" style="background-color: #046b7b;">
                             Notifications
                         </h6>
-                        <div style="overflow-y:scroll;max-height:300px">
-                            <?php
-                            $id = 0;
-
-                            foreach ($notif as $notifs) { ?>
-                                <a class="dropdown-item d-flex align-items-center notifs" data-id="<?php echo $notifs[0]['id_notification_target'] ?>" href="<?= base_url("Notification/readNotif/" . $notifs[0]['id_notification_target'] . '/' . $notifs[0]['id_customer'] . '/' . $notifs[0]['id_type_notification']) ?>">
-                                    <div class="mr-3">
-                                        <div class="icon-circle <?= $notifs[0]['bg_color']; ?>">
-                                            <i class="<?= $notifs[0]['icon_notification']; ?> text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500"><?= date('d F Y H:i:s', strtotime($notifs[0]['created_at'])); ?></div>
-                                        <span class="font-weight-bold"><?= $notifs[0]['title']; ?> : <?= $notifs[0]['details']; ?> </span>
-                                    </div>
-                                </a>
-                            <?php
-
-                                $id = $id + 1;
-                            } ?>
+                        <div class="" style="overflow-y:scroll; max-height: 350px;" id="list-notification">
+                            <?= view_cell('\App\Libraries\Notification::renderListNotif', ['id_user' => session()->get('id_user')]); ?>
                         </div>
-
                         <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                     </div>
                 </li>
+                <!-- </div> -->
 
                 <div class="topbar-divider d-none d-sm-block"></div>
 

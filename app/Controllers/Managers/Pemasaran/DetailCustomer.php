@@ -40,7 +40,6 @@ class DetailCustomer extends BaseController
         $data['title'] = 'Customer Profile';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] = $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $role = 'Account Executive';
 
@@ -77,7 +76,7 @@ class DetailCustomer extends BaseController
 
         // Data Cancellation Report
         $data['cancellation_report'] = $this->M_CancellationReport->getCancellationReportByRole($role);
-        d($data['cancellation_report']);
+        // d($data['cancellation_report']);
 
         // Data Energize Report
         $id_dir_file_energize = $this->M_UserEnergize->getFileEnergize($id_customer);

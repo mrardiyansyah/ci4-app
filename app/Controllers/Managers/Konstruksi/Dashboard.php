@@ -38,7 +38,6 @@ class Dashboard extends BaseController
         $data['title'] = 'Dashboard Construction';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
         $role = 'Construction';
 
         // Total Customer
@@ -63,11 +62,21 @@ class Dashboard extends BaseController
         $data['report_log'] = $this->M_UserReport->getReportByRole($role);
 
         // All Problem Report
-        $data['problem_report'] = $this->M_CancellationReport->getCancellationReportByRole($role);
+        $problem = $this->M_CancellationReport->getCancellationReportByRole($role);
+        $count_problem = 0;
+        foreach ($problem as $p) {
+            if ($p['id_approval_status'] == 1) {
+                $count_problem++;
+            } else {
+                continue;
+            }
+        }
+        $data['problem_report'] = $count_problem;
+        // dd($problem);
 
         // List Supervisor Construction
         $data['list_spv'] = $this->M_Auth->getAllSupervisor();
-        d($data['list_spv']);
+        // d($data['list_spv']);
 
         return view('managers/konstruksi/dashboard', $data);
     }

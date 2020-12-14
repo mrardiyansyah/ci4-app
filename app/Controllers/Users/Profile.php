@@ -12,6 +12,8 @@ class Profile extends BaseController
 
     protected $M_Auth, $M_Role;
 
+
+
     public function __construct()
     {
         $this->M_Auth = new M_Auth();
@@ -24,8 +26,10 @@ class Profile extends BaseController
         $data['title'] = 'My Profile';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
+        // $data['notif'] = get_new_notif();
 
+        // $data['message'] = 'test';
+        // $this->pusher->trigger('my-channel', 'my-event', $data['message']);
         return view('user/index', $data);
     }
 
@@ -36,7 +40,7 @@ class Profile extends BaseController
         $data['title'] = 'Edit Profile';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
+        // $data['notif'] = get_new_notif();
 
         if ($this->request->getMethod() == 'post') {
             $rules = [
@@ -115,7 +119,7 @@ class Profile extends BaseController
         $data['title'] = 'Change Password';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
+        // $data['notif'] = get_new_notif();
 
 
         if ($this->request->getMethod() === "put") {

@@ -34,7 +34,6 @@ class IncomingRequest extends BaseController
         $data['title'] = 'Incoming Request';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['request_reksis'] = $this->CustomerModel->getInformationForReksis();
         $data['request_data'] = "";
@@ -48,7 +47,6 @@ class IncomingRequest extends BaseController
         $data['title'] = 'Recommendation System Request List';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['request_reksis'] = $this->CustomerModel->getInformationForReksis();
 
@@ -60,9 +58,26 @@ class IncomingRequest extends BaseController
         $session = session();
         if ($this->request->isAJAX()) {
             try {
+                $customer = $this->CustomerModel->getCustomerById($id_customer);
                 $update_information = $this->M_Customer->update($id_customer, ['id_information' => 4]);
+                $id_salesman = $customer['id_salesman'];
+                $cust_name = $customer['name_customer'];
+
 
                 if ($update_information) {
+                    $this->M_Notification->setNotification(
+                        $id_customer,
+                        $session->get('id_user'),
+                        $id_salesman,
+                        'Info',
+                        "Reksis and SLD for {$cust_name} on process. Hang in there!",
+                        'Info'
+                    );
+                    $message = [
+                        'message' => 'success'
+                    ];
+                    $this->pusher->trigger('my-channel', 'my-event', $message);
+
                     echo json_encode(['success' => 'success']);
                 } else {
                     throw new Exception("Error Processing Request", 1);
@@ -84,7 +99,6 @@ class IncomingRequest extends BaseController
         $data['title'] = "Upload File Reksis";
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         // Get Data Customer
         $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
@@ -117,12 +131,26 @@ class IncomingRequest extends BaseController
                     ];
 
                     try {
-                        // Update Status and Information (Closing and Menunggu Reksis)
+                        // Update Status and Information (Proses SPJBTL)
                         $this->M_Customer->update($id_customer, $status);
                     } catch (\Exception $e) {
                         $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">There something went wrong! ' . $this->M_Customer->errors() . '</div>');
                         return redirect()->to(site_url("planning/request-potential"));
                     }
+                    $id_salesman = $data['customer']['id_salesman'];
+
+                    $this->M_Notification->setNotification(
+                        $id_customer,
+                        $session->get('id_user'),
+                        $id_salesman,
+                        'Info',
+                        "Reksis and SLD for {$cust_name} has been received from {$data['user']['name']}. Please check the following attachments!",
+                        'Info'
+                    );
+                    $message = [
+                        'message' => 'success'
+                    ];
+                    $this->pusher->trigger('my-channel', 'my-event', $message);
 
                     $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Recommendation System and SLD successfully uploaded!</div>');
                     return redirect()->to(site_url("planning/incoming-request"));
@@ -197,6 +225,9 @@ class IncomingRequest extends BaseController
             // Size file
             $size_file = $file->getSize();
 
+            // Size file
+            $mime_type = $file->getMimeType();
+
             // File Path
             $file_path = "$reportDirectoryName$file_name";
 
@@ -219,6 +250,7 @@ class IncomingRequest extends BaseController
                 'original_file_name' => $originalFileName,
                 'storage_file_name' => $file_name,
                 'size' => $size_file,
+                'mime_type' => $mime_type,
                 'file_path' => $file_path,
                 'description' => $description,
                 'created_at' => date("Y-m-d H:i:s"),

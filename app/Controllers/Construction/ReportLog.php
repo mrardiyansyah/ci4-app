@@ -38,7 +38,6 @@ class ReportLog extends BaseController
         $data['title'] = 'Construction Log Form';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
 
@@ -117,6 +116,19 @@ class ReportLog extends BaseController
                         $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Report Log failed to add! Please try again ' . $this->M_UserReport->errors() . '</div>');
                         return redirect()->to(site_url("construction"));
                     }
+
+                    $this->M_Notification->setNotification(
+                        $id_customer,
+                        $session->get('id_user'),
+                        5,
+                        'Report',
+                        "Report has been received from {$data['user']['name']}. Please kindly check the report.",
+                        'Report'
+                    );
+                    $message = [
+                        'message' => 'success'
+                    ];
+                    $this->pusher->trigger('my-channel', 'my-event', $message);
 
                     $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Report Log added Successfully!</div>');
                     return redirect()->to(site_url("construction"));
@@ -247,7 +259,6 @@ class ReportLog extends BaseController
         $data['title'] = 'Problem Report Form';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
 
@@ -337,6 +348,19 @@ class ReportLog extends BaseController
                         return redirect()->to(site_url("construction"));
                     }
 
+                    $this->M_Notification->setNotification(
+                        $id_customer,
+                        $session->get('id_user'),
+                        5,
+                        'Problem',
+                        "Problem Report has been received from {$data['user']['name']}. Please kindly check the report.",
+                        'Problem'
+                    );
+                    $message = [
+                        'message' => 'success'
+                    ];
+                    $this->pusher->trigger('my-channel', 'my-event', $message);
+
                     $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Problem Report added Successfully! Please wait for confirmation</div>');
                     return redirect()->to(site_url("construction"));
                 } else {
@@ -355,7 +379,6 @@ class ReportLog extends BaseController
         $data['title'] = 'Edit Construction Log Form';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['cancellation_log'] = $this->M_CancellationReport->getReportLogById($id_user_cancellation);
 
@@ -471,7 +494,6 @@ class ReportLog extends BaseController
         $data['title'] = 'Edit Construction Log Form';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $data['construction_log'] = $this->M_UserReport->getReportLogById($id_user_report);
 

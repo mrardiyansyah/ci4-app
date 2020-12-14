@@ -38,7 +38,6 @@ class RejuvenationData extends BaseController
         $data['title'] = 'Rejuvenate Data';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         // Data Potential Customer Sesuai dengan Salesnya
         $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
