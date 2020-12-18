@@ -145,7 +145,7 @@ class DataPotential extends BaseController
 
                 if ($update) {
                     $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
-                    Data successfully added!</div>');
+                    Data successfully updated!</div>');
                     return redirect()->to(site_url("planning/detail-customer/$id_customer"));
                 } else {
                     $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">' . $this->M_Customer->errors() . '</div>');

@@ -131,9 +131,15 @@ class AddPotential extends BaseController
                 ];
 
                 // dd($data);
-                $this->M_Customer->insert($data);
+                try {
+                    $this->M_Customer->insert($data);
+                } catch (\Exception $e) {
+                    $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
+                        Data failed to add!</div>');
+                    return redirect()->back();
+                }
                 $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
-                    Data has been added!</div>');
+                    Data successfully added!</div>');
                 return redirect()->back();
             }
         }
@@ -245,7 +251,7 @@ class AddPotential extends BaseController
             try {
                 $insert = $this->M_Customer->insertBatch($input_data);
             } catch (Exception $e) {
-                $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Failed to Input Data. Please double check the data entered is correct and appropriate</div>');
+                $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Failed to add Data. Please double check the data entered is correct and appropriate</div>');
                 return redirect()->back();
             }
 

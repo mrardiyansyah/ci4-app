@@ -457,7 +457,7 @@ class Probing extends BaseController
                             'suggestion_solution' => (!empty($solutions)) ? $solutions : NULL,
                         ];
                     } else {
-                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to add! Please try again</div>');
+                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to update! Please try again</div>');
                         return redirect()->to(site_url("account-executive"));
                     }
                 } else {
@@ -476,7 +476,7 @@ class Probing extends BaseController
                 try {
                     $this->M_CancellationReport->save($ReportData);
                 } catch (\Exception $e) {
-                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to add! Please try again ' . $this->M_CancellationReport->errors() . '</div>');
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to update! Please try again ' . $this->M_CancellationReport->errors() . '</div>');
                     return redirect()->to(site_url("account-executive"));
                 }
 
@@ -570,7 +570,7 @@ class Probing extends BaseController
                             'description' => $this->request->getPost('description'),
                         ];
                     } else {
-                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Report Log failed to add! Please try again</div>');
+                        $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Report Log failed to update! Please try again</div>');
                         return redirect()->to(site_url("account-executive"));
                     }
                 } else {
@@ -588,11 +588,11 @@ class Probing extends BaseController
                 try {
                     $this->M_UserReport->save($ReportData);
                 } catch (\Exception $e) {
-                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Report Log failed to add! Please try again ' . $this->M_UserReport->errors() . '</div>');
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Report Log failed to update! Please try again ' . $this->M_UserReport->errors() . '</div>');
                     return redirect()->to(site_url("account-executive"));
                 }
 
-                $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Report Log added Successfully!</div>');
+                $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Report Log successfully Updated!</div>');
                 return redirect()->to(site_url("account-executive"));
             }
         }

@@ -388,7 +388,7 @@ class RejuvenationData extends BaseController
             try {
                 $rejuvenation = $this->M_Customer->update($id_customer, $data_customer);
             } catch (\Exception $e) {
-                return redirect()->back()->with('message', '<div class="alert alert-danger" role="alert">' . $this->M_Customer->errors() . '</div>');
+                return redirect()->back()->with('message', '<div class="alert alert-danger" role="alert">Failed to add data! Please try again</div>');
             }
 
             if ($rejuvenation) {

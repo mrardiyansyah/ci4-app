@@ -130,7 +130,7 @@ class ProblemReport extends BaseController
                     'message' => 'success'
                 ];
                 $this->pusher->trigger('my-channel', 'my-event', $message);
-                $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Problem Report rejected!</div>');
+                $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Customer has been terminated for Premium Service!</div>');
                 return redirect()->to(site_url("manager/pemasaran"));
             }
         }

@@ -321,7 +321,7 @@ class Auth extends BaseController
                     $this->changePassword();
                 } else {
                     $M_Token->where('token', $token)->delete();
-                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Account Activation <strong>Failed</strong>! Token Expired</div>');
+                    $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Reset Password <strong>Failed</strong>! Token Expired</div>');
                     return redirect()->route('login');
                 }
             } else {
