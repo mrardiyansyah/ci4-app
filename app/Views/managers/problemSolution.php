@@ -93,7 +93,7 @@
                                     Submit
                                     <i class="fas fa-save ml-1 text-white"></i>
                                 </button>
-                                <a href="<?= previous_url(); ?>" class="btn btn-sm btn-secondary btn-cancel">Cancel</a>
+                                <a href="<?= base_url(''); ?>" class="btn btn-sm btn-secondary btn-cancel">Cancel</a>
                             </div>
                         </div>
                     </form>

@@ -50,44 +50,40 @@ class WorkOrder extends BaseController
     public function detailCustomer($id_customer)
     {
         $session = session();
-        if ($this->request->getMethod() == 'post') {
-            $data['title'] = 'Detail Information';
-            $data['user'] = $this->M_Auth->find($session->get('id_user'));
-            $data['role'] =  $this->M_Role->find($session->get('id_role'));
-            // $data['notif'] = get_new_notif();
+        $data['title'] = 'Detail Information';
+        $data['user'] = $this->M_Auth->find($session->get('id_user'));
+        $data['role'] =  $this->M_Role->find($session->get('id_role'));
+        // $data['notif'] = get_new_notif();
 
-            // Data Customer
-            $data['customer'] = $this->CustomerModel->getAllInformationCustomerById($id_customer);
+        // Data Customer
+        $data['customer'] = $this->CustomerModel->getAllInformationCustomerById($id_customer);
 
-            // Data File sesuai dengan customer
-            $id_dir_file = $this->M_UserClosing->getDirFileForConstruction($id_customer);
-            $data['file_construction'] =
-                $this->M_Files->getInfoFileForConstruction($id_dir_file['id_reksis_sld'], $id_dir_file['id_working_order']);
+        // Data File sesuai dengan customer
+        $id_dir_file = $this->M_UserClosing->getDirFileForConstruction($id_customer);
+        $data['file_construction'] =
+            $this->M_Files->getInfoFileForConstruction($id_dir_file['id_reksis_sld'], $id_dir_file['id_working_order']);
 
-            // Data Pengawas
-            $data['pengawas'] = $this->M_Auth->find($data['customer']['id_pengawas']);
+        // Data Pengawas
+        $data['pengawas'] = $this->M_Auth->find($data['customer']['id_pengawas']);
 
-            // Data Report Log
-            $role = 'Construction';
-            $data['report_log'] = $this->M_UserReport->getReportByRolePerCustomer($role, $id_customer);
+        // Data Report Log
+        $role = 'Construction';
+        $data['report_log'] = $this->M_UserReport->getReportByRolePerCustomer($role, $id_customer);
 
-            // Data Cancellation Report
-            $data['cancellation_report'] = $this->M_CancellationReport->getCancellationReport($session->get('id_user'), $id_customer);
+        // Data Cancellation Report
+        $data['cancellation_report'] = $this->M_CancellationReport->getCancellationReport($session->get('id_user'), $id_customer);
 
-            // Data Energize Report
-            $id_dir_file_energize = $this->M_UserEnergize->getFileEnergize($id_customer);
-            if ($id_dir_file_energize) {
-                $data['file_energize'] =
-                    $this->M_Files->getFileEnergize($id_dir_file_energize['id_ba_aco'], $id_dir_file_energize['id_work_order'], $id_dir_file_energize['id_documentation']);
-            }
-
-            // d($data['file_energize']);
-            // d($data['file_construction']);
-
-            return view('construction/detailCustomer', $data);
-        } else {
-            return redirect()->route('blocked');
+        // Data Energize Report
+        $id_dir_file_energize = $this->M_UserEnergize->getFileEnergize($id_customer);
+        if ($id_dir_file_energize) {
+            $data['file_energize'] =
+                $this->M_Files->getFileEnergize($id_dir_file_energize['id_ba_aco'], $id_dir_file_energize['id_work_order'], $id_dir_file_energize['id_documentation']);
         }
+
+        // d($data['file_energize']);
+        // d($data['file_construction']);
+
+        return view('construction/detailCustomer', $data);
     }
 
     public function startConstruct($id_customer)

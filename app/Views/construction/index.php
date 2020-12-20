@@ -42,8 +42,7 @@
                             <td class="text-center"><?= $c['information']; ?></td>
                             <td class="text-center">
                                 <form action="<?= base_url('construction/detail/' . $c['id_customer']); ?>" method="post">
-                                    <?= csrf_field(); ?>
-                                    <button type="submit" class="btn btn-sm btn-primary btn-work-order" data-toggle="tooltip" data-placement="bottom" data-id="<?= $c['id_customer']; ?>" data-url="<?= base_url('manager//'); ?>" data-information="<?= $c['information']; ?>" title="See Detail Info <?= $c['name_customer']; ?>"><i class="fas fa-fw fa-edit"></i></button>
+                                    <button type="submit" class="btn btn-sm btn-primary btn-work-order" data-toggle="tooltip" data-placement="bottom" data-id="<?= $c['id_customer']; ?>" data-information="<?= $c['information']; ?>" title="See Detail Info <?= $c['name_customer']; ?>"><i class="fas fa-fw fa-edit"></i></button>
                                 </form>
                             </td>
                         </tr>

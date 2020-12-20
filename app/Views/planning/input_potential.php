@@ -25,7 +25,7 @@
                 <div class="card col-lg">
                     <div class="card-body col-lg-11">
                         <div class="form-group row">
-                            <label for="cust-name" class="col-sm-2 col-form-label col-form-label-sm">Customer Name *</label>
+                            <label for="cust-name" class="col-sm-3 col-form-label col-form-label-sm">Customer Name *</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control form-control-sm" id="cust-name" name="cust-name" placeholder="Customer's Name" value="<?= set_value('cust-name'); ?>">
                                 <?php if (isset($validation)) : ?>
@@ -36,7 +36,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="cust-id" class="col-sm-2 col-form-label col-form-label-sm">ID Customer *</label>
+                            <label for="cust-id" class="col-sm-3 col-form-label col-form-label-sm">ID Customer *</label>
                             <div class="col-sm-8">
                                 <input type="number" class="form-control form-control-sm" id="cust-id" name="cust-id" placeholder="ID Customer's" value="<?= set_value('cust-id'); ?>">
                                 <?php if (isset($validation)) : ?>
@@ -47,7 +47,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="tariff" class="col-sm-2 col-form-label col-form-label-sm">Tarif *</label>
+                            <label for="tariff" class="col-sm-3 col-form-label col-form-label-sm">Tarif *</label>
                             <div class="col-sm-8">
                                 <select id="tariff" name="tariff" class="col-sm-4 form-control custom-select custom-line-height custom-select-sm" value="<?= set_value('tariff'); ?>">
                                     <?php foreach ($tariff as $tarif) { ?>
@@ -62,9 +62,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="power" class="col-sm-2 col-form-label col-form-label-sm">Daya (VA) *</label>
+                            <label for="power" class="col-sm-3 col-form-label col-form-label-sm">Daya (VA) *</label>
                             <div class="col-sm-8">
-                                <input type="number" class="col-sm-2 form-control form-control-sm" id="power" name="power" value="<?= set_value('power'); ?>">
+                                <input type="number" class="col-sm-3 form-control form-control-sm" id="power" name="power" value="<?= set_value('power'); ?>">
                                 <?php if (isset($validation)) : ?>
                                     <div class="text-danger pl-1" role="alert">
                                         <?= $validation->getError('power'); ?>
@@ -73,7 +73,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="cust-address" class="col-sm-2 col-form-label col-form-label-sm">Address *</label>
+                            <label for="cust-address" class="col-sm-3 col-form-label col-form-label-sm">Address *</label>
                             <div class="col-sm-8">
                                 <textarea class="form-control form-control-sm" name="cust-address" id="cust-address" cols="30" rows="4" placeholder="Address Customer's" value="<?= set_value('cust-address'); ?>"><?= set_value('cust-address'); ?></textarea>
                                 <?php if (isset($validation)) : ?>
@@ -84,7 +84,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="substation" class="col-sm-2 col-form-label col-form-label-sm">Substation *</label>
+                            <label for="substation" class="col-sm-3 col-form-label col-form-label-sm">Substation *</label>
                             <div class="col-sm-8">
                                 <!-- <input type="text" class="form-control form-control-sm" id="substation" name="substation"> -->
                                 <select id="substation" name="substation" class="col-sm-4 form-control custom-select custom-line-height custom-select-sm" value="<?= set_value('substation'); ?>">
@@ -100,7 +100,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="feeder-substation" class="col-sm-2 col-form-label col-form-label-sm">Feeder Substation *</label>
+                            <label for="feeder-substation" class="col-sm-3 col-form-label col-form-label-sm">Feeder Substation *</label>
                             <div class="col-sm-8">
                                 <!-- <input type="text" class="form-control form-control-sm" id="feeder-substation" name="feeder-substation"> -->
                                 <select id="feeder-substation" name="feeder-substation" class="col-sm-4 form-control custom-select custom-line-height custom-select-sm" value="<?= set_value('feeder-substation'); ?>">
@@ -116,7 +116,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="subsistem" class="col-sm-2 col-form-label col-form-label-sm">Subsistem *</label>
+                            <label for="subsistem" class="col-sm-3 col-form-label col-form-label-sm">Subsistem *</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control form-control-sm" id="subsistem" name="subsistem" value="<?= set_value('subsistem'); ?>">
                                 <?php if (isset($validation)) : ?>
@@ -127,7 +127,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="bep-value" class="col-sm-2 col-form-label col-form-label-sm">BEP Value *</label>
+                            <label for="bep-value" class="col-sm-3 col-form-label col-form-label-sm">BEP Value *</label>
                             <div class="col-sm-8">
                                 <input type="number" step="any" class="form-control form-control-sm" id="bep-value" name="bep-value" value="<?= set_value('bep-value'); ?>">
                                 <?php if (isset($validation)) : ?>
@@ -138,7 +138,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="recommend-service" class="col-sm-2 col-form-label col-form-label-sm">Service Recommendation*</label>
+                            <label for="recommend-service" class="col-sm-3 col-form-label col-form-label-sm">Service Recommendation*</label>
                             <div class="col-sm-8">
                                 <select id="recommend-service" name="recommend-service" class="col-sm-4 form-control custom-select custom-select-sm custom-line-height">
                                     <?php foreach ($service as $down) { ?>
@@ -185,7 +185,7 @@
                     <?= csrf_field(); ?>
                     <input type="hidden" name="_method" value="PUT">
                     <div class="form-group row">
-                        <label for="file_excel" class="col-sm-2 col-form-label">File</label>
+                        <label for="file_excel" class="col-sm-3 col-form-label">File</label>
                         <div class="col-sm-10">
                             <div class="custom-file">
                                 <input type="file" class="form-control custom-file-input" id="file_excel" name="file_excel">

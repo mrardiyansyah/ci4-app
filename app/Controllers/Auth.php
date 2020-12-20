@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Models\M_Auth;
 use App\Models\M_Role;
 use App\Models\M_Token;
-use CodeIgniter\Controller;
 
 class Auth extends BaseController
 {

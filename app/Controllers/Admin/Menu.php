@@ -27,7 +27,7 @@ class Menu extends BaseController
         $data['title'] = 'Menu Manajemen';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
+
 
         $data['menu'] = $this->M_Menu->findAll();
 

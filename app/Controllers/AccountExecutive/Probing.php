@@ -133,8 +133,7 @@ class Probing extends BaseController
                     ];
                     $this->pusher->trigger('my-channel', 'my-event', $message);
 
-                    $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Report Log added Successfully!</div>');
-                    return redirect()->to(site_url("account-executive"));
+                    return redirect()->to(site_url("account-executive"))->with('message', '<div class="alert alert-success" role="alert">Report Log added Successfully!</div>');
                 } else {
                     $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Report Log failed to add! Please try again</div>');
                     return redirect()->to(site_url("account-executive"));
@@ -480,8 +479,7 @@ class Probing extends BaseController
                     return redirect()->to(site_url("account-executive"));
                 }
 
-                $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Problem Report has been edited!</div>');
-                return redirect()->to(site_url("account-executive"));
+                return redirect()->to(site_url("account-executive"))->with('message', '<div class="alert alert-success" role="alert">Problem Report has been edited!</div>');
             }
         }
 

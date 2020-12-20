@@ -379,19 +379,21 @@
                         <div class="tab-content" id="myTabContent">
                             <!-- Report Log Tab Pane -->
                             <div class="tab-pane fade show active" id="reportLog" role="tabpanel" aria-labelledby="reportLog-tab">
-                                <!-- Button Create Report -->
-                                <div class="dropdown pb-3 d-sm-flex">
-                                    <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownReportLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                        Create Report
-                                    </a>
-                                    <div class="dropdown-menu animate__animated animate__zoomIn animate__faster" aria-labelledby="dropdownReportLink">
-                                        <a class="dropdown-item text-primary" href="<?= base_url('account-executive/probing/' . $customer['id_customer']); ?>"><i class="fas fa-fw fa-file-alt"></i> Make a Report</a>
-                                        <?php if ($customer['id_status'] < 4 && $customer['id_information'] != 12) : ?>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item text-danger" href="<?= base_url('account-executive/cancellationReport/' . $customer['id_customer']); ?>"><i class="fas fa-fw fa-exclamation-triangle"></i> Cancellation Report</a>
-                                        <?php endif; ?>
+                                <?php if ($customer['id_status'] < 4) : ?>
+                                    <!-- Button Create Report -->
+                                    <div class="dropdown pb-3 d-sm-flex">
+                                        <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownReportLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            Create Report
+                                        </a>
+                                        <div class="dropdown-menu animate__animated animate__zoomIn animate__faster" aria-labelledby="dropdownReportLink">
+                                            <a class="dropdown-item text-primary" href="<?= base_url('account-executive/probing/' . $customer['id_customer']); ?>"><i class="fas fa-fw fa-file-alt"></i> Make a Report</a>
+                                            <?php if ($customer['id_status'] < 4 && $customer['id_information'] != 12) : ?>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item text-danger" href="<?= base_url('account-executive/cancellationReport/' . $customer['id_customer']); ?>"><i class="fas fa-fw fa-exclamation-triangle"></i> Cancellation Report</a>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
-                                </div>
+                                <?php endif; ?>
                                 <div>
                                     <table class="table table-bordered table-hover table-striped table-reportLog" style="width: 100%;">
                                         <thead class="thead-dark">

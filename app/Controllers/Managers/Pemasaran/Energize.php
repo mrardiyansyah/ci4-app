@@ -9,11 +9,10 @@ use App\Models\CustomerModel;
 use App\Models\M_Role;
 use App\Models\M_Directories;
 use App\Models\M_Files;
-use App\Models\M_UserEnergize;
 
 class Energize extends BaseController
 {
-    protected $M_Auth, $M_Role, $M_Customer, $M_Directories, $M_Files, $M_UserEnergize, $CustomerModel;
+    protected $M_Auth, $M_Role, $M_Customer, $M_Directories, $M_Files, $CustomerModel;
 
     public function __construct()
     {
@@ -22,8 +21,6 @@ class Energize extends BaseController
         $this->M_Customer = new M_Customer();
         $this->M_Directories = new M_Directories();
         $this->M_Files = new M_Files();
-        $this->M_UserEnergize = new M_UserEnergize();
-
         $db = db_connect();
         $this->CustomerModel = new CustomerModel($db);
     }

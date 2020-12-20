@@ -7,16 +7,13 @@ use App\Models\M_Auth;
 use App\Models\M_Customer;
 use App\Models\CustomerModel;
 use App\Models\M_Role;
-use App\Models\M_UserClosing;
-use App\Models\M_Directories;
-use App\Models\M_Files;
 use App\Models\M_UserReport;
 use App\Models\M_CancellationReport;
 use App\Models\M_Notification;
 
 class Dashboard extends BaseController
 {
-    protected $M_Auth, $M_Role, $M_Customer, $M_UserReport, $M_CancellationReport, $M_UserClosing, $M_Directories, $M_Files, $CustomerModel, $M_Notification;
+    protected $M_Auth, $M_Role, $M_Customer, $M_UserReport, $M_CancellationReport, $CustomerModel, $M_Notification;
 
 
     public function __construct()
@@ -26,9 +23,6 @@ class Dashboard extends BaseController
         $this->M_UserReport = new M_UserReport();
         $this->M_CancellationReport = new M_CancellationReport();
         $this->M_Customer = new M_Customer();
-        $this->M_UserClosing = new M_UserClosing();
-        $this->M_Directories = new M_Directories();
-        $this->M_Files = new M_Files();
         $this->M_Notification = new M_Notification();
         $db = db_connect();
         $this->CustomerModel = new CustomerModel($db);

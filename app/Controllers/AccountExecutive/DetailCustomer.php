@@ -4,7 +4,6 @@ namespace App\Controllers\AccountExecutive;
 
 use App\Controllers\BaseController;
 use App\Models\M_Auth;
-use App\Models\M_Customer;
 use App\Models\CustomerModel;
 use App\Models\M_Role;
 use App\Models\M_UserClosing;
@@ -16,7 +15,7 @@ use App\Models\M_UserEnergize;
 
 class DetailCustomer extends BaseController
 {
-    protected $M_Auth, $M_Role, $M_Customer, $M_UserReport, $M_CancellationReport, $M_UserClosing, $M_UserEnergize, $M_Directories, $M_Files, $CustomerModel;
+    protected $M_Auth, $M_Role, $M_UserReport, $M_CancellationReport, $M_UserClosing, $M_UserEnergize, $M_Directories, $M_Files, $CustomerModel;
 
 
     public function __construct()
@@ -26,7 +25,6 @@ class DetailCustomer extends BaseController
         $this->M_UserReport = new M_UserReport();
         $this->M_CancellationReport = new M_CancellationReport();
         $this->M_UserEnergize = new M_UserEnergize();
-        $this->M_Customer = new M_Customer();
         $this->M_UserClosing = new M_UserClosing();
         $this->M_Directories = new M_Directories();
         $this->M_Files = new M_Files();

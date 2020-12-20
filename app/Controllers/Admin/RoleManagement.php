@@ -26,7 +26,6 @@ class RoleManagement extends BaseController
         $data['title'] = 'Role Management';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        $data['notif'] = get_new_notif();
 
         $current_page = $this->request->getVar('page_user_role') ? $this->request->getVar('page_user_role') : 1;
         $keyword = $this->request->getVar('keyword');
@@ -52,7 +51,6 @@ class RoleManagement extends BaseController
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($id_role);
         $data['menu'] = $this->M_Menu->where('id_user_menu !=', 1)->findAll();
-        $data['notif'] = get_new_notif();
 
         return view('role_management/role-access', $data);
     }

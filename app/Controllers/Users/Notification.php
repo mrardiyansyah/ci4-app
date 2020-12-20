@@ -3,19 +3,14 @@
 namespace App\Controllers\Users;
 
 use App\Controllers\BaseController;
-use App\Models\M_Auth;
-use App\Models\M_Role;
 use App\Models\M_Notification;
 
 class Notification extends BaseController
 {
-    protected $M_Auth, $M_Role, $M_Notification;
-
+    protected $M_Notification;
 
     public function __construct()
     {
-        $this->M_Auth = new M_Auth();
-        $this->M_Role = new M_Role();
         $this->M_Notification = new M_Notification();
     }
 

@@ -5,14 +5,13 @@ namespace App\Controllers\Planning;
 use App\Controllers\BaseController;
 use App\Models\M_Auth;
 use App\Models\CustomerModel;
-use App\Models\CustomModel;
 use App\Models\M_Customer;
 use App\Models\M_Role;
 use Exception;
 
 class AddPotential extends BaseController
 {
-    protected $M_Auth, $M_Role, $M_Customer, $CustomerModel, $CustomModel;
+    protected $M_Auth, $M_Role, $M_Customer, $CustomerModel;
 
     public function __construct()
     {
@@ -21,7 +20,6 @@ class AddPotential extends BaseController
         $this->M_Customer = new M_Customer();
         $db = db_connect();
         $this->CustomerModel = new CustomerModel($db);
-        $this->CustomModel = new CustomModel($db);
     }
 
     public function index()
@@ -138,6 +136,7 @@ class AddPotential extends BaseController
                         Data failed to add!</div>');
                     return redirect()->back();
                 }
+
                 $session->setFlashdata('message', '<div class="alert alert-success" role="alert">
                     Data successfully added!</div>');
                 return redirect()->back();
