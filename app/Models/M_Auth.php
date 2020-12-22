@@ -76,6 +76,7 @@ class M_Auth extends Model
         return $builder
             ->where('user.id_role', 3)
             ->where('is_active', 1)
+            ->Where('deleted_at', NULL)
             ->join('user_role', "user.id_role = user_role.id_role")
             ->join('customer', "user.id_user = customer.id_salesman", 'left')
             ->groupBy('user.id_user')

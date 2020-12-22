@@ -44,9 +44,10 @@ class AddPotential extends BaseController
                 ],
                 'cust-id' => [
                     'label' => 'ID Customer',
-                    'rules' => 'required|max_length[9]',
+                    'rules' => 'required|max_length[9]|is_unique[customer.id_pelanggan]',
                     'errors' => [
-                        'max_length' => 'ID Customer maximum length is 9'
+                        'max_length' => 'ID Customer maximum length is 9',
+                        'is_unique' => 'This ID Customer already exists in database'
                     ]
                 ],
                 'power' => [

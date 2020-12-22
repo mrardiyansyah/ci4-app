@@ -31,19 +31,22 @@
 
                         <div class="d-flex justify-content-end">
                             <!-- Button Edit and Delete -->
-                            <a href="<?= base_url('planning/edit-customer/' . $customer['id_customer']); ?>" class="btn btn-sm btn-primary float-right mr-1" id="btn-edit-customer">
-                                <i class="far fa-fw fa-edit"></i>
-                                Edit
-                            </a>
-
-                            <form action="<?= base_url('planning/detail-customer/' . $customer['id_customer']); ?>" method="post">
-                                <?= csrf_field(); ?>
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button type="button" class="btn btn-sm btn-danger float-right" data-customer="<?= $customer['name_customer']; ?>" id="btn-delete-customer">
-                                    <i class="far fa-fw fa-trash-alt"></i>
-                                    Delete
-                                </button>
-                            </form>
+                            <div class="toggle-wrapper" data-toggle="tooltip" data-placement="top" data-original-title="<?= ($customer['id_status'] > 1) ? "Can't Edit" : "Edit Customer"; ?>" style="cursor: <?= ($customer['id_status'] > 1) ? "no-drop" : "default"; ?>;">
+                                <a href="<?= base_url('planning/edit-customer/' . $customer['id_customer']); ?>" class="btn btn-sm btn-primary float-right mr-1 <?= ($customer['id_status'] > 1) ? "disabled" : ""; ?>" id="btn-edit-customer">
+                                    <i class="far fa-fw fa-edit"></i>
+                                    Edit
+                                </a>
+                            </div>
+                            <div class="toggle-wrapper" data-toggle="tooltip" data-placement="top" data-original-title="<?= ($customer['id_status'] > 1) ? "Can't Delete" : "Delete Customer"; ?>">
+                                <form action="<?= base_url('planning/detail-customer/' . $customer['id_customer']); ?>" method="post">
+                                    <?= csrf_field(); ?>
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="button" class="btn btn-sm btn-danger float-right <?= ($customer['id_status'] > 1) ? "disabled" : ""; ?>" data-customer="<?= $customer['name_customer']; ?>" id="btn-delete-customer" style="cursor: <?= ($customer['id_status'] > 1) ? "no-drop" : "default"; ?>;">
+                                        <i class="far fa-fw fa-trash-alt"></i>
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                         <div style="overflow-x: auto;">
                             <table class="table table-sm table-borderless col-lg-9 table-responsive">

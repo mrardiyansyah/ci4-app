@@ -359,8 +359,8 @@ class ReportLog extends BaseController
                     ];
                     $this->pusher->trigger('my-channel', 'my-event', $message);
 
-                    $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Problem Report added Successfully! Please wait for confirmation</div>');
-                    return redirect()->to(site_url("construction"));
+                    // $session->setFlashdata('message', '<div class="alert alert-success" role="alert">Problem Report added Successfully! Please wait for confirmation</div>');
+                    return redirect()->to(site_url("construction"))->with('message', '<div class="alert alert-success" role="alert">Problem Report added Successfully! Please wait for confirmation</div>');
                 } else {
                     $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to add! Please try again</div>');
                     return redirect()->to(site_url("construction"));

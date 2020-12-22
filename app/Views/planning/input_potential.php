@@ -185,7 +185,7 @@
                     <?= csrf_field(); ?>
                     <input type="hidden" name="_method" value="PUT">
                     <div class="form-group row">
-                        <label for="file_excel" class="col-sm-3 col-form-label">File</label>
+                        <label for="file_excel" class="col-sm col-form-label">File</label>
                         <div class="col-sm-10">
                             <div class="custom-file">
                                 <input type="file" class="form-control custom-file-input" id="file_excel" name="file_excel">

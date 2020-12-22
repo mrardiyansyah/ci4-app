@@ -143,6 +143,8 @@ class ProblemReport extends BaseController
         // d($data['problem_report']);
 
         if ($this->request->getMethod() == 'put') {
+            $temp_id_approval = $data['problem_report']['id_approval_status'];
+            // d($temp_id_approval);
             $id_approval_status = $this->request->getPost('approval_status');
             if ($id_approval_status == 5) {
                 $rules = [
@@ -179,7 +181,10 @@ class ProblemReport extends BaseController
 
                 try {
                     $update = $this->M_CancellationReport->update($id_report, $update_status);
-                    $this->M_Customer->update($id_customer, ['id_information' => 2]);
+
+                    $information = ($temp_id_approval == 4) ? ['id_information' => 8] : ['id_information' => 2];
+
+                    $this->M_Customer->update($id_customer, $information);
                 } catch (\Exception $e) {
                     $session->setFlashdata('message', '<div class="alert alert-danger" role="alert">Problem Report failed to update! Please try again ' . $this->M_CancellationReport->errors() . '</div>');
                     return redirect()->to(site_url("manager/pemasaran"));

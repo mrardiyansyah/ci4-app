@@ -627,11 +627,14 @@ $("#form-problem-report").on('submit', function (e) {
     let status = $(".btn-submit-problem-report").data('status');
     let url = $(".btn-submit-problem-report").data('url')
     let id = $(".btn-submit-problem-report").data('id')
+    let user = $(".btn-submit-problem-report").data('user')
 
     if (status == 'Problem Mapping') {
         url = url + "/pemasaran/problem-solve/" + id;
-    } else if (status == 'Construction') {
+    } else if (status == 'Construction' && user == 19) {
         url = url + "/konstruksi/problem-solve/" + id;
+    } else if (status == 'Construction' && user == 20) {
+        url = url + "/pemasaran/problem-solve/" + id;
     } else {
         return false;
     }

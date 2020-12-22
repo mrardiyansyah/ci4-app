@@ -89,7 +89,7 @@
                         </div>
                         <div class="form-group justify-content-end">
                             <div class="col-sm-10">
-                                <button class="btn btn-sm btn-primary btn-submit-problem-report mb-1" type="submit" data-id="<?= $problem_report['id_user_cancellation']; ?>" data-status="<?= $problem_report['status']; ?>" data-url="<?= base_url('manager'); ?>">
+                                <button class="btn btn-sm btn-primary btn-submit-problem-report mb-1" type="submit" data-id="<?= $problem_report['id_user_cancellation']; ?>" data-user="<?= session()->get('id_role'); ?>" data-status="<?= $problem_report['status']; ?>" data-url="<?= base_url('manager'); ?>">
                                     Submit
                                     <i class="fas fa-save ml-1 text-white"></i>
                                 </button>
