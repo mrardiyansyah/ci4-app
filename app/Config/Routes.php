@@ -238,6 +238,9 @@ $routes->group('manager', ['filter' => 'auth:19,20,21'], function ($routes) {
 		// Dashboard
 		$routes->get('/', 'Managers\Pemasaran\Dashboard::index');
 
+		// Dashboard
+		$routes->get('data-potential', 'Managers\Pemasaran\DataCustomer::index');
+
 		// Detail Customer
 		$routes->add('detail/(:num)', 'Managers\Pemasaran\DetailCustomer::index/$1');
 

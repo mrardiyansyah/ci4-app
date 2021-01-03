@@ -34,20 +34,7 @@ class Dashboard extends BaseController
         $data['title'] = 'Dashboard Pemasaran';
         $data['user'] = $this->M_Auth->find($session->get('id_user'));
         $data['role'] =  $this->M_Role->find($session->get('id_role'));
-        // $data['notif'] = get_new_notif();
         $role = 'Account Executive';
-
-        // $notif = $this->M_Notification->setNotification(
-        //     1,
-        //     $session->get('id_user'),
-        //     1,
-        //     'test',
-        //     'test',
-        //     'Info'
-        // );
-        // d($notif);
-        // $data['asu'] = 'asu';
-        // $this->pusher->trigger('my-channel', 'my-event', $data['asu']);
 
         // Total Customer
         $data['total_customer'] = $this->M_Customer->countAllResults();
