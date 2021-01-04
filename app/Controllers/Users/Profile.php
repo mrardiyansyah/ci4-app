@@ -12,8 +12,6 @@ class Profile extends BaseController
 
     protected $M_Auth, $M_Role;
 
-
-
     public function __construct()
     {
         $this->M_Auth = new M_Auth();
@@ -44,7 +42,7 @@ class Profile extends BaseController
 
         if ($this->request->getMethod() == 'post') {
             $rules = [
-                'name' => 'required|alpha_space',
+                'name' => 'required',
                 'image' => [
                     'label' => 'Image',
                     'rules' => 'max_size[image,2048]|is_image[image]|mime_in[image,image/gif,image/jpeg,image/png]',

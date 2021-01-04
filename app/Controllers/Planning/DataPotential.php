@@ -33,6 +33,9 @@ class DataPotential extends BaseController
         // Data Semua customer
         $data['customer'] = $this->CustomerModel->getCustomer();
 
+        // Data Account Executive
+        $data['list_ae'] = $this->M_Auth->getAllAccountExecutive();
+
         return view('planning/index', $data);
     }
 
@@ -42,7 +45,7 @@ class DataPotential extends BaseController
 
         // Data Semua customer
         $data['customer'] = $this->CustomerModel->getCustomerById($id_customer);
-
+        // d($data['customer']);
         if (!isset($data['customer'])) {
             return redirect()->to(site_url('planning'));
         }

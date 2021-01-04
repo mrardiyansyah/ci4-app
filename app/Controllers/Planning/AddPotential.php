@@ -95,7 +95,6 @@ class AddPotential extends BaseController
             } else {
                 $all_sales = $this->M_Auth->getAllSales();
 
-
                 foreach ($all_sales as $key => $sales) {
                     $compare = $this->M_Customer->countDataPerSalesman($sales['id_user']);
 

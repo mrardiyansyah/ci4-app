@@ -12,6 +12,8 @@
             <div class="col-lg-9">
                 <?= session()->get('message'); ?>
             </div>
+
+            <!-- Tabel Customer -->
             <table class="table table-hover table-customer" style="width: 100%;">
                 <thead>
                     <tr class="text-center">
@@ -48,6 +50,38 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
+
+            <!-- List Account Executive -->
+            <div class="col-lg-4 mt-2 mb-2">
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <span class="float-right font-weight-bold text-primary" title="<?= count($list_ae); ?> Account Executive"><?= count($list_ae); ?></span>
+                        <h6 class="m-0 font-weight-bold text-primary">Account Executive</h6>
+                    </div>
+                    <div class="card-body" style="max-height: 370px; overflow-y: auto;">
+                        <?php foreach ($list_ae as $ae) : ?>
+                            <span class="float-right text-cadetblue small font-weight-bolder" data-toggle="tooltip" title="Have <?= ($ae['total'] > 0) ? $ae['total'] : 'No'; ?> Potential Customer"><i class="fas fa-user-friends"></i> <?= $ae['total']; ?></span>
+                            <div class="row mb-4">
+                                <div class="">
+                                    <?php if ($ae['image'] == 'default.jpg') { ?>
+                                        <img class="img-fluid rounded-circle" src="<?= base_url('assets/img/profile/' . $ae['image']); ?>" width="35" height="35">
+                                    <?php } else { ?>
+                                        <img class="img-fluid rounded-circle" src="<?= base_url('assets/img/profile/' . $ae['id_user'] . '/' . $ae['image']); ?>" width="35" height="35">
+                                    <?php } ?>
+                                </div>
+                                <div class="col">
+                                    <div class="list-heading">
+                                        <span class="ml-1 small font-weight-bold"><?= $ae['name']; ?> </span>
+                                    </div>
+                                    <div class="list-subheading">
+                                        <span class="ml-1 text-gray-500 small"><?= $ae['role_type']; ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -7,7 +7,6 @@ use App\Models\M_Auth;
 use App\Models\M_Customer;
 use App\Models\CustomerModel;
 use App\Models\M_Role;
-use App\Models\M_UserClosing;
 use App\Models\M_Directories;
 use App\Models\M_Files;
 use App\Models\M_UserReport;
@@ -17,7 +16,7 @@ use App\Models\M_Notification;
 
 class Probing extends BaseController
 {
-    protected $M_Auth, $M_Role, $M_Customer, $M_UserClosing, $M_Directories, $M_Files, $M_UserReport, $M_CancellationReport, $M_Notification, $CustomerModel;
+    protected $M_Auth, $M_Role, $M_Customer, $M_Directories, $M_Files, $M_UserReport, $M_CancellationReport, $M_Notification, $CustomerModel;
 
 
     public function __construct()
@@ -25,7 +24,6 @@ class Probing extends BaseController
         $this->M_Auth = new M_Auth();
         $this->M_Role = new M_Role();
         $this->M_Customer = new M_Customer();
-        $this->M_UserClosing = new M_UserClosing();
         $this->M_Directories = new M_Directories();
         $this->M_Files = new M_Files();
         $this->M_UserReport = new M_UserReport();
